@@ -43,5 +43,9 @@ install_manifest.txt
 compile_commands.json
 CTestTestfile.cmake
 _deps
-
+cmake_install.cmake
 Makefile
+
+#Executables
+lab1
+lab1-test
