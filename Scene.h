@@ -7,6 +7,7 @@
 #include "Node.h"
 #include "Light.h"
 #include "Camera.h"
+#include "Group.h"
 class Scene;
 
 /// <summary>
@@ -66,10 +67,10 @@ public:
   void useProgram();
 
   /// <summary>
-  /// Add a new node
+  /// Add a new group.
   /// </summary>
   /// <param name="node">A new node</param>
-  void add(std::shared_ptr<Node>& node);
+  void add(std::shared_ptr<Group> group);
 
   /// <summary>
   /// Reset all nodes transform to its initial value
@@ -89,6 +90,8 @@ public:
   /// <returns>A node</returns>
   std::shared_ptr<Node> getNode(size_t i);
 
+  const GroupVector& getGroups();
+
   /// <summary>
   /// Compute a bounding box for the whole scene
   /// </summary>
@@ -102,6 +105,7 @@ public:
 
 private:
   NodeVector m_nodes;
+  GroupVector m_groups;
   LightVector m_lights;
   GLuint m_program;
   GLint m_uniform_numberOfLights;

@@ -159,7 +159,7 @@ glm::mat4 assimpToGlmMatrix(const aiMatrix4x4 &ai_matrix)
   return glm_matrix;
 }
 
-void parseNodes(aiNode *root_node, MaterialVector& materials, std::stack<glm::mat4>& transformStack, std::shared_ptr<Node>& node, const aiScene *aiScene)
+void parseNodes(aiNode *root_node, MaterialVector& materials, std::stack<glm::mat4>& transformStack, std::shared_ptr<Group>& group, const aiScene *aiScene)
 {
 
   glm::mat4 transform = assimpToGlmMatrix(root_node->mTransformation);
@@ -174,21 +174,21 @@ void parseNodes(aiNode *root_node, MaterialVector& materials, std::stack<glm::ma
 
   for (uint32_t i = 0; i < num_meshes; i++)
   {
-    std::shared_ptr<Mesh> loadedMesh(new Mesh());
+    std::shared_ptr<Geometry> loadedGeometry(new Geometry());
 
     aiMesh *mesh = aiScene->mMeshes[root_node->mMeshes[i]];
     uint32_t num_vertices = mesh->mNumVertices;
 
-    loadedMesh->vertices.resize(num_vertices);
-    loadedMesh->normals.resize(num_vertices);
-    loadedMesh->texCoords.resize(num_vertices);
+    loadedGeometry->vertices.resize(num_vertices);
+    loadedGeometry->normals.resize(num_vertices);
+    loadedGeometry->texCoords.resize(num_vertices);
 
     //tangents.resize(num_vertices);
 
     for (uint32_t j = 0; j < num_vertices; j++)
     {
-      loadedMesh->vertices[j] = glm::vec4(mesh->mVertices[j].x, mesh->mVertices[j].y, mesh->mVertices[j].z, 1);
-      loadedMesh->normals[j] = glm::vec3(mesh->mNormals[j].x, mesh->mNormals[j].y, mesh->mNormals[j].z);
+      loadedGeometry->vertices[j] = glm::vec4(mesh->mVertices[j].x, mesh->mVertices[j].y, mesh->mVertices[j].z, 1);
+      loadedGeometry->normals[j] = glm::vec3(mesh->mNormals[j].x, mesh->mNormals[j].y, mesh->mNormals[j].z);
 
       glm::vec3 tangent;
       if (mesh->HasTangentsAndBitangents())
@@ -204,7 +204,7 @@ void parseNodes(aiNode *root_node, MaterialVector& materials, std::stack<glm::ma
         tex_coord.x = mesh->mTextureCoords[0][j].x;
         tex_coord.y = mesh->mTextureCoords[0][j].y;
 
-        loadedMesh->texCoords[j] = tex_coord;
+        loadedGeometry->texCoords[j] = tex_coord;
       }
 
       // Ignore color
@@ -218,33 +218,35 @@ void parseNodes(aiNode *root_node, MaterialVector& materials, std::stack<glm::ma
     }
 
     uint32_t num_faces = mesh->mNumFaces;
-    loadedMesh->elements.resize(0);
+    loadedGeometry->elements.resize(0);
     for (uint32_t j = 0; j < num_faces; j++)
     {
       aiFace face = mesh->mFaces[j];
       uint32_t num_indices = face.mNumIndices;
       for (uint32_t k = 0; k < num_indices; k++)
       {
-        loadedMesh->elements.push_back(face.mIndices[k]);
+        loadedGeometry->elements.push_back(face.mIndices[k]);
       }
     }
 
-    loadedMesh->object2world = transformStack.top();
+    Transform *transformation = new Transform();
+    transformation->object2world = transformStack.top();
     
     if (!materials.empty())
-      loadedMesh->setMaterial(materials[mesh->mMaterialIndex]);
-
-    node->add(loadedMesh);
+      //TODO fix material here later.
+      //loadedGeometry->setMaterial(materials[mesh->mMaterialIndex]);
+    
+    group->addChild(loadedGeometry);
   }
 
   for (uint32_t i = 0; i < root_node->mNumChildren; i++)
   {
-    parseNodes(root_node->mChildren[i], materials, transformStack, node, aiScene);
+    parseNodes(root_node->mChildren[i], materials, transformStack, group, aiScene);
   }
   transformStack.pop();
 }
 
-std::shared_ptr<Node> load3DModelFile(const std::string& filename)
+std::shared_ptr<Group> load3DModelFile(const std::string& filename)
 {
   std::string filepath = filename;
   bool exist = vr::FileSystem::exists(filepath);
@@ -290,14 +292,14 @@ std::shared_ptr<Node> load3DModelFile(const std::string& filename)
   std::stack<glm::mat4> transformStack;
   transformStack.push(glm::mat4());
 
-  std::shared_ptr<Node> node = std::shared_ptr<Node>(new Node);
-  parseNodes(root_node, materials, transformStack, node, aiScene);
+  std::shared_ptr<Group> group = std::shared_ptr<Group>(new Group);
+  parseNodes(root_node, materials, transformStack, group, aiScene);
   transformStack.pop();
 
-  if (node->getMeshes().empty())
+  if (group->empty())
     std::cerr << " File " << filepath << " did not contain any mesh data" << std::endl;
 
-  return node;
+  return group;
 }
 
 #include <fstream>
@@ -461,8 +463,8 @@ bool loadSceneFile(const std::string& sceneFile, std::shared_ptr<Scene>& scene)
           throw std::runtime_error("Node (" + name + ") Invalid scale in: " + pathToString(xmlpath));
 
         // Now create the node
-        std::shared_ptr<Node> loadedNode = load3DModelFile(path);
-        if (!loadedNode)
+        std::shared_ptr<Group> loadedGroup = load3DModelFile(path);
+        if (!loadedGroup)
           std::cerr << "Unable to load node \'" << name << "\' path: " << path << std::endl;
         else
         {
@@ -474,9 +476,12 @@ bool loadSceneFile(const std::string& sceneFile, std::shared_ptr<Scene>& scene)
 
           auto t = mt * rz * ry * rx;
           t = glm::scale(t, s_vec);
-          loadedNode->setInitialTransform(t);
-          loadedNode->name = name;
-          scene->add(loadedNode);
+          Transform *initTransform = new Transform();
+          initTransform->object2world = t;
+          initTransform->addChild(loadedGroup);
+          //loadedGroup->setInitialTransform(t);
+          loadedGroup->name = name;
+          scene->add(loadedGroup);
         }
 
         xmlpath.pop_back(); // transform

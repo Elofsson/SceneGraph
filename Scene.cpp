@@ -40,10 +40,11 @@ bool Scene::initShaders(const std::string& vshader_filename, const std::string& 
   return true;
 }
 
+//TODO bruh, continue here and see how this should be handled with groups.
 void Scene::add(std::shared_ptr<Light>& light)
 {
   m_lights.push_back(light);
-  std::shared_ptr<Node> node = std::shared_ptr<Node>(new Node());
+  std::shared_ptr<Group> group = std::shared_ptr<Node>(new Node());
 
   node->add(light->m_mesh);
   node->add(light->getMesh());
@@ -85,14 +86,15 @@ void Scene::useProgram()
   glUseProgram(m_program);
 }
 
-void Scene::add(std::shared_ptr<Node>& node)
+//TODO See if there is another way to init geometries other than getGeometry method.
+void Scene::add(std::shared_ptr<Group> group)
 {
-  m_nodes.push_back(node);
+  m_groups.push_back(group);
 
-  for (auto m : node->getMeshes())
+  for (auto geometry : group->getGeometry())
   {
-    m->initShaders(m_program);
-    m->upload();
+    geometry->initShaders(m_program);
+    geometry->upload();
   }
 }
 

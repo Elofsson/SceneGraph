@@ -1,3 +1,7 @@
+#pragma once
+
+#include "Group.h"
+
 //TODO implement Transform.
 /*
  * A Node that transforms all nodes below it in the scenegraph. 
@@ -6,3 +10,17 @@
  * instantiation. See notes on RenderVisitor below for possible solutions.
  *
  * 
+ * */
+
+//class Group;
+
+class Transform : public Group {
+
+public:
+  //TODO consider making this matrix private.
+  glm::mat4 object2world;
+
+  Transform();
+  virtual BoundingBox calculateBoundingBox(MeshVector meshVec) override;
+
+};

@@ -35,7 +35,7 @@ bool Application::initResources(const std::string& model_filename, const std::st
   getCamera()->setScreenSize(m_screenSize);
 
   std::string ext = vr::FileSystem::getFileExtension(model_filename);
-  std::shared_ptr<Node> node;
+  std::shared_ptr<Group> node;
 
   // Ok lets load this as our own "scene file format"
   if (ext == "xml" || ext == "XML")
@@ -45,13 +45,13 @@ bool Application::initResources(const std::string& model_filename, const std::st
       return false;
     }
 
-    if (m_sceneRoot->getNodes().empty())
+    if (m_sceneRoot->getGroups().empty())
     {
       std::cerr << "Empty scene, something when wrong when loading files" << std::endl;
       return false;
     }
     // We want to be able to "rotate" one node lets take the first
-    node = m_sceneRoot->getNodes().front();
+    node = m_sceneRoot->getGroups().front();
   }
   else
   {
