@@ -1,0 +1,22 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master/examples/lab1-test/Geometry.cpp
+
+/home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master/examples/lab1-test/NodeVisitor.cpp
+
+/home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master/examples/lab1-test/RenderVisitor.cpp
+
+/home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master/examples/lab1-test/Texture.cpp
+
+/home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master/examples/lab1-test/Transform.cpp
+
+/home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master/examples/lab1-test/UpdateCallback.cpp
+
+/home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master/examples/lab1-test/UpdateVisitor.cpp
+
