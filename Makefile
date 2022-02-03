@@ -325,6 +325,33 @@ Group.cpp.s:
 	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab1/CMakeFiles/lab1.dir/build.make examples/lab1/CMakeFiles/lab1.dir/Group.cpp.s
 .PHONY : Group.cpp.s
 
+InitVisitor.o: InitVisitor.cpp.o
+
+.PHONY : InitVisitor.o
+
+# target to build an object file
+InitVisitor.cpp.o:
+	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab1/CMakeFiles/lab1.dir/build.make examples/lab1/CMakeFiles/lab1.dir/InitVisitor.cpp.o
+.PHONY : InitVisitor.cpp.o
+
+InitVisitor.i: InitVisitor.cpp.i
+
+.PHONY : InitVisitor.i
+
+# target to preprocess a source file
+InitVisitor.cpp.i:
+	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab1/CMakeFiles/lab1.dir/build.make examples/lab1/CMakeFiles/lab1.dir/InitVisitor.cpp.i
+.PHONY : InitVisitor.cpp.i
+
+InitVisitor.s: InitVisitor.cpp.s
+
+.PHONY : InitVisitor.s
+
+# target to generate assembly for a file
+InitVisitor.cpp.s:
+	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab1/CMakeFiles/lab1.dir/build.make examples/lab1/CMakeFiles/lab1.dir/InitVisitor.cpp.s
+.PHONY : InitVisitor.cpp.s
+
 Light.o: Light.cpp.o
 
 .PHONY : Light.o
@@ -731,6 +758,9 @@ help:
 	@echo "... Group.o"
 	@echo "... Group.i"
 	@echo "... Group.s"
+	@echo "... InitVisitor.o"
+	@echo "... InitVisitor.i"
+	@echo "... InitVisitor.s"
 	@echo "... Light.o"
 	@echo "... Light.i"
 	@echo "... Light.s"

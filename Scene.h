@@ -9,6 +9,8 @@
 #include "Light.h"
 #include "Camera.h"
 #include "Group.h"
+//#include "RenderVisitor.h"
+#include "InitVisitor.h"
 class Scene;
 
 /// <summary>
@@ -71,7 +73,7 @@ public:
   /// Add a new group.
   /// </summary>
   /// <param name="node">A new node</param>
-  void add(std::shared_ptr<Node> group);
+  void add(std::shared_ptr<Group> group);
 
   /// <summary>
   /// Reset all nodes transform to its initial value
@@ -105,6 +107,7 @@ public:
   void render();
 
 private:
+  std::shared_ptr<Group> m_root;
   NodeVector m_nodes;
   GroupVector m_groups;
   LightVector m_lights;

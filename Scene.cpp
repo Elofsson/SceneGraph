@@ -5,7 +5,7 @@
 Scene::Scene() : m_uniform_numberOfLights(-1)
 {
   m_camera = std::shared_ptr<Camera>(new Camera);
-
+  m_root = std::shared_ptr<Group>(new Group);
   m_program = glCreateProgram();
 }
 
@@ -40,7 +40,6 @@ bool Scene::initShaders(const std::string& vshader_filename, const std::string& 
   return true;
 }
 
-//TODO bruh, continue here and see how this should be handled with groups.
 void Scene::add(std::shared_ptr<Light>& light)
 {
   m_lights.push_back(light);
@@ -85,11 +84,15 @@ void Scene::useProgram()
   glUseProgram(m_program);
 }
 
-//TODO See if there is another way to init geometries other than getGeometry method.
-//FIXME Find a way to initialize geometry from a group.
-void Scene::add(std::shared_ptr<Node> node)
+//TODO See if there is another way to init geometries other than initVisitor.
+void Scene::add(std::shared_ptr<Group> node)
 {
-  m_nodes.push_back(node);
+  //Initalize new node with initVisitor.
+  InitVisitor *initVisitor = new InitVisitor(m_program);
+  initVisitor->visit(*node);
+
+  //Add the new node to root graph.
+  m_root->addChild(node);
 
   //for (auto geometry : group->getGeometry())
   //{
@@ -135,6 +138,9 @@ void Scene::render()
 {
   useProgram();
 
+  //TODO add renderVisitor here to render the scenegraph.
+
+
   // Update number of lights
   if (m_uniform_numberOfLights == -1) {
     const char *uniform_name = "numberOfLights";
@@ -143,6 +149,7 @@ void Scene::render()
       std::cerr << "Could not bind uniform " << uniform_name << std::endl;
     }
   }
+
   glUniform1i(m_uniform_numberOfLights, (GLint)m_lights.size());
 
   //FIXME fix a way to apply lights.

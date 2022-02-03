@@ -4,6 +4,8 @@
 #include "Node.h"
 //TODO implement group.
 
+class NodeVisitor;
+
 class Group : public Node {
 public:
   Group();
@@ -15,6 +17,11 @@ public:
 
   //Check if this group contains any children.
   bool empty();
+
+  virtual void accept(NodeVisitor &visitor) override;
+
+private:
+  NodeVector m_nodes;
 };
 
 typedef std::vector<std::shared_ptr<Group>> GroupVector;

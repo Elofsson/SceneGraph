@@ -4,6 +4,11 @@ Node::Node()
 {
 }
 
+void Node::accept(NodeVisitor &visitor)
+{
+  //visitor.visit(this);
+}
+
 /// Calculate and return a bounding box for this Node based on its Mesh objects
 BoundingBox Node::calculateBoundingBox(MeshVector meshVec)
 {

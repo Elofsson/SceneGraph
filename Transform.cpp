@@ -1,5 +1,5 @@
 #include "Transform.h"
-
+#include "NodeVisitor.h"
 
 Transform::Transform()
 {
@@ -9,6 +9,13 @@ Transform::Transform()
 Transform::~Transform()
 {
 
+}
+
+void Transform::accept(NodeVisitor &visitor)
+{
+  //Push transform.
+  Group::accept(visitor);
+  //Pop transform.
 }
 
 BoundingBox Transform::calculateBoundingBox(MeshVector meshVec)

@@ -23,5 +23,6 @@ public:
   Transform();
   ~Transform();
   virtual BoundingBox calculateBoundingBox(MeshVector meshVec) override;
+  virtual void accept(NodeVisitor &visitor) override;
 
 };

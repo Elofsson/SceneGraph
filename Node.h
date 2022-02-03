@@ -8,7 +8,7 @@
 
 #include <glm/glm.hpp>
 
-class Visitor;
+class NodeVisitor;
 
 /// <summary>
 /// Simple class that store a number of meshes and draws it
@@ -27,7 +27,7 @@ public:
   
   //TODO Add other visitors here later.
   //TODO Should nodes be able to add geometry, or only groups?
-  void Accept(Visitor *visitor);
+  virtual void accept(NodeVisitor& visitor) = 0;
 
 private:
 

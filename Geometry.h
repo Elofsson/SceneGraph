@@ -2,6 +2,7 @@
 
 #include "Node.h"
 #include <glm/glm.hpp>
+#include <vr/glErrorUtil.h>
 
 //TODO Implement Geometry.
 //TODO Data to contian: Vertices, Vertex colors and Texture Coordinates if present, Normals.
@@ -31,8 +32,10 @@ public:
   //Draw this geometry.
   void draw();
 
+  virtual void accept(NodeVisitor& visitor) override;
+
   //Initialise shaders with attributes, uniforms e.t.c.
-  bool initShaders(GLint program);
+  bool initShaders(GLuint program);
 
 private:
 
