@@ -3,5 +3,15 @@
 
 Transform::Transform()
 {
-  object2World = glm::mat4(1.0f);
+  object2world = glm::mat4(1.0f);
+}
+
+Transform::~Transform()
+{
+
+}
+
+BoundingBox Transform::calculateBoundingBox(MeshVector meshVec)
+{
+
 }

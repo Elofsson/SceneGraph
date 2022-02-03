@@ -21,6 +21,7 @@ public:
   glm::mat4 object2world;
 
   Transform();
+  ~Transform();
   virtual BoundingBox calculateBoundingBox(MeshVector meshVec) override;
 
 };

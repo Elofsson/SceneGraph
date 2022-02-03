@@ -5,6 +5,7 @@
 #include <vector>
 #include <sstream>
 #include "Node.h"
+#include "Geometry.h"
 #include "Light.h"
 #include "Camera.h"
 #include "Group.h"
@@ -70,7 +71,7 @@ public:
   /// Add a new group.
   /// </summary>
   /// <param name="node">A new node</param>
-  void add(std::shared_ptr<Group> group);
+  void add(std::shared_ptr<Node> group);
 
   /// <summary>
   /// Reset all nodes transform to its initial value

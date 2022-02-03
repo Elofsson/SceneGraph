@@ -23,6 +23,8 @@ Application::Application(unsigned int width, unsigned height) : m_screenSize(wid
 
 bool Application::initResources(const std::string& model_filename, const std::string& vshader_filename, std::string& fshader_filename)
 {
+  std::cout << "Filename: " << model_filename << std::endl;
+  
   m_loadedVShader = vshader_filename;
   m_loadedFShader = fshader_filename;
   m_loadedFilename = model_filename;

@@ -229,14 +229,15 @@ void parseNodes(aiNode *root_node, MaterialVector& materials, std::stack<glm::ma
       }
     }
 
-    Transform *transformation = new Transform();
+    std::shared_ptr<Transform> transformation = std::shared_ptr<Transform>(new Transform());
     transformation->object2world = transformStack.top();
+    transformation->addChild(loadedGeometry);
     
     if (!materials.empty())
       //TODO fix material here later.
       //loadedGeometry->setMaterial(materials[mesh->mMaterialIndex]);
     
-    group->addChild(loadedGeometry);
+    group->addChild(transformation);
   }
 
   for (uint32_t i = 0; i < root_node->mNumChildren; i++)
@@ -294,6 +295,7 @@ std::shared_ptr<Group> load3DModelFile(const std::string& filename)
 
   std::shared_ptr<Group> group = std::shared_ptr<Group>(new Group);
   parseNodes(root_node, materials, transformStack, group, aiScene);
+
   transformStack.pop();
 
   if (group->empty())

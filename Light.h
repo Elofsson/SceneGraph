@@ -3,6 +3,7 @@
 #include <glm/glm.hpp>
 #include <memory>
 #include "Mesh.h"
+#include "Geometry.h"
 #include <vector>
 
 /// Simple class that store light properties and apply them to Uniforms
@@ -18,12 +19,14 @@ public:
 
 private:
   friend class Scene;
-  std::shared_ptr<Mesh> m_mesh;
+  std::shared_ptr<Geometry> m_geometry;
 
-  void createMesh();
-  std::shared_ptr<Mesh>& getMesh();
-  void apply(GLuint program, size_t idx);
+  void createGeometry();
+  std::shared_ptr<Geometry>& getGeometry();
+  
+  //TODO check where to put this.
+  //void apply(GLuint program, size_t idx);
 };
-typedef std::vector<std::shared_ptr<Light> > LightVector;
+typedef std::vector<std::shared_ptr<Light>> LightVector;
 
 

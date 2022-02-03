@@ -44,13 +44,12 @@ bool Scene::initShaders(const std::string& vshader_filename, const std::string& 
 void Scene::add(std::shared_ptr<Light>& light)
 {
   m_lights.push_back(light);
-  std::shared_ptr<Group> group = std::shared_ptr<Node>(new Node());
+  std::shared_ptr<Group> group = std::shared_ptr<Group>(new Group());
 
-  node->add(light->m_mesh);
-  node->add(light->getMesh());
+  group->addChild(light->m_geometry);
 
   // Also add the mesh-node
-  add(node);
+  add(group);
 }
 
 const LightVector& Scene::getLights()
@@ -87,21 +86,23 @@ void Scene::useProgram()
 }
 
 //TODO See if there is another way to init geometries other than getGeometry method.
-void Scene::add(std::shared_ptr<Group> group)
+//FIXME Find a way to initialize geometry from a group.
+void Scene::add(std::shared_ptr<Node> node)
 {
-  m_groups.push_back(group);
+  m_nodes.push_back(node);
 
-  for (auto geometry : group->getGeometry())
-  {
-    geometry->initShaders(m_program);
-    geometry->upload();
-  }
+  //for (auto geometry : group->getGeometry())
+  //{
+  //  geometry->initShaders(m_program);
+  //  geometry->upload();
+  //}
 }
 
 void Scene::resetTransform()
 {
-  for (auto n : m_nodes)
-    n->resetTransform();
+  //FIXME move reset of transforms to transform.
+  //for (auto n : m_nodes)
+    //n->resetTransform();
 }
 
 const NodeVector& Scene::getNodes()
@@ -117,11 +118,17 @@ std::shared_ptr<Node> Scene::getNode(size_t i)
 
 BoundingBox Scene::calculateBoundingBox()
 {
+  //FIXME find a good way to calculate bounding box for nodes.
   BoundingBox box;
-  for (auto n : m_nodes)
-    box.expand(n->calculateBoundingBox());
+  //for (auto n : m_nodes)
+    //box.expand(n->calculateBoundingBox());
 
   return box;
+}
+
+const GroupVector& Scene::getGroups()
+{
+  return m_groups;
 }
 
 void Scene::render()
@@ -138,13 +145,15 @@ void Scene::render()
   }
   glUniform1i(m_uniform_numberOfLights, (GLint)m_lights.size());
 
+  //FIXME fix a way to apply lights.
   // Apply lightsources
-  size_t i = 0;
-  for (auto l : m_lights)
-  {
-    l->apply(m_program, i++);
-  }
+  //size_t i = 0;
+  //for (auto l : m_lights)
+  //{
+    //l->apply(m_program, i++);
+  //}
 
-  for (auto n : m_nodes)
-    n->render(m_program);
+  //FIXME Replace with a renderVisitor
+  //for (auto n : m_nodes)
+    //n->render(m_program);
 }
