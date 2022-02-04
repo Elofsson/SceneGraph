@@ -25,7 +25,7 @@ private:
   std::shared_ptr<Geometry>& getGeometry();
   
   //TODO check where to put this.
-  //void apply(GLuint program, size_t idx);
+  void apply(GLuint program, size_t idx);
 };
 typedef std::vector<std::shared_ptr<Light>> LightVector;
 

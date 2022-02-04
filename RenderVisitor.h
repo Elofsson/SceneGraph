@@ -1,6 +1,8 @@
 #pragma once
 
 #include "NodeVisitor.h"
+#include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp>
 //TODO Node visitor to handle rendering.
 //TODO Apply transformations, states, geometry when encountrered in scenegraph.
 //TODO Scenegraph should not be modified by this visitor.
@@ -12,6 +14,12 @@
 class RenderVisitor : public NodeVisitor
 {
 public:
+  RenderVisitor(GLuint program);
+  using NodeVisitor::visit;
   virtual void visit(Transform &t) override;
   virtual void visit(Geometry &g) override;
+
+private:
+  GLuint m_uniform_m_3x3_inv_transp;
+  GLuint m_uniform_m;
 };

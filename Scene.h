@@ -9,7 +9,8 @@
 #include "Light.h"
 #include "Camera.h"
 #include "Group.h"
-//#include "RenderVisitor.h"
+#include "RenderVisitor.h"
+#include "UpdateVisitor.h"
 #include "InitVisitor.h"
 class Scene;
 

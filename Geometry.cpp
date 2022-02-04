@@ -18,6 +18,103 @@ void Geometry::accept(NodeVisitor &visitor)
 
 void Geometry::draw() {
   std::cout << "Draw geometry: " << name << std::endl;
+  if (m_useVAO) {
+    glBindVertexArray(m_vao);
+    CHECK_GL_ERROR_LINE_FILE();
+  }
+
+  //FIXME see where these should go.
+  //if (normals.size() == 0)
+  //{
+    //draw_bbox();
+    //return;
+  //}
+
+  //if (m_material)
+    //m_material->apply(program);
+  
+  CHECK_GL_ERROR_LINE_FILE();
+
+  if (!m_useVAO)
+  {
+    if (this->m_vbo_vertices != 0) 
+    {
+      glEnableVertexAttribArray(m_attribute_v_coord);
+      glBindBuffer(GL_ARRAY_BUFFER, this->m_vbo_vertices);
+      glVertexAttribPointer(
+        m_attribute_v_coord,// attribute
+        4,                  // number of elements per vertex, here (x,y,z,w)
+        GL_FLOAT,           // the type of each element
+        GL_FALSE,           // take our values as-is
+        0,                  // no extra data between each position
+        0                   // offset of first element
+        );
+    }
+
+    if (this->m_vbo_normals != 0)
+    {
+      glEnableVertexAttribArray(m_attribute_v_normal);
+      glBindBuffer(GL_ARRAY_BUFFER, this->m_vbo_normals);
+      glVertexAttribPointer(
+        m_attribute_v_normal, // attribute
+        3,                  // number of elements per vertex, here (x,y,z)
+        GL_FLOAT,           // the type of each element
+        GL_FALSE,           // take our values as-is
+        0,                  // no extra data between each position
+        0                   // offset of first element
+      );
+    }
+    if (this->m_vbo_texCoords != 0)
+    {
+      glEnableVertexAttribArray(m_attribute_v_texCoords);
+      glBindBuffer(GL_ARRAY_BUFFER, this->m_vbo_texCoords);
+      glVertexAttribPointer(
+        m_attribute_v_texCoords, // attribute
+        2,                  // number of elements per vertex, here (x,y,z)
+        GL_FLOAT,           // the type of each element
+        GL_FALSE,           // take our values as-is
+        0,                  // no extra data between each position
+        0                   // offset of first element
+      );
+    }
+  }
+  else {
+    glEnableVertexAttribArray(m_attribute_v_coord);
+    CHECK_GL_ERROR_LINE_FILE();
+    glEnableVertexAttribArray(m_attribute_v_normal);
+    CHECK_GL_ERROR_LINE_FILE();
+    if (m_vbo_texCoords != 0)
+      glEnableVertexAttribArray(m_attribute_v_texCoords);
+    CHECK_GL_ERROR_LINE_FILE();
+    
+  }
+  CHECK_GL_ERROR_LINE_FILE();
+
+  /* Push each element in buffer_vertices to the vertex shader */
+  if (this->m_ibo_elements != 0) 
+  {
+    if (!m_useVAO)
+      glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->m_ibo_elements);
+
+      GLuint size = GLuint(this->elements.size());
+      glDrawElements(GL_TRIANGLES, size, GL_UNSIGNED_SHORT, 0);
+      CHECK_GL_ERROR_LINE_FILE();
+  }
+  else {
+    glDrawArrays(GL_TRIANGLES, 0, (GLsizei)this->vertices.size());
+  }
+
+  if (this->m_vbo_normals != 0)
+    glDisableVertexAttribArray(m_attribute_v_normal);
+
+  if (this->m_vbo_vertices != 0)
+    glDisableVertexAttribArray(m_attribute_v_coord);
+
+  if (this->m_vbo_texCoords != 0)
+    glDisableVertexAttribArray(m_attribute_v_texCoords);
+
+  if (m_useVAO)
+    glBindVertexArray(0);
 }
 
 /**
@@ -140,23 +237,6 @@ bool Geometry::initShaders(GLuint program)
     fprintf(stderr, "Could not bind attribute %s\n", attribute_name);
     return false;
   }
-
-  //FIXME check where this model matrix uniform should be set.
-  //const char* uniform_name;
-  //uniform_name = "m";
-  //m_uniform_m = glGetUniformLocation(program, uniform_name);
-  //if (m_uniform_m == -1) {
-  //  fprintf(stderr, "Could not bind uniform %s\n", uniform_name);
-  //  return 0;
-  //}
-
-  //FIXME check where this inverse transpose matrix should be set.
-  //uniform_name = "m_3x3_inv_transp";
-  //m_uniform_m_3x3_inv_transp = glGetUniformLocation(program, uniform_name);
-  //if (m_uniform_m_3x3_inv_transp == -1) {
-  //  fprintf(stderr, "Could not bind uniform %s\n", uniform_name);
-  //  return false;
-  //}
 
   return true;
 }

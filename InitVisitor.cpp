@@ -14,7 +14,7 @@ void InitVisitor::visit(Geometry &g)
 {
   std::cout << "InitVisitor: Visit Geometry" << std::endl;
   if(!g.initShaders(m_program))
-    {
+  {
       std::cerr << "Failed to load shaders for geometry" << std::endl;
       return;
     }

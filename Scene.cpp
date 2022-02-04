@@ -138,9 +138,6 @@ void Scene::render()
 {
   useProgram();
 
-  //TODO add renderVisitor here to render the scenegraph.
-
-
   // Update number of lights
   if (m_uniform_numberOfLights == -1) {
     const char *uniform_name = "numberOfLights";
@@ -154,13 +151,12 @@ void Scene::render()
 
   //FIXME fix a way to apply lights.
   // Apply lightsources
-  //size_t i = 0;
-  //for (auto l : m_lights)
-  //{
-    //l->apply(m_program, i++);
-  //}
+  size_t i = 0;
+  for (auto l : m_lights)
+  {
+    l->apply(m_program, i++);
+  }
 
-  //FIXME Replace with a renderVisitor
-  //for (auto n : m_nodes)
-    //n->render(m_program);
+  RenderVisitor *render = new RenderVisitor(m_program);
+  render->visit(*m_root);
 }

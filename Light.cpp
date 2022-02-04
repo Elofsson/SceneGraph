@@ -16,7 +16,7 @@ void Light::createGeometry()
   m_geometry = std::shared_ptr<Geometry>(new Geometry());
 
   float size = 0.1f;
-  glm::vec3 light_position = glm::vec3(0.0, 1.0, 2.0);
+  position = glm::vec4(0.0, 1.0, 2.0, 0.0f);
   m_geometry->vertices.push_back(glm::vec4(-size, -size, -size, 0.0));
   m_geometry->vertices.push_back(glm::vec4(size, -size, -size, 0.0));
   m_geometry->vertices.push_back(glm::vec4(size, size, -size, 0.0));
@@ -27,6 +27,7 @@ void Light::createGeometry()
   m_geometry->vertices.push_back(glm::vec4(-size, size, size, 0.0));
   //TODO check what to do with this matrix
   //m_geometry->object2world = glm::translate(glm::mat4(1), glm::vec3(this->position));
+  
   m_geometry->name = "light";
 }
 
@@ -35,12 +36,14 @@ std::shared_ptr<Geometry>& Light::getGeometry()
   return m_geometry; 
 }
 
-/*void Light::apply(GLuint program, size_t idx)
+void Light::apply(GLuint program, size_t idx)
 {
   int i = 0;
 
+  //FIXME fix updates of lightning position
   // Update light position
-  m_mesh->object2world = glm::translate(glm::mat4(1), glm::vec3(this->position));
+  //m_mesh->object2world = //glm::translate(glm::mat4(1), glm::vec3(this->position));
+
 
   std::stringstream str;
   str << "lights[" << idx << "].";
@@ -69,4 +72,4 @@ std::shared_ptr<Geometry>& Light::getGeometry()
   APPLY_UNIFORM4V(program, "diffuse", this->diffuse);
   APPLY_UNIFORM4V(program, "specular", this->specular);
   APPLY_UNIFORM4V(program, "position", this->position);
-}*/
+}
