@@ -47,13 +47,13 @@ bool Application::initResources(const std::string& model_filename, const std::st
       return false;
     }
 
-    if (m_sceneRoot->getGroups().empty())
+    if (m_sceneRoot->getRoot()->empty())
     {
       std::cerr << "Empty scene, something when wrong when loading files" << std::endl;
       return false;
     }
     // We want to be able to "rotate" one node lets take the first
-    node = m_sceneRoot->getGroups().front();
+    node = m_sceneRoot->getRoot();
   }
   else
   {
@@ -107,15 +107,18 @@ void Application::reloadScene()
 
 void Application::initView()
 {
+  //FIXME fix this bounding box calculation.
   // Compute a bounding box around the whole scene
-  BoundingBox box = m_sceneRoot->calculateBoundingBox();
-  float radius = box.getRadius();
+  //BoundingBox box = m_sceneRoot->calculateBoundingBox();
+  //float radius = box.getRadius();
+
+  float radius = 50.0f;
 
   // Compute the diagonal and a suitable distance so we can see the whole thing
   float distance = radius * 1.5f;
   glm::vec3 eye = glm::vec3(0, radius, distance);
 
-  glm::vec3 direction = glm::normalize(box.getCenter() - eye);
+  glm::vec3 direction = glm::normalize(glm::vec3() - eye);
 
   std::shared_ptr<Light> light = m_sceneRoot->getLights().front();
   glm::vec4 position;

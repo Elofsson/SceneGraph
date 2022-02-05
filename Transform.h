@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Group.h"
+#include "Debug.h"
 #include <stack>
 
 //TODO implement Transform.

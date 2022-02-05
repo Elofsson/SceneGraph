@@ -16,7 +16,7 @@ NodeVisitor::~NodeVisitor()
 //Group traversal implementation?
 void NodeVisitor::visit(Group &g)
 {
-  cout << "NodeVisitor: Visit group" << endl;
+  cout << "NodeVisitor: Visit group " << endl;
   g.accept(*this);
 }
 

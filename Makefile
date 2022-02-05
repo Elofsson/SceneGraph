@@ -244,6 +244,33 @@ Camera.cpp.s:
 	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab1/CMakeFiles/lab1.dir/build.make examples/lab1/CMakeFiles/lab1.dir/Camera.cpp.s
 .PHONY : Camera.cpp.s
 
+Debug.o: Debug.cpp.o
+
+.PHONY : Debug.o
+
+# target to build an object file
+Debug.cpp.o:
+	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab1/CMakeFiles/lab1.dir/build.make examples/lab1/CMakeFiles/lab1.dir/Debug.cpp.o
+.PHONY : Debug.cpp.o
+
+Debug.i: Debug.cpp.i
+
+.PHONY : Debug.i
+
+# target to preprocess a source file
+Debug.cpp.i:
+	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab1/CMakeFiles/lab1.dir/build.make examples/lab1/CMakeFiles/lab1.dir/Debug.cpp.i
+.PHONY : Debug.cpp.i
+
+Debug.s: Debug.cpp.s
+
+.PHONY : Debug.s
+
+# target to generate assembly for a file
+Debug.cpp.s:
+	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab1/CMakeFiles/lab1.dir/build.make examples/lab1/CMakeFiles/lab1.dir/Debug.cpp.s
+.PHONY : Debug.cpp.s
+
 FPSCounter.o: FPSCounter.cpp.o
 
 .PHONY : FPSCounter.o
@@ -749,6 +776,9 @@ help:
 	@echo "... Camera.o"
 	@echo "... Camera.i"
 	@echo "... Camera.s"
+	@echo "... Debug.o"
+	@echo "... Debug.i"
+	@echo "... Debug.s"
 	@echo "... FPSCounter.o"
 	@echo "... FPSCounter.i"
 	@echo "... FPSCounter.s"

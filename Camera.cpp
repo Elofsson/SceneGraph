@@ -8,6 +8,7 @@
 #include<glm/gtx/rotate_vector.hpp>
 #include<glm/gtx/vector_angle.hpp>
 #include<glm/gtx/io.hpp>
+#include "Debug.h"
 
 Camera::Camera() : 
 	m_uniform_v(0),
@@ -202,7 +203,8 @@ void Camera::apply(GLuint program)
 
 	// Adds perspective to the scene
 	projection = glm::perspective(glm::radians(m_fov), aspect, m_nearFar[0], m_nearFar[1]);
-
+	//Debug::printMat4("Camera projection matrix", projection);
+	//Debug::printMat4("Camera view matrix", view);
   glUniformMatrix4fv(m_uniform_v, 1, GL_FALSE, glm::value_ptr(view));
   glUniformMatrix4fv(m_uniform_p, 1, GL_FALSE, glm::value_ptr(projection));
   glm::mat4 v_inv = glm::inverse(view);

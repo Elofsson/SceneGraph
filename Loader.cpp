@@ -165,6 +165,8 @@ void parseNodes(aiNode *root_node, MaterialVector& materials, std::stack<glm::ma
   glm::mat4 transform = assimpToGlmMatrix(root_node->mTransformation);
 
   glm::mat4 m = transformStack.top()*transform;
+  //Debug::printMat4(m);
+
   transformStack.push(m);
 
   uint32_t num_meshes = root_node->mNumMeshes;
@@ -231,6 +233,7 @@ void parseNodes(aiNode *root_node, MaterialVector& materials, std::stack<glm::ma
 
     std::shared_ptr<Transform> transformation = std::shared_ptr<Transform>(new Transform());
     transformation->object2world = transformStack.top();
+    Debug::printMat4(transformation->object2world);
     transformation->addChild(loadedGeometry);
     
     if (!materials.empty())
@@ -478,6 +481,7 @@ bool loadSceneFile(const std::string& sceneFile, std::shared_ptr<Scene>& scene)
 
           auto t = mt * rz * ry * rx;
           t = glm::scale(t, s_vec);
+          Debug::printMat4(t);
           Transform *initTransform = new Transform();
           initTransform->object2world = t;
           initTransform->addChild(loadedGroup);

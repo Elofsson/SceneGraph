@@ -4,6 +4,7 @@
 #include "Geometry.h"
 #include "Group.h"
 #include "Transform.h"
+#include "Debug.h"
 
 /// Load a given file and add content to the scene
 std::shared_ptr<Group> load3DModelFile(const std::string& filename);

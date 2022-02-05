@@ -32,6 +32,9 @@ bool Transform::initShaders(GLuint program)
 void Transform::accept(NodeVisitor &visitor)
 {
   
+  std::cout << "Transform::accept " << name << std::endl;
+  //Debug::printMat4(object2world);
+
   //Push transform.
   //Empty stack, add transformation matrix directly.
   if(visitor.isTransformsEmpty())

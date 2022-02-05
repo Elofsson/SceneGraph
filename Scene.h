@@ -96,6 +96,8 @@ public:
 
   const GroupVector& getGroups();
 
+  const std::shared_ptr<Group> getRoot();
+
   /// <summary>
   /// Compute a bounding box for the whole scene
   /// </summary>

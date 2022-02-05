@@ -3,6 +3,7 @@
 #include "NodeVisitor.h"
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include "Debug.h"
 //TODO Node visitor to handle rendering.
 //TODO Apply transformations, states, geometry when encountrered in scenegraph.
 //TODO Scenegraph should not be modified by this visitor.

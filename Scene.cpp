@@ -51,6 +51,11 @@ void Scene::add(std::shared_ptr<Light>& light)
   add(group);
 }
 
+const std::shared_ptr<Group> Scene::getRoot()
+{
+  return m_root;
+}
+
 const LightVector& Scene::getLights()
 {
   return

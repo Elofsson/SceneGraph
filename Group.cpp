@@ -21,6 +21,7 @@ bool Group::empty()
 
 void Group::accept(NodeVisitor &visitor)
 {
+  std::cout << "Group: " << (this) << std::endl;
   for(auto child : m_nodes)
   {
     std::cout << "Group::accept: Visiting " << child << std::endl;
