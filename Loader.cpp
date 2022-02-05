@@ -239,8 +239,8 @@ void parseNodes(aiNode *root_node, MaterialVector& materials, std::stack<glm::ma
     
     if (!materials.empty())
       //TODO fix material here later.
-      //loadedGeometry->setMaterial(materials[mesh->mMaterialIndex]);
-    
+      loadedGeometry->getState()->setMaterial(materials[mesh->mMaterialIndex]);
+     
     group->addChild(transformation);
   }
 

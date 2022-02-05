@@ -59,5 +59,8 @@ void RenderVisitor::visit(Geometry &g)
   glm::mat3 m_3x3_inv_transp = glm::transpose(glm::inverse(glm::mat3(object2world)));
   glUniformMatrix3fv(m_uniform_m_3x3_inv_transp, 1, GL_FALSE, glm::value_ptr(m_3x3_inv_transp));
 
+  //Apply state.
+  g.getState()->apply();
+
   g.draw();
 }

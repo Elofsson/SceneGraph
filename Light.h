@@ -1,9 +1,11 @@
 #pragma once
 
 #include <glm/glm.hpp>
+#include "GL/glew.h"
 #include <memory>
-#include "Geometry.h"
 #include <vector>
+
+class Geometry;
 
 /// Simple class that store light properties and apply them to Uniforms
 class Light

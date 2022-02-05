@@ -56,7 +56,7 @@ GLFWwindow* initializeWindows(int width, int height)
   if (!glfwInit())
     return nullptr;
 
-  window = glfwCreateWindow(width, height, "ObjViewer", NULL, NULL);
+  window = glfwCreateWindow(width, height, "Lab1", NULL, NULL);
   if (!window)
   {
     glfwTerminate();

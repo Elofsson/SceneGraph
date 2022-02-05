@@ -43,7 +43,7 @@ public:
 
   //void setTexture(std::shared_ptr<vr::Texture> texture, unsigned int unit);
 
-  //void apply(State state);
+  void apply(GLuint program);
 
 
 };

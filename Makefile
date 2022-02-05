@@ -595,6 +595,33 @@ Scene.cpp.s:
 	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab1/CMakeFiles/lab1.dir/build.make examples/lab1/CMakeFiles/lab1.dir/Scene.cpp.s
 .PHONY : Scene.cpp.s
 
+State.o: State.cpp.o
+
+.PHONY : State.o
+
+# target to build an object file
+State.cpp.o:
+	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab1/CMakeFiles/lab1.dir/build.make examples/lab1/CMakeFiles/lab1.dir/State.cpp.o
+.PHONY : State.cpp.o
+
+State.i: State.cpp.i
+
+.PHONY : State.i
+
+# target to preprocess a source file
+State.cpp.i:
+	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab1/CMakeFiles/lab1.dir/build.make examples/lab1/CMakeFiles/lab1.dir/State.cpp.i
+.PHONY : State.cpp.i
+
+State.s: State.cpp.s
+
+.PHONY : State.s
+
+# target to generate assembly for a file
+State.cpp.s:
+	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab1/CMakeFiles/lab1.dir/build.make examples/lab1/CMakeFiles/lab1.dir/State.cpp.s
+.PHONY : State.cpp.s
+
 Texture.o: Texture.cpp.o
 
 .PHONY : Texture.o
@@ -815,6 +842,9 @@ help:
 	@echo "... Scene.o"
 	@echo "... Scene.i"
 	@echo "... Scene.s"
+	@echo "... State.o"
+	@echo "... State.i"
+	@echo "... State.s"
 	@echo "... Texture.o"
 	@echo "... Texture.i"
 	@echo "... Texture.s"

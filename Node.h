@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include "BoundingBox.h"
+#include "State.h"
 #include <glm/glm.hpp>
 
 class NodeVisitor;
@@ -23,11 +24,13 @@ public:
   // Calculate and return a bounding box for this Node based on its Mesh objects
   virtual BoundingBox calculateBoundingBox(glm::mat4 modelMat) = 0;
   
-  //TODO Add other visitors here later.
-  //TODO Should nodes be able to add geometry, or only groups?
   virtual void accept(NodeVisitor& visitor) = 0;
 
-private:
+  //TODO See how state should be able to be modified later, set methods? public attribute? 
+  virtual std::shared_ptr<State> getState();
+
+protected:
+  std::shared_ptr<State> nodeState;
 
 };
 

@@ -34,7 +34,7 @@ void Material::setSpecular(const glm::vec4& color)  { m_specular = color; }
 void Material::setDiffuse(const glm::vec4& color)  { m_diffuse = color; }
 void Material::setShininess(float s)  { m_shininess = s; }
 
-/*void Material::apply(State state)
+void Material::apply(GLuint program)
 {
   GLint loc = 0;
   int i = 0;
@@ -51,7 +51,8 @@ void Material::setShininess(float s)  { m_shininess = s; }
   loc = glGetUniformLocation(program, "material.shininess");
   glUniform1f(loc, m_shininess);
 
-  std::vector<int> slotActive;
+  //FIXME move to textures.
+  /*std::vector<int> slotActive;
   std::vector<int> slots;
   slotActive.resize(m_textures.size());
   slots.resize(m_textures.size());
@@ -71,10 +72,10 @@ void Material::setShininess(float s)  { m_shininess = s; }
   loc = glGetUniformLocation(program, "material.activeTextures");
   glUniform1iv(loc, (GLsizei)slotActive.size(), slotActive.data());
 
-  CHECK_GL_ERROR_LINE_FILE();
+  CHECK_GL_ERROR_LINE_FILE();*/
 }
 
-void Material::setTexture(std::shared_ptr<vr::Texture> texture, unsigned int unit)
-{
-  m_textures[unit] = texture;
-}*/
+//void Material::setTexture(std::shared_ptr<vr::Texture> texture, unsigned int unit)
+//{
+  //m_textures[unit] = texture;
+//}

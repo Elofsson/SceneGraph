@@ -1,4 +1,5 @@
 #include "Light.h"
+#include "Geometry.h"
 #include <iostream>
 #include <sstream>
 #include <glm/gtc/type_ptr.hpp>

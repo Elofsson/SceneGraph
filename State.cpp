@@ -1,21 +1,33 @@
 #include "State.h"
 
-State::State(GLuint program)
+//State::State(GLuint program)
+//{
+  //m_program = program;
+//}
+
+State::State()
+{
+
+}
+
+void State::setProgram(GLuint program)
 {
   m_program = program;
-
-  getLocations();
 }
 
-void State::apply(Material &material)
+void State::setMaterial(std::shared_ptr<Material>& material)
 {
-  glUniform4fv(m_material_ambient_uniform, 1, glm::value_ptr(material.getAmbient()));
-  glUniform4fv(m_material_specular_uniform, 1, glm::value_ptr(material.getSpecular()));
-  glUniform4fv(m_material_diffuse_uniform, 1, glm::value_ptr(material.getDiffuse()));
-  glUniform1f(m_material_shininess_uniform, material.getShininess());
+  m_material = material;
 }
 
-void State::apply(Texture &texture)
+bool State::apply()
+{
+  m_material->apply(m_program);
+  //TODO Call the apply method for Texture, and Light.
+  return true;
+}
+
+void State::setTextures(TextureVector &texture)
 {
   //FIXME fix textures.
   /*std::vector<int> slotActive;
@@ -31,25 +43,25 @@ void State::apply(Texture &texture)
   }*/
 }
 
-void State::apply(Light &light)
+void State::setLights(LightVector &light)
 {
 
 }
 
-void State::applyPolygonMode(GLuint mode)
+void State::setPolygonMode(GLuint mode)
 {
 
 }
 
-void State::applyCullFace(bool useCullFace)
+void State::setCullFace(bool useCullFace)
 {
   
 }
 
 bool State::getLocations()
 {
-  m_material_ambient_uniform = glGetUniformLocation(m_program, "material.ambient");
-  m_material_specular_uniform = glGetUniformLocation(m_program, "material.specular");
-  m_material_diffuse_uniform = glGetUniformLocation(m_program, "material.diffuse");
-  m_material_shininess_uniform = glGetUniformLocation(m_program, "material.shininess");
+  //m_material_ambient_uniform = glGetUniformLocation(m_program, "material.ambient");
+  //m_material_specular_uniform = glGetUniformLocation(m_program, "material.specular");
+  //m_material_diffuse_uniform = glGetUniformLocation(m_program, "material.diffuse");
+  //m_material_shininess_uniform = glGetUniformLocation(m_program, "material.shininess");
 }
