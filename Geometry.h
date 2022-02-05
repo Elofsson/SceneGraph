@@ -1,6 +1,8 @@
 #pragma once
 
 #include "Node.h"
+#include "NodeVisitor.h"
+#include "BoundingBox.h"
 #include <glm/glm.hpp>
 #include <vr/glErrorUtil.h>
 

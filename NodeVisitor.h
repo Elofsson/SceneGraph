@@ -1,8 +1,9 @@
 #pragma once
 
+#include <GL/glew.h>
+
 #include "Group.h"
-#include "Geometry.h"
-#include "Transform.h"
+#include "glm/glm.hpp"
 #include <iostream>
 #include <stack>
 
@@ -10,6 +11,9 @@
 //TODO Implement group traversing. 
 //TODO Check out the visitor pattern.
 
+class Transform;
+class Group;
+class Geometry;
 
 class NodeVisitor 
 {

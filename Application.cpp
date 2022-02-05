@@ -13,7 +13,6 @@
 
 #include "Scene.h"
 #include "Loader.h"
-#include "Mesh.h"
 
 Application::Application(unsigned int width, unsigned height) : m_screenSize(width, height)
 {
@@ -110,7 +109,6 @@ void Application::initView()
   // Compute a bounding box around the whole scene
   BoundingBox box = m_sceneRoot->calculateBoundingBox();
   float radius = box.getRadius();
-  std::cout << "Radius: " << radius << std::endl;
 
   // Compute the diagonal and a suitable distance so we can see the whole thing
   float distance = radius * 1.5f;

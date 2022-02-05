@@ -9,7 +9,7 @@
 #include <glm/glm.hpp>
 #include <vector>
 #include <memory>
-#include <vr/Texture.h>
+//#include <vr/Texture.h>
 
 /// <summary>
 /// Simple class for storing material properties
@@ -18,12 +18,14 @@ class Material
 {
 private:
 
-  glm::vec4 m_ambient, m_diffuse, m_specular;
+  glm::vec4 m_ambient;
+  glm::vec4 m_diffuse;
+  glm::vec4 m_specular;
 
-  GLfloat m_shininess;
+  float m_shininess;
 
-  typedef std::vector<std::shared_ptr<vr::Texture> > TextureVector;
-  TextureVector m_textures;
+  //typedef std::vector<std::shared_ptr<vr::Texture>> TextureVector;
+  //TextureVector m_textures;
 
 public:
 
@@ -32,18 +34,19 @@ public:
   glm::vec4 getAmbient() const;
   glm::vec4 getSpecular() const;
   glm::vec4 getDiffuse() const;
+  float getShininess() const;
 
   void setAmbient(const glm::vec4& color);
   void setSpecular(const glm::vec4& color);
   void setDiffuse(const glm::vec4& color);
   void setShininess(float s);
 
-  void setTexture(std::shared_ptr<vr::Texture> texture, unsigned int unit);
+  //void setTexture(std::shared_ptr<vr::Texture> texture, unsigned int unit);
 
-  void apply(GLuint program);
+  //void apply(State state);
 
 
 };
 
-typedef std::vector<std::shared_ptr<Material> > MaterialVector;
+typedef std::vector<std::shared_ptr<Material>> MaterialVector;
 

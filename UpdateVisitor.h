@@ -1,6 +1,8 @@
 #pragma once
 
 #include "NodeVisitor.h"
+#include "Geometry.h"
+#include "Transform.h"
 #include <stack>
 //TODO Execute UpdateCallback nodes might have. 
 //TODO Derived from the NodeVisitor.

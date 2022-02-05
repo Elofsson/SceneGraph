@@ -38,8 +38,8 @@ public:
   /// <param name="useVAO">If true Vertex Array Objects will be used for this mesh</param>
   Mesh(bool useVAO = true);
 
-  void setMaterial(std::shared_ptr<Material>& material);
-  std::shared_ptr<Material> getMaterial();
+  //void setMaterial(std::shared_ptr<Material>& material);
+  //std::shared_ptr<Material> getMaterial();
 
   ~Mesh();
 
@@ -77,7 +77,7 @@ public:
 
 private:
 
-  std::shared_ptr<Material> m_material;
+  //std::shared_ptr<Material> m_material;
 
   GLuint m_vbo_vertices, m_vbo_normals, m_vbo_texCoords, m_ibo_elements;
   GLuint m_vao;

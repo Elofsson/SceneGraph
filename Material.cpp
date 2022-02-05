@@ -21,19 +21,20 @@ Material::Material() : m_shininess(5)
   m_diffuse = glm::vec4(0.7, 0.8, 0.8, 1.0);
   m_specular = glm::vec4(1.0, 1.0, 1.0, 1.0);
 
-  m_textures.resize(2);
+  //m_textures.resize(2);
 }
 
 glm::vec4 Material::getAmbient() const { return m_ambient; }
 glm::vec4 Material::getSpecular() const { return m_specular; }
 glm::vec4 Material::getDiffuse() const { return m_diffuse; }
+float Material::getShininess() const { return m_shininess; }
 
 void Material::setAmbient(const glm::vec4& color)  { m_ambient = color; }
 void Material::setSpecular(const glm::vec4& color)  { m_specular = color; }
 void Material::setDiffuse(const glm::vec4& color)  { m_diffuse = color; }
 void Material::setShininess(float s)  { m_shininess = s; }
 
-void Material::apply(GLuint program)
+/*void Material::apply(State state)
 {
   GLint loc = 0;
   int i = 0;
@@ -76,4 +77,4 @@ void Material::apply(GLuint program)
 void Material::setTexture(std::shared_ptr<vr::Texture> texture, unsigned int unit)
 {
   m_textures[unit] = texture;
-}
+}*/

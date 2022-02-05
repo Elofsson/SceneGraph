@@ -16,6 +16,8 @@
 
 //class Group;
 
+class NodeVisitor;
+
 class Transform : public Group {
 
 public:

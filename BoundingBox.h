@@ -1,5 +1,7 @@
 #pragma once
 
+#include "glm/glm.hpp"
+
 // Simple class to store and handle a AABB (Axis aligned bounding box)
 class BoundingBox
 {

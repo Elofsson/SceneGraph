@@ -114,7 +114,9 @@ size_t ExtractMaterials(const aiScene *scene, MaterialVector& materials, const s
         if (!texture->create(texturePath.c_str(), 0))
           std::cerr << "Error creating texture: " << texturePath << std::endl;
         else
-          material->setTexture(texture, 0);
+          //FIXME fix this method to state.
+          //material->setTexture(texture, 0);
+          std::cout << "Set texture here" << std::endl;
       }
 
     }
@@ -171,8 +173,8 @@ void parseNodes(aiNode *root_node, MaterialVector& materials, std::stack<glm::ma
 
   uint32_t num_meshes = root_node->mNumMeshes;
 
-  Mesh::vec3Vector tangents;
-  Mesh::vec2Vector tex_coords;
+  Geometry::vec3Vector tangents;
+  Geometry::vec2Vector tex_coords;
 
   for (uint32_t i = 0; i < num_meshes; i++)
   {

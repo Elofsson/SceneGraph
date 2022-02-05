@@ -12,13 +12,13 @@ Mesh::Mesh(bool useVAO) : m_vbo_vertices(0), m_vbo_normals(0), m_vbo_texCoords(0
                            m_attribute_v_coord(-1), m_attribute_v_normal(-1), m_attribute_v_texCoords(-1), m_vao(-1), m_useVAO(useVAO)
 {
   // Default material
-  m_material = std::shared_ptr<Material>(new Material);
+  //m_material = std::shared_ptr<Material>(new Material);
 }
 
-void Mesh::setMaterial(std::shared_ptr<Material>& material) 
-{ 
-  m_material = material; 
-}
+//void Mesh::setMaterial(std::shared_ptr<Material>& material) 
+//{ 
+//  m_material = material; 
+//}
 
 
 Mesh::~Mesh() 
@@ -190,8 +190,8 @@ void Mesh::render(GLuint program, const glm::mat4& modelMatrix)
     return;
   }
 
-  if (m_material)
-    m_material->apply(program);
+  //if (m_material)
+    //m_material->apply(program);
   
   CHECK_GL_ERROR_LINE_FILE();
 
@@ -381,7 +381,7 @@ void Mesh::draw_bbox() {
   glDeleteBuffers(1, &ibo_elements);
 }
 
-std::shared_ptr<Material> Mesh::getMaterial()
-{
-  return m_material;
-}
+//std::shared_ptr<Material> Mesh::getMaterial()
+//{
+//  return m_material;
+//}

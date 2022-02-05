@@ -2,9 +2,9 @@
 
 #include "Geometry.h"
 #include "Node.h"
+#include <memory>
+#include "BoundingBox.h"
 //TODO implement group.
-
-class NodeVisitor;
 
 class Group : public Node {
 public:

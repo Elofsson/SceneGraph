@@ -1,6 +1,8 @@
 #pragma once
 
 #include "NodeVisitor.h"
+#include "Geometry.h"
+#include "Transform.h"
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include "Debug.h"

@@ -18,6 +18,7 @@ void NodeVisitor::visit(Group &g)
 {
   //cout << "NodeVisitor: Visit group " << endl;
   g.accept(*this);
+  
 }
 
 bool NodeVisitor::isTransformsEmpty()

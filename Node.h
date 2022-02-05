@@ -1,11 +1,9 @@
 #pragma once
 
 #include <memory>
-
-#include "Material.h"
-#include "Mesh.h"
+#include <string>
+#include <vector>
 #include "BoundingBox.h"
-
 #include <glm/glm.hpp>
 
 class NodeVisitor;
