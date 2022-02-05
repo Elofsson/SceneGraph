@@ -5,7 +5,7 @@ using namespace std;
 NodeVisitor::NodeVisitor(GLuint program)
 {
   m_program = program;
-  cout << "NodeVisitor constructor" << endl;
+  //cout << "NodeVisitor constructor" << endl;
 }
 
 NodeVisitor::~NodeVisitor()
@@ -16,7 +16,7 @@ NodeVisitor::~NodeVisitor()
 //Group traversal implementation?
 void NodeVisitor::visit(Group &g)
 {
-  cout << "NodeVisitor: Visit group " << endl;
+  //cout << "NodeVisitor: Visit group " << endl;
   g.accept(*this);
 }
 

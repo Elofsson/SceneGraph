@@ -23,7 +23,7 @@ public:
   Node();
 
   // Calculate and return a bounding box for this Node based on its Mesh objects
-  virtual BoundingBox calculateBoundingBox(MeshVector meshVec) = 0;
+  virtual BoundingBox calculateBoundingBox(glm::mat4 modelMat) = 0;
   
   //TODO Add other visitors here later.
   //TODO Should nodes be able to add geometry, or only groups?

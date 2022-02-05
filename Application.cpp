@@ -107,18 +107,16 @@ void Application::reloadScene()
 
 void Application::initView()
 {
-  //FIXME fix this bounding box calculation.
   // Compute a bounding box around the whole scene
-  //BoundingBox box = m_sceneRoot->calculateBoundingBox();
-  //float radius = box.getRadius();
-
-  float radius = 50.0f;
+  BoundingBox box = m_sceneRoot->calculateBoundingBox();
+  float radius = box.getRadius();
+  std::cout << "Radius: " << radius << std::endl;
 
   // Compute the diagonal and a suitable distance so we can see the whole thing
   float distance = radius * 1.5f;
   glm::vec3 eye = glm::vec3(0, radius, distance);
 
-  glm::vec3 direction = glm::normalize(glm::vec3() - eye);
+  glm::vec3 direction = glm::normalize(box.getCenter() - eye);
 
   std::shared_ptr<Light> light = m_sceneRoot->getLights().front();
   glm::vec4 position;

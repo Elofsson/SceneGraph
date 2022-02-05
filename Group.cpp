@@ -21,17 +21,23 @@ bool Group::empty()
 
 void Group::accept(NodeVisitor &visitor)
 {
-  std::cout << "Group: " << (this) << std::endl;
+  //std::cout << "Group: " << (this) << std::endl;
   for(auto child : m_nodes)
   {
-    std::cout << "Group::accept: Visiting " << child << std::endl;
+    //std::cout << "Group::accept: Visiting " << child << std::endl;
     child->accept(visitor);
   }
 }
 
-BoundingBox Group::calculateBoundingBox(MeshVector meshVec)
+BoundingBox Group::calculateBoundingBox(glm::mat4 modelMat)
 {
-  //FIXME fix boundingbox calculation here.
+  std::cout << "Group::calculateBoundingBox" << std::endl;
   BoundingBox box;
+  for(auto child : m_nodes)
+  {
+    BoundingBox boxChild = child->calculateBoundingBox(modelMat);
+    box.expand(boxChild);
+  }
   return box;
 }
+

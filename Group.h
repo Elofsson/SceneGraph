@@ -10,7 +10,7 @@ class Group : public Node {
 public:
   Group();
   ~Group();
-  virtual BoundingBox calculateBoundingBox(MeshVector meshVec) override;
+  virtual BoundingBox calculateBoundingBox(glm::mat4 modelMat) override;
 
   //TODO check if shared pointers should be used or not.
   void addChild(std::shared_ptr<Node> node);
@@ -20,7 +20,7 @@ public:
 
   virtual void accept(NodeVisitor &visitor) override;
 
-private:
+protected:
   NodeVector m_nodes;
 };
 

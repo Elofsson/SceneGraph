@@ -24,7 +24,8 @@ public:
 
   Geometry(bool useVAO = true);
 
-  virtual BoundingBox calculateBoundingBox(MeshVector meshVec) override;
+  virtual BoundingBox calculateBoundingBox(glm::mat4 modelMat) override;
+  
 
   //Store object vertices, normals and/or elements in graphic card buffers
   void upload();

@@ -32,7 +32,7 @@ bool Transform::initShaders(GLuint program)
 void Transform::accept(NodeVisitor &visitor)
 {
   
-  std::cout << "Transform::accept " << name << std::endl;
+  //std::cout << "Transform::accept " << name << std::endl;
   //Debug::printMat4(object2world);
 
   //Push transform.
@@ -56,7 +56,16 @@ void Transform::accept(NodeVisitor &visitor)
   visitor.popMat4();
 }
 
-BoundingBox Transform::calculateBoundingBox(MeshVector meshVec)
+BoundingBox Transform::calculateBoundingBox(glm::mat4 modelMat)
 {
+  std::cout << "Transform::calculateBoundingBox" << std::endl;
+  BoundingBox box;
+  glm::mat4 newModelMat = modelMat * object2world;
+  for(auto child : m_nodes)
+  {
+    BoundingBox boxChild = child->calculateBoundingBox(newModelMat);
+    box.expand(boxChild);
+  }
 
+  return box;
 }

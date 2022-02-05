@@ -27,7 +27,7 @@ public:
   bool initShaders(GLuint program);
   void pushMat4(glm::mat4 matrix);
   void popMat4(glm::mat4 matrix);
-  virtual BoundingBox calculateBoundingBox(MeshVector meshVec) override;
+  virtual BoundingBox calculateBoundingBox(glm::mat4 modelMat) override;
   virtual void accept(NodeVisitor &visitor) override;
 
 private:

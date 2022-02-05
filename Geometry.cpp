@@ -6,18 +6,26 @@ Geometry::Geometry(bool useVAO) {
   m_useVAO = useVAO;
 }
 
-BoundingBox Geometry::calculateBoundingBox(MeshVector meshVec) {
+BoundingBox Geometry::calculateBoundingBox(glm::mat4 modelMat) {
+  std::cout << "Geometry::calculateBoundingBox" << std::endl;
+  BoundingBox box;
+  for(auto v : vertices)
+  {
+    glm::vec3 vTransformed = modelMat * v;
+    box.expand(vTransformed);
+  }
 
+  return box;
 }
 
 void Geometry::accept(NodeVisitor &visitor)
 {
-  std::cout << "Geometry::accept " << name << std::endl;
+  //std::cout << "Geometry::accept " << name << std::endl;
   visitor.visit(*this);
 }
 
 void Geometry::draw() {
-  std::cout << "Draw geometry: " << name << std::endl;
+  //std::cout << "Draw geometry: " << name << std::endl;
   if (m_useVAO) {
     glBindVertexArray(m_vao);
     CHECK_GL_ERROR_LINE_FILE();

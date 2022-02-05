@@ -127,11 +127,11 @@ std::shared_ptr<Node> Scene::getNode(size_t i)
 BoundingBox Scene::calculateBoundingBox()
 {
   //FIXME find a good way to calculate bounding box for nodes.
-  BoundingBox box;
+  //BoundingBox box;
   //for (auto n : m_nodes)
     //box.expand(n->calculateBoundingBox());
 
-  return box;
+  return m_root->calculateBoundingBox(glm::mat4(1.0f));
 }
 
 const GroupVector& Scene::getGroups()

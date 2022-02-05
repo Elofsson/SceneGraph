@@ -33,20 +33,20 @@ RenderVisitor::RenderVisitor(GLuint program) : NodeVisitor(program)
 
 void RenderVisitor::visit(Transform &t)
 {
-  cout << "RenderVisitor: visit transform" << endl;
+  //cout << "RenderVisitor: visit transform" << endl;
   t.accept(*this);
 }
 
 
 void RenderVisitor::visit(Geometry &g)
 {
-  cout << "RenderVisitor: visit geometry" << endl;
+  //cout << "RenderVisitor: visit geometry" << endl;
   
   //Set uniforms here maybe?
 
   if(m_transform_matrices.empty())
   {
-    cout << "Empty transform stack" << endl;
+    //cout << "Empty transform stack" << endl;
     return;
   }
 
