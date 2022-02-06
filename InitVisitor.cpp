@@ -5,9 +5,16 @@ InitVisitor::~InitVisitor()
 
 }
 
+void InitVisitor::visit(Group &g)
+{
+  NodeVisitor::visit(g);
+  g.getState()->setProgram(m_program);
+}
+
 void InitVisitor::visit(Transform &t)
 {
   std::cout << "InitVisitor: Visit transform!" << std::endl;
+  t.getState()->setProgram(m_program);
 }
 
 void InitVisitor::visit(Geometry &g)
@@ -20,4 +27,5 @@ void InitVisitor::visit(Geometry &g)
     }
   g.upload();
   g.getState()->setProgram(m_program);
+
 }

@@ -36,19 +36,21 @@ bool Scene::initShaders(const std::string& vshader_filename, const std::string& 
   }
 
   m_camera->init(m_program);
+  m_root->getState()->setProgram(m_program);
 
   return true;
 }
 
+//Currently apply lights to all children.
 void Scene::add(std::shared_ptr<Light>& light)
 {
+  //std::shared_ptr<Group> group = std::shared_ptr<Group>(new Group());
+  //group->addChild(light->m_geometry);
   m_lights.push_back(light);
-  std::shared_ptr<Group> group = std::shared_ptr<Group>(new Group());
-
-  group->addChild(light->m_geometry);
+  m_root->getState()->addLight(light);
 
   // Also add the mesh-node
-  add(group);
+  //add(group);
 }
 
 const std::shared_ptr<Group> Scene::getRoot()
@@ -98,12 +100,6 @@ void Scene::add(std::shared_ptr<Group> node)
 
   //Add the new node to root graph.
   m_root->addChild(node);
-
-  //for (auto geometry : group->getGeometry())
-  //{
-  //  geometry->initShaders(m_program);
-  //  geometry->upload();
-  //}
 }
 
 void Scene::resetTransform()
@@ -126,11 +122,6 @@ std::shared_ptr<Node> Scene::getNode(size_t i)
 
 BoundingBox Scene::calculateBoundingBox()
 {
-  //FIXME find a good way to calculate bounding box for nodes.
-  //BoundingBox box;
-  //for (auto n : m_nodes)
-    //box.expand(n->calculateBoundingBox());
-
   return m_root->calculateBoundingBox(glm::mat4(1.0f));
 }
 
@@ -142,26 +133,6 @@ const GroupVector& Scene::getGroups()
 void Scene::render()
 {
   useProgram();
-
-  // Update number of lights
-  if (m_uniform_numberOfLights == -1) {
-    const char *uniform_name = "numberOfLights";
-    m_uniform_numberOfLights = glGetUniformLocation(m_program, uniform_name);
-    if (m_uniform_numberOfLights == -1) {
-      std::cerr << "Could not bind uniform " << uniform_name << std::endl;
-    }
-  }
-
-  glUniform1i(m_uniform_numberOfLights, (GLint)m_lights.size());
-
-  //FIXME fix a way to apply lights.
-  // Apply lightsources
-  size_t i = 0;
-  for (auto l : m_lights)
-  {
-    l->apply(m_program, i++);
-  }
-
   RenderVisitor *render = new RenderVisitor(m_program);
   render->visit(*m_root);
 }

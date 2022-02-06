@@ -6,7 +6,7 @@
 #include "Transform.h"
 #include "Debug.h"
 #include "Material.h"
-#include "vr/Texture.h"
+#include "Texture.h"
 
 /// Load a given file and add content to the scene
 std::shared_ptr<Group> load3DModelFile(const std::string& filename);

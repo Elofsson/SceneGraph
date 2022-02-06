@@ -29,11 +29,18 @@ RenderVisitor::RenderVisitor(GLuint program) : NodeVisitor(program)
   if (m_uniform_m_3x3_inv_transp == -1) {
     fprintf(stderr, "Could not bind uniform %s\n", uniform_name);
   }
-} 
+}
+
+void RenderVisitor::visit(Group &g)
+{
+  g.getState()->apply();
+  NodeVisitor::visit(g);
+}
 
 void RenderVisitor::visit(Transform &t)
 {
   //cout << "RenderVisitor: visit transform" << endl;
+  t.getState()->apply();
   t.accept(*this);
 }
 

@@ -88,12 +88,19 @@ bool Application::initResources(const std::string& model_filename, const std::st
   m_sceneRoot->add(groundNode);
 #endif
 
+  //Create first light.
   std::shared_ptr<Light> light1 = std::shared_ptr<Light>(new Light);
   light1->diffuse = glm::vec4(1, 1, 1, 1);
   light1->specular = glm::vec4(1, 1, 1, 1);
   light1->position = glm::vec4(0.0, -2.0, 2.0, 0.0);
-
   m_sceneRoot->add(light1);
+
+  //Create second light.
+  std::shared_ptr<Light> light2 = std::shared_ptr<Light>(new Light);
+  light1->diffuse = glm::vec4(0.5, 0.5, 0.2, 1);
+  light1->specular = glm::vec4(1, 1, 1, 1);
+  light1->position = glm::vec4(1.0, 2.0, -2.0, 0.0);
+  m_sceneRoot->add(light2);
 
   return 1;
 }

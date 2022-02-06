@@ -70,7 +70,7 @@ std::string findTexture(const std::string& texturePath, const std::string& model
   return ""; // Unable to find
 }
 
-size_t ExtractMaterials(const aiScene *scene, MaterialVector& materials, const std::string modelPath)
+size_t ExtractMaterials(const aiScene *scene, MaterialVector& materials, TextureVector& textures, const std::string modelPath)
 {
   uint32_t num_materials = scene->mNumMaterials;
   aiMaterial *ai_material;
@@ -93,9 +93,6 @@ size_t ExtractMaterials(const aiScene *scene, MaterialVector& materials, const s
     ai_material->Get(AI_MATKEY_COLOR_SPECULAR, color);
     material->setSpecular(glm::vec4(color.r, color.g, color.b, color.a));
 
-    //ai_material->Get(AI_MATKEY_COLOR_EMISSIVE, color);
-    //material->setAmbient(glm::vec4(color.r, color.g, color.b, color.a));
-
     ai_material->Get(AI_MATKEY_SHININESS, shiniess);
     material->setShininess(shiniess);
 
@@ -110,12 +107,13 @@ size_t ExtractMaterials(const aiScene *scene, MaterialVector& materials, const s
         std::cerr << "Unable to find texture: " << path.C_Str() << std::endl;
       }
       else {
-        std::shared_ptr<vr::Texture> texture = std::make_shared<vr::Texture>();
-        if (!texture->create(texturePath.c_str(), 0))
-          std::cerr << "Error creating texture: " << texturePath << std::endl;
-        else
+        //FIXME segmentation fault here, investigate this.
+        std::shared_ptr<Texture> texture = std::shared_ptr<Texture>(new Texture());
+        //if (!texture->init(texturePath.c_str(), 0, GL_TEXTURE_2D, GL_UNSIGNED_INT))
+          //std::cerr << "Error creating texture: " << texturePath << std::endl;
+        //else
           //FIXME fix this method to state.
-          //material->setTexture(texture, 0);
+          //textures.push_back(texture);
           std::cout << "Set texture here" << std::endl;
       }
 
@@ -272,9 +270,6 @@ std::shared_ptr<Group> load3DModelFile(const std::string& filename)
     return nullptr;
   }
 
-  MaterialVector materials;
-
-
   Assimp::Importer importer;
   const aiScene* aiScene = importer.ReadFile(filepath,
     aiProcess_CalcTangentSpace |
@@ -291,14 +286,18 @@ std::shared_ptr<Group> load3DModelFile(const std::string& filename)
 
   aiNode *root_node = aiScene->mRootNode;
 
-  ExtractMaterials(aiScene, materials, filename);
+  MaterialVector materials;
+  TextureVector textures;
+  ExtractMaterials(aiScene, materials, textures, filename);
   std::cout << "Found " << materials.size() << " materials" << std::endl;
+  std::cout << "Found " << textures.size() << " textures" << std::endl;
 
   std::stack<glm::mat4> transformStack;
   transformStack.push(glm::mat4());
 
   std::shared_ptr<Group> group = std::shared_ptr<Group>(new Group);
   parseNodes(root_node, materials, transformStack, group, aiScene);
+  group->getState()->setTextures(textures);
 
   transformStack.pop();
 

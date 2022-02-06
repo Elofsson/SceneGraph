@@ -8,6 +8,7 @@ Node::Node()
 void Node::accept(NodeVisitor &visitor)
 {
   //visitor.visit(this);
+  
 }
 
 std::shared_ptr<State> Node::getState() { return nodeState; }

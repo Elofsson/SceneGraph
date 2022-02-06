@@ -18,6 +18,9 @@ public:
 
   Light();
 
+  //TODO check where to put this.
+  void apply(GLuint program, size_t idx);
+
 private:
   friend class Scene;
   std::shared_ptr<Geometry> m_geometry;
@@ -25,8 +28,6 @@ private:
   void createGeometry();
   std::shared_ptr<Geometry>& getGeometry();
   
-  //TODO check where to put this.
-  void apply(GLuint program, size_t idx);
 };
 typedef std::vector<std::shared_ptr<Light>> LightVector;
 
