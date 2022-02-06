@@ -7,7 +7,6 @@ Geometry::Geometry(bool useVAO) {
 }
 
 BoundingBox Geometry::calculateBoundingBox(glm::mat4 modelMat) {
-  std::cout << "Geometry::calculateBoundingBox" << std::endl;
   BoundingBox box;
   for(auto v : vertices)
   {
@@ -37,9 +36,6 @@ void Geometry::draw() {
     //draw_bbox();
     //return;
   //}
-
-  //if (m_material)
-    //m_material->apply(program);
   
   CHECK_GL_ERROR_LINE_FILE();
 

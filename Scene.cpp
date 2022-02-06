@@ -37,6 +37,8 @@ bool Scene::initShaders(const std::string& vshader_filename, const std::string& 
 
   m_camera->init(m_program);
   m_root->getState()->setProgram(m_program);
+  m_root->getState()->setPolygonMode(GL_FILL);
+  m_root->getState()->setCullFace(false);
 
   return true;
 }
@@ -94,6 +96,9 @@ void Scene::useProgram()
 //TODO See if there is another way to init geometries other than initVisitor.
 void Scene::add(std::shared_ptr<Group> node)
 {
+
+  //node->getState()->setPolygonMode(GL_LINE);
+
   //Initalize new node with initVisitor.
   InitVisitor *initVisitor = new InitVisitor(m_program);
   initVisitor->visit(*node);

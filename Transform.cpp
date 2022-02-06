@@ -58,7 +58,6 @@ void Transform::accept(NodeVisitor &visitor)
 
 BoundingBox Transform::calculateBoundingBox(glm::mat4 modelMat)
 {
-  std::cout << "Transform::calculateBoundingBox" << std::endl;
   BoundingBox box;
   glm::mat4 newModelMat = modelMat * object2world;
   for(auto child : m_nodes)

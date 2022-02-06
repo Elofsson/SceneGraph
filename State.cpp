@@ -37,7 +37,6 @@ bool State::apply()
       std::cout << "Apply texture" << std::endl;
       texture->apply(m_program);
     }
-
   }
 
   //Apply lights.
@@ -54,7 +53,6 @@ bool State::apply()
     }
   }
 
-  //TODO Call the apply method for Texture, and Light.
   return true;
 }
 
@@ -70,12 +68,29 @@ void State::addLight(std::shared_ptr<Light> &light)
 
 void State::setPolygonMode(GLuint mode)
 {
-
+  if(mode != GL_FILL && mode != GL_POINT && mode != GL_LINE)
+  {
+    std::cerr << "Nonsupported polygon mode" << std::endl;
+    return;
+  }
+  
+  std::cout << "Update polygonmode" << std::endl;
+  m_polygonmode = mode;
+  glPolygonMode(GL_FRONT_AND_BACK, m_polygonmode);
 }
 
 void State::setCullFace(bool useCullFace)
 {
-  
+  if(useCullFace)
+  {
+    std::cout << "Enable culling of backfaces" << std::endl;
+    glEnable(GL_CULL_FACE);
+  } 
+  else
+  {
+    std::cout << "Disable culling of backfaces" << std::endl;
+    glDisable(GL_CULL_FACE);
+  }
 }
 
 bool State::getLocations()

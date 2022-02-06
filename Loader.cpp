@@ -165,9 +165,12 @@ void parseNodes(aiNode *root_node, MaterialVector& materials, std::stack<glm::ma
   glm::mat4 transform = assimpToGlmMatrix(root_node->mTransformation);
 
   glm::mat4 m = transformStack.top()*transform;
-  //Debug::printMat4(m);
-
-  transformStack.push(m);
+  //if(!(m == glm::mat4(1)))
+  //{
+    Debug::printMat4(m);
+    std::cout << "Push matrix" << std::endl;
+    transformStack.push(m);
+  //}
 
   uint32_t num_meshes = root_node->mNumMeshes;
 

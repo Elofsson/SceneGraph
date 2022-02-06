@@ -28,6 +28,7 @@ private:
   bool getLocations();
 
   GLuint m_program;
+  GLuint m_polygonmode;
   GLuint m_uniform_numberOfLights;
 
   TextureVector m_textures;

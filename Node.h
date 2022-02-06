@@ -9,6 +9,7 @@
 
 class NodeVisitor;
 
+//TODO find a way to check if a node has a set state.
 /// <summary>
 /// Simple class that store a number of meshes and draws it
 /// </summary>
