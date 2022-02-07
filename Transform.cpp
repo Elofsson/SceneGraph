@@ -32,7 +32,7 @@ bool Transform::initShaders(GLuint program)
 void Transform::accept(NodeVisitor &visitor)
 {
   
-  //std::cout << "Transform::accept " << name << std::endl;
+  //std::cout << "Transform::accept " << this << std::endl;
   //Debug::printMat4(object2world);
 
   //Push transform.
@@ -46,7 +46,7 @@ void Transform::accept(NodeVisitor &visitor)
   else
   {
     glm::mat4 prevMat = visitor.getLastTransform();
-    glm::mat4 newObject2world = object2world * prevMat;
+    glm::mat4 newObject2world = prevMat * object2world;
     visitor.pushMat4(newObject2world); 
   }
 

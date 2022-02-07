@@ -38,7 +38,7 @@ bool Scene::initShaders(const std::string& vshader_filename, const std::string& 
   m_camera->init(m_program);
   m_root->getState()->setProgram(m_program);
   m_root->getState()->setPolygonMode(GL_FILL);
-  m_root->getState()->setCullFace(false);
+  m_root->getState()->setCullFace(true);
 
   return true;
 }

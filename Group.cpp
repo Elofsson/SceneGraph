@@ -31,7 +31,6 @@ void Group::accept(NodeVisitor &visitor)
 
 BoundingBox Group::calculateBoundingBox(glm::mat4 modelMat)
 {
-  std::cout << "Group::calculateBoundingBox" << std::endl;
   BoundingBox box;
   for(auto child : m_nodes)
   {
