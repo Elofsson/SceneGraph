@@ -13,6 +13,7 @@
 
 #include "Scene.h"
 #include "Loader.h"
+#include "CircularMovementCallback.h"
 
 Application::Application(unsigned int width, unsigned height) : m_screenSize(width, height)
 {
@@ -35,58 +36,14 @@ bool Application::initResources(const std::string& model_filename, const std::st
 
   getCamera()->setScreenSize(m_screenSize);
 
-  std::string ext = vr::FileSystem::getFileExtension(model_filename);
-  std::shared_ptr<Group> node;
-
-  // Ok lets load this as our own "scene file format"
-  if (ext == "xml" || ext == "XML")
+  std::shared_ptr<Group> rootGroup = std::shared_ptr<Group>(new Group());
+  if(!loadGroup(model_filename, rootGroup))
   {
-    if (!loadSceneFile(model_filename, m_sceneRoot))
-    {
-      return false;
-    }
-
-    if (m_sceneRoot->getRoot()->empty())
-    {
-      std::cerr << "Empty scene, something when wrong when loading files" << std::endl;
-      return false;
-    }
-    // We want to be able to "rotate" one node lets take the first
-    node = m_sceneRoot->getRoot();
-  }
-  else
-  {
-    node = load3DModelFile(model_filename);
-    if (!node)
-      return false;
-    m_sceneRoot->add(node);
+    std::cerr << "Failed to load scene" << std::endl;
+    return false;
   }
 
-#if 0
-  std::shared_ptr<Mesh> ground(new Mesh);
-
-  BoundingBox box = m_sceneRoot->calculateBoundingBox();
-  glm::vec3 size = box.max() - box.min();
-  // mesh position initialized in init_view()
-
-  ground->vertices.push_back(glm::vec4(size.x, 0, size.y, 1.0));
-  ground->vertices.push_back(glm::vec4(size.x, 0, -size.y, 1.0));
-  ground->vertices.push_back(glm::vec4(-size.x, 0, size.y, 1.0));
-  ground->vertices.push_back(glm::vec4(-size.x, 0, size.y, 1.0));
-  ground->vertices.push_back(glm::vec4(size.x, 0, -size.y, 1.0));
-  ground->vertices.push_back(glm::vec4(-size.x, 0, -size.y, 1.0));
-  
-  for (unsigned int k = 0; k < 6; k++)
-    ground->normals.push_back(glm::vec3(0.0, 1.0, 0.0));
-
-  std::shared_ptr<Node> groundNode = std::shared_ptr<Node>(new Node);
-  groundNode->add(ground);
-
-  groundNode->setInitialTransform(glm::translate(glm::mat4(), glm::vec3(box.getCenter().x, box.min().y, box.getCenter().z)));
-  ground->name = "ground";
-
-  m_sceneRoot->add(groundNode);
-#endif
+  m_sceneRoot->add(rootGroup);
 
   //Create first light.
   std::shared_ptr<Light> light1 = std::shared_ptr<Light>(new Light);
@@ -103,6 +60,68 @@ bool Application::initResources(const std::string& model_filename, const std::st
   m_sceneRoot->add(light2);
 
   return 1;
+}
+
+bool Application::buildGeometry()
+{
+  std::string ironman_modelfile = "scenes/custom.xml";
+  std::shared_ptr<Group> ironmanGroup = std::shared_ptr<Group>(new Group());
+  if(!loadGroup(ironman_modelfile, ironmanGroup))
+  {
+    return false;
+  }
+
+  int translateOffset = 20;
+  float movementOffset = 0.05;
+  glm::vec3 pos = glm::vec3(0.0f, 0.0f, 0.0f);
+  for(int i = 0; i < 5; i++)
+  {
+    std::shared_ptr<Transform> transform = std::shared_ptr<Transform>(new Transform(pos.x, pos.y, pos.z));
+    transform->addChild(ironmanGroup);
+    //Add test movement callback to transform.
+    std::shared_ptr<CircularMovementCallback> ironmanMovement = std::shared_ptr<CircularMovementCallback>(new CircularMovementCallback(movementOffset, 10.0f));
+    transform->addCallback(ironmanMovement, false);
+    m_sceneRoot->add(transform);
+    
+    //Increase offsets.
+    pos += translateOffset;
+    movementOffset += movementOffset;
+  }
+
+
+
+
+
+  return true;
+
+}
+
+bool Application::loadGroup(std::string model_filename, std::shared_ptr<Group> &group)
+{
+  std::string ext = vr::FileSystem::getFileExtension(model_filename);
+  if (ext == "xml" || ext == "XML"){
+    if (!loadSceneFile(model_filename, group))
+    {
+      return false;
+    }
+
+    if (group->empty())
+    {
+      std::cerr << "Empty scene, something when wrong when loading files" << std::endl;
+      return false;
+    }
+  }
+
+  else
+  {
+    group = load3DModelFile(model_filename);
+    if(!group)
+    {
+      return false;
+    }
+  }
+
+  return true;
 }
 
 void Application::reloadScene()

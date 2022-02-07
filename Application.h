@@ -26,6 +26,9 @@ public:
 
   void processInput(GLFWwindow* window);
 
+  bool buildGeometry();
+  bool loadGroup(std::string model_filename, std::shared_ptr<Group> &group);
+
 private:
 
   // Parent of all to be rendered

@@ -2,6 +2,8 @@
 #include <iostream>
 #include <vr/shaderUtils.h>
 
+#include "CircularMovementCallback.h"
+
 Scene::Scene() : m_uniform_numberOfLights(-1)
 {
   m_camera = std::shared_ptr<Camera>(new Camera);
@@ -138,6 +140,10 @@ const GroupVector& Scene::getGroups()
 void Scene::render()
 {
   useProgram();
+
+  UpdateVisitor *updater = new UpdateVisitor(m_program);
+  updater->visit(*m_root);
+
   RenderVisitor *render = new RenderVisitor(m_program);
   render->visit(*m_root);
 }

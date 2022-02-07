@@ -34,7 +34,7 @@ bool State::apply()
   {
     for(auto texture : m_textures)
     {
-      std::cout << "Apply texture" << std::endl;
+      //std::cout << "Apply texture" << std::endl;
       texture->apply(m_program);
     }
   }
@@ -56,9 +56,9 @@ bool State::apply()
   return true;
 }
 
-void State::setTextures(TextureVector &textures)
+void State::addTexture(std::shared_ptr<Texture> &texture)
 {
-  m_textures = textures;
+  m_textures.push_back(texture);
 }
 
 void State::addLight(std::shared_ptr<Light> &light)

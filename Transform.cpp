@@ -6,6 +6,11 @@ Transform::Transform()
   object2world = glm::mat4(1.0f);
 }
 
+Transform::Transform(float x, float y, float z)
+{
+  object2world = glm::translate(glm::mat4(1.0f), glm::vec3(x, y, z));
+}
+
 Transform::~Transform()
 {
 
@@ -49,6 +54,9 @@ void Transform::accept(NodeVisitor &visitor)
     glm::mat4 newObject2world = prevMat * object2world;
     visitor.pushMat4(newObject2world); 
   }
+
+  //Go to visitor before searching for other
+  visitor.visit(*this);
 
   Group::accept(visitor);
   

@@ -27,3 +27,22 @@ std::shared_ptr<State> Node::getState() { return nodeState; }
 
   //return box;
 //}
+
+//----------------------Callbacks---------------------------
+void Node::addCallback(std::shared_ptr<UpdateCallback> callback, bool executeOnce)
+{
+  if(executeOnce)
+  {
+    m_exec_once_callbacks.push_back(callback);
+  }
+
+  else
+  {
+    m_callbacks.push_back(callback);
+  }
+}
+
+CallbackVector Node::getCallbacks()
+{
+  return m_callbacks;
+}

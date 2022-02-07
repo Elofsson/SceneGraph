@@ -13,7 +13,7 @@ class UpdateVisitor : public NodeVisitor
 {
 public:
   using NodeVisitor::NodeVisitor;
-  using NodeVisitor::visit;
+  virtual void visit(Group &g) override;
   virtual void visit(Transform &t) override;
   virtual void visit(Geometry &g) override;
 };

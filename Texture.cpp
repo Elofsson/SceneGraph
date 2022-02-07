@@ -91,7 +91,11 @@ unsigned char* Texture::readTexture(std::string filePath, int *width, int *heigh
 //TODO check this apply method, looks wierd.
 void Texture::apply(GLuint program)
 {
-  GLuint texUni = glGetUniformLocation(program, "material.textures");
+	std::string uniform = "material.textures[";
+	uniform.append(std::to_string(m_slot));
+	uniform.append("]");
+
+  GLuint texUni = glGetUniformLocation(program, uniform.c_str());
   glUniform1i(texUni, m_slot);
 
   CHECK_GL_ERROR_LINE_FILE();

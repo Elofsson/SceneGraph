@@ -123,6 +123,12 @@ int main(int argc, char** argv)
     return 1;
   }
 
+  if(!application->buildGeometry())
+  {
+    std::cerr << "Failed to build geometry" << std::endl;
+    return 1;
+  }
+
   application->initView();
 
   glEnable(GL_BLEND);

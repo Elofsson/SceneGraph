@@ -3,6 +3,7 @@
 #include "Group.h"
 #include "Debug.h"
 #include <stack>
+#include <glm/gtc/matrix_transform.hpp>
 
 //TODO implement Transform.
 /*
@@ -25,10 +26,9 @@ public:
   glm::mat4 object2world;
 
   Transform();
+  Transform(float x, float y, float z);
   ~Transform();
   bool initShaders(GLuint program);
-  void pushMat4(glm::mat4 matrix);
-  void popMat4(glm::mat4 matrix);
   virtual BoundingBox calculateBoundingBox(glm::mat4 modelMat) override;
   virtual void accept(NodeVisitor &visitor) override;
 

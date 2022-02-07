@@ -13,13 +13,11 @@ void InitVisitor::visit(Group &g)
 
 void InitVisitor::visit(Transform &t)
 {
-  std::cout << "InitVisitor: Visit transform!" << std::endl;
   t.getState()->setProgram(m_program);
 }
 
 void InitVisitor::visit(Geometry &g)
 {
-  std::cout << "InitVisitor: Visit Geometry" << std::endl;
   if(!g.initShaders(m_program))
   {
       std::cerr << "Failed to load shaders for geometry" << std::endl;

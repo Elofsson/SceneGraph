@@ -9,6 +9,7 @@
 #include <glm/vec4.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include "CircularMovementCallback.h"
 
 #include <vr/FileSystem.h>
 #include <vr/shaderUtils.h>
@@ -80,6 +81,7 @@ size_t ExtractMaterials(const aiScene *scene, MaterialVector& materials, Texture
 
   for (uint32_t i = 0; i < num_materials; i++)
   {
+    std::cout << "[" << i << "]" << std::endl;
     std::shared_ptr<Material> material(new Material);
 
     ai_material = scene->mMaterials[i];
@@ -96,6 +98,8 @@ size_t ExtractMaterials(const aiScene *scene, MaterialVector& materials, Texture
     ai_material->Get(AI_MATKEY_SHININESS, shiniess);
     material->setShininess(shiniess);
 
+    unsigned int count = ai_material->GetTextureCount(aiTextureType_DIFFUSE);
+
     if (ai_material->GetTextureCount(aiTextureType_DIFFUSE) > 0)
     {
       aiString res("res\\");
@@ -110,13 +114,15 @@ size_t ExtractMaterials(const aiScene *scene, MaterialVector& materials, Texture
         //FIXME segmentation fault here, investigate this.
         std::shared_ptr<Texture> texture = std::shared_ptr<Texture>(new Texture());
         //if (!texture->init(texturePath.c_str(), 0, GL_TEXTURE_2D, GL_UNSIGNED_INT))
-          //std::cerr << "Error creating texture: " << texturePath << std::endl;
+        //{
+          //std::cout << "Error creating texture: " << texturePath << std::endl;
+        //}
         //else
+        //{
           //FIXME fix this method to state.
           //textures.push_back(texture);
-          std::cout << "Set texture here" << std::endl;
+        //}
       }
-
     }
 
     if (ai_material->GetTextureCount(aiTextureType_SPECULAR) > 0)
@@ -159,7 +165,7 @@ glm::mat4 assimpToGlmMatrix(const aiMatrix4x4 &ai_matrix)
   return glm_matrix;
 }
 
-void parseNodes(aiNode *root_node, MaterialVector& materials, std::stack<glm::mat4>& transformStack, std::shared_ptr<Group>& group, const aiScene *aiScene)
+void parseNodes(aiNode *root_node, MaterialVector& materials, TextureVector& textures, std::stack<glm::mat4>& transformStack, std::shared_ptr<Group>& group, const aiScene *aiScene)
 {
 
   glm::mat4 transform = assimpToGlmMatrix(root_node->mTransformation);
@@ -231,21 +237,25 @@ void parseNodes(aiNode *root_node, MaterialVector& materials, std::stack<glm::ma
     //Add transformation if one is found.
     if(!transformStack.empty())
     {
-      Debug::printMat4("Found transformation: ", transformStack.top());
       std::shared_ptr<Transform> transformation = std::shared_ptr<Transform>(new Transform());
       transformation->object2world = transformStack.top();
       transformation->addChild(loadedGeometry);
       group->addChild(transformation);
     }
     
-    if (!materials.empty())
-      //TODO fix material here later.
+    if(!materials.empty())
       loadedGeometry->getState()->setMaterial(materials[mesh->mMaterialIndex]);
+
+    //if(!textures.empty() && textures.size() > mesh->mMaterialIndex)
+    //{
+      //std::cout << "Set texture for geometry" << std::endl;
+      //loadedGeometry->getState()->addTexture(textures[mesh->mMaterialIndex]); 
+    //}
   }
 
   for (uint32_t i = 0; i < root_node->mNumChildren; i++)
   {
-    parseNodes(root_node->mChildren[i], materials, transformStack, group, aiScene);
+    parseNodes(root_node->mChildren[i], materials, textures, transformStack, group, aiScene);
   }
   transformStack.pop();
 }
@@ -297,8 +307,9 @@ std::shared_ptr<Group> load3DModelFile(const std::string& filename)
   transformStack.push(glm::mat4());
 
   std::shared_ptr<Group> group = std::shared_ptr<Group>(new Group);
-  parseNodes(root_node, materials, transformStack, group, aiScene);
-  group->getState()->setTextures(textures);
+  parseNodes(root_node, materials, textures, transformStack, group, aiScene);
+  std::cout << "After parse nodes" << std::endl;
+  //group->getState()->setTextures(textures);
 
   transformStack.pop();
 
@@ -388,7 +399,7 @@ std::string getAttribute(rapidxml::xml_node<> * node, const std::string& attribu
   return attrib->value();
 }
 
-bool loadSceneFile(const std::string& sceneFile, std::shared_ptr<Scene>& scene)
+bool loadSceneFile(const std::string& sceneFile, std::shared_ptr<Group>& group)
 {
   std::string filepath = sceneFile;
   bool exist = vr::FileSystem::exists(filepath);
@@ -426,8 +437,10 @@ bool loadSceneFile(const std::string& sceneFile, std::shared_ptr<Scene>& scene)
 
     xmlpath.push_back("scene");
     // Iterate over the nodes
+    int count = 0;
     for (rapidxml::xml_node<> * node_node = root_node->first_node("node"); node_node; node_node = node_node->next_sibling())
     {
+      std::cout << "Loading 3d object " << count << std::endl;
       xmlpath.push_back("node");
 
       if (node_node->type() == rapidxml::node_comment || node_node->type() == rapidxml::node_doctype)
@@ -486,9 +499,8 @@ bool loadSceneFile(const std::string& sceneFile, std::shared_ptr<Scene>& scene)
           std::shared_ptr<Transform> initTransform = std::shared_ptr<Transform>(new Transform());
           initTransform->object2world = t;
           initTransform->addChild(loadedGroup);
-          //loadedGroup->setInitialTransform(t);
           loadedGroup->name = name;
-          scene->add(initTransform);
+          group->addChild(initTransform);
         }
 
         xmlpath.pop_back(); // transform

@@ -13,7 +13,7 @@ class State
 public:
   State();
   void setMaterial(std::shared_ptr<Material>& material);
-  void setTextures(TextureVector &textures);
+  void addTexture(std::shared_ptr<Texture> &texture);
   void addLight(std::shared_ptr<Light> &light);
   void setPolygonMode(GLuint mode);
   void setCullFace(bool useCullFace);
