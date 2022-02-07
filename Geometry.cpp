@@ -24,7 +24,6 @@ void Geometry::accept(NodeVisitor &visitor)
 }
 
 void Geometry::draw() {
-  std::cout << "Draw geometry: " << name << std::endl;
   if (m_useVAO) {
     glBindVertexArray(m_vao);
     CHECK_GL_ERROR_LINE_FILE();

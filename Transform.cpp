@@ -36,7 +36,7 @@ bool Transform::initShaders(GLuint program)
 
 void Transform::accept(NodeVisitor &visitor)
 {
-  
+  m_callbacks.front(); 
   //std::cout << "Transform::accept " << this << std::endl;
   //Debug::printMat4(object2world);
 

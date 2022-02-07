@@ -45,18 +45,11 @@ bool Application::initResources(const std::string& model_filename, const std::st
 
   m_sceneRoot->add(rootGroup);
 
-  //Create first light.
-  std::shared_ptr<Light> light1 = std::shared_ptr<Light>(new Light);
-  light1->diffuse = glm::vec4(1, 1, 1, 1);
-  light1->specular = glm::vec4(1, 1, 1, 1);
-  light1->position = glm::vec4(0.0, -2.0, 2.0, 0.0);
-  m_sceneRoot->add(light1);
-
   //Create second light.
   std::shared_ptr<Light> light2 = std::shared_ptr<Light>(new Light);
-  light1->diffuse = glm::vec4(0.5, 0.5, 0.2, 1);
-  light1->specular = glm::vec4(1, 1, 1, 1);
-  light1->position = glm::vec4(1.0, 2.0, -2.0, 0.0);
+  light2->diffuse = glm::vec4(0.5, 0.5, 0.2, 1);
+  light2->specular = glm::vec4(1, 1, 1, 1);
+  light2->position = glm::vec4(1.0, 2.0, -2.0, 0.0);
   m_sceneRoot->add(light2);
 
   return 1;
@@ -71,29 +64,29 @@ bool Application::buildGeometry()
     return false;
   }
 
+  //Add 5 ironmans.
+  std::shared_ptr<CircularMovementCallback> ironmanMovement = std::shared_ptr<CircularMovementCallback>(new CircularMovementCallback(0.002f, 5.0f));
   int translateOffset = 20;
-  float movementOffset = 0.05;
   glm::vec3 pos = glm::vec3(0.0f, 0.0f, 0.0f);
   for(int i = 0; i < 5; i++)
   {
-    std::shared_ptr<Transform> transform = std::shared_ptr<Transform>(new Transform(pos.x, pos.y, pos.z));
-    transform->addChild(ironmanGroup);
+    std::shared_ptr<Transform> transformPositive = std::shared_ptr<Transform>(new Transform(pos.x, pos.y, pos.z));
+    std::shared_ptr<Transform> transformNegative = std::shared_ptr<Transform>(new Transform(-pos.x, pos.y, -pos.z));
+    transformPositive->addChild(ironmanGroup);
+    transformNegative->addChild(ironmanGroup);
+    
     //Add test movement callback to transform.
-    std::shared_ptr<CircularMovementCallback> ironmanMovement = std::shared_ptr<CircularMovementCallback>(new CircularMovementCallback(movementOffset, 10.0f));
-    transform->addCallback(ironmanMovement, false);
-    m_sceneRoot->add(transform);
+    transformPositive->addCallback(ironmanMovement, false);
+    transformNegative->addCallback(ironmanMovement, false);
+
+    m_sceneRoot->add(transformPositive);
+    m_sceneRoot->add(transformNegative);
     
     //Increase offsets.
     pos += translateOffset;
-    movementOffset += movementOffset;
   }
 
-
-
-
-
   return true;
-
 }
 
 bool Application::loadGroup(std::string model_filename, std::shared_ptr<Group> &group)

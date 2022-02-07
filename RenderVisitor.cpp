@@ -39,7 +39,6 @@ void RenderVisitor::visit(Group &g)
 
 void RenderVisitor::visit(Transform &t)
 {
-	cout << "RenderVisitor: visit transform" << endl;
   //Push on stack.
 	t.getState()->apply();
   //Pop stack.
@@ -48,7 +47,6 @@ void RenderVisitor::visit(Transform &t)
 
 void RenderVisitor::visit(Geometry &g)
 {
-	cout << "RenderVisitor: visit geometry" << endl;
 	
 	//Set uniforms here maybe?
 

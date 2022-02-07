@@ -15,8 +15,6 @@ CircularMovementCallback::CircularMovementCallback(float speed, float radius)
 
 bool CircularMovementCallback::update(Transform &t)
 {
-  std::cout << "Update movement" << std::endl;
-
   float xCoord = t.object2world[0][3];
   float yCoord = t.object2world[1][3];
   float zCoord = t.object2world[2][3];

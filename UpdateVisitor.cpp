@@ -2,7 +2,7 @@
 
 void UpdateVisitor::visit(Transform &t)
 {
-  std::cout << "UpdateVisitor::Visit Transform" << std::endl;
+  //std::cout << "UpdateVisitor::Visit Transform" << std::endl;
   CallbackVector callbacks = t.getCallbacks();
 
   for(auto callback : callbacks)
@@ -12,11 +12,11 @@ void UpdateVisitor::visit(Transform &t)
 }
 void UpdateVisitor::visit(Geometry &g)
 {
-  std::cout << "UpdateVisitor::Visit Geometry" << std::endl;
+  //std::cout << "UpdateVisitor::Visit Geometry" << std::endl;
 }
 
 void UpdateVisitor::visit(Group &g)
 {
-  std::cout << "UpdateVisitor::VisitGroup" << std::endl;
+  //std::cout << "UpdateVisitor::VisitGroup" << std::endl;
   NodeVisitor::visit(g);
 }
