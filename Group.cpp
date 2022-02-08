@@ -21,10 +21,6 @@ bool Group::empty()
 
 void Group::accept(NodeVisitor &visitor)
 {
-  if(m_nodes.size() > 1)
-  {
-    std::cout << "Group: " << m_nodes.size() << std::endl;
-  }
   for(auto child : m_nodes)
   {
     //std::cout << "Group::accept: Visiting " << child << std::endl;
