@@ -1,6 +1,6 @@
 #include "CircularMovementCallback.h"
 
-CircularMovementCallback::CircularMovementCallback(float speed, float radius)
+CircularMovementCallback::CircularMovementCallback(float speed, float radius, bool callOnce) : UpdateCallback(callOnce)
 {
   //Maximum speed is 90.
   if(speed > 90)
@@ -15,6 +15,7 @@ CircularMovementCallback::CircularMovementCallback(float speed, float radius)
 
 bool CircularMovementCallback::update(Transform &t)
 {
+  std::cout << "Execute callback" << std::endl;
   float xCoord = t.object2world[0][3];
   float yCoord = t.object2world[1][3];
   float zCoord = t.object2world[2][3];

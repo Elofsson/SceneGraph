@@ -55,36 +55,42 @@ bool Application::initResources(const std::string& model_filename, const std::st
   return 1;
 }
 
+//TODO move to main.
 bool Application::buildGeometry()
 {
   std::string ironman_modelfile = "scenes/custom.xml";
-  std::shared_ptr<Group> ironmanGroup = std::shared_ptr<Group>(new Group());
-  if(!loadGroup(ironman_modelfile, ironmanGroup))
+  std::shared_ptr<Group> ironmanModel = std::shared_ptr<Group>(new Group());
+  if(!loadGroup(ironman_modelfile, ironmanModel))
   {
     return false;
   }
 
   //Add 5 ironmans.
-  std::shared_ptr<CircularMovementCallback> ironmanMovement = std::shared_ptr<CircularMovementCallback>(new CircularMovementCallback(0.002f, 5.0f));
+  std::shared_ptr<Group> ironmanGroup = std::shared_ptr<Group>(new Group());
   int translateOffset = 20;
   glm::vec3 pos = glm::vec3(0.0f, 0.0f, 0.0f);
+  
   for(int i = 0; i < 5; i++)
   {
     std::shared_ptr<Transform> transformPositive = std::shared_ptr<Transform>(new Transform(pos.x, pos.y, pos.z));
     std::shared_ptr<Transform> transformNegative = std::shared_ptr<Transform>(new Transform(-pos.x, pos.y, -pos.z));
-    transformPositive->addChild(ironmanGroup);
-    transformNegative->addChild(ironmanGroup);
-    
-    //Add test movement callback to transform.
-    transformPositive->addCallback(ironmanMovement, false);
-    transformNegative->addCallback(ironmanMovement, false);
+    transformPositive->addChild(ironmanModel);
+    transformNegative->addChild(ironmanModel);
 
-    m_sceneRoot->add(transformPositive);
-    m_sceneRoot->add(transformNegative);
+    ironmanGroup->addChild(transformPositive);
+    ironmanGroup->addChild(transformNegative);
     
     //Increase offsets.
     pos += translateOffset;
   }
+
+  std::shared_ptr<CircularMovementCallback> ironmanMovement = std::shared_ptr<CircularMovementCallback>(new CircularMovementCallback(0.02f, 1.0f, false));
+  std::shared_ptr<Transform> moveIronManModels = std::shared_ptr<Transform>(new Transform(1, 1, 1));
+  moveIronManModels->addChild(ironmanGroup);
+  moveIronManModels->addCallback(ironmanMovement);
+
+  m_sceneRoot->add(moveIronManModels);
+
 
   return true;
 }

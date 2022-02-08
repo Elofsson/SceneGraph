@@ -121,7 +121,6 @@ const NodeVector& Scene::getNodes()
   return m_nodes;
 }
 
-
 std::shared_ptr<Node> Scene::getNode(size_t i)
 {
   return m_nodes[i];

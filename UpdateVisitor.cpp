@@ -3,12 +3,7 @@
 void UpdateVisitor::visit(Transform &t)
 {
   //std::cout << "UpdateVisitor::Visit Transform" << std::endl;
-  CallbackVector callbacks = t.getCallbacks();
-
-  for(auto callback : callbacks)
-  {
-    callback->update(t);
-  }
+  t.executeCallbacks();
 }
 void UpdateVisitor::visit(Geometry &g)
 {

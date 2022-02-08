@@ -5,13 +5,11 @@
 #include <GLFW/glfw3.h>
 #include <glm/gtc/matrix_transform.hpp>
 
-class CircularMovementCallback : public UpdateCallback
+class CircularMovementCallback : public UpdateCallback<Transform>
 {
 public:
-  CircularMovementCallback(float speed, float radius);
+  CircularMovementCallback(float speed, float radius, bool callOnce);
   virtual bool update(Transform &t) override;
-  virtual bool update(Group &t){ return false; };
-  virtual bool update(Geometry &t){ return false; };
 
 private:
   float m_speed;

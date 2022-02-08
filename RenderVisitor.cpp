@@ -56,6 +56,7 @@ void RenderVisitor::visit(Geometry &g)
 		return;
 	}
 
+	//TODO Make apply method for geometry.
 	//Get model matrix.
 	glm::mat4 object2world =  m_transform_matrices.top();
 	glUniformMatrix4fv(m_uniform_m, 1, GL_FALSE, glm::value_ptr(object2world));
