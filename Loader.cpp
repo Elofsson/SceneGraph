@@ -179,10 +179,14 @@ void parseNodes(aiNode *root_node, MaterialVector& materials, TextureVector& tex
 
   for (uint32_t i = 0; i < num_meshes; i++)
   {
+    
     std::shared_ptr<Geometry> loadedGeometry(new Geometry());
+    loadedGeometry->name = group->name;
+    loadedGeometry->name.append(std::to_string(i));
 
     aiMesh *mesh = aiScene->mMeshes[root_node->mMeshes[i]];
     uint32_t num_vertices = mesh->mNumVertices;
+    
 
     loadedGeometry->vertices.resize(num_vertices);
     loadedGeometry->normals.resize(num_vertices);
@@ -243,14 +247,22 @@ void parseNodes(aiNode *root_node, MaterialVector& materials, TextureVector& tex
       group->addChild(transformation);
     }
     
-    if(!materials.empty())
-      loadedGeometry->getState()->setMaterial(materials[mesh->mMaterialIndex]);
+    std::shared_ptr<State> geometryState = std::shared_ptr<State>(new State());
 
-    //if(!textures.empty() && textures.size() > mesh->mMaterialIndex)
-    //{
-      //std::cout << "Set texture for geometry" << std::endl;
-      //loadedGeometry->getState()->addTexture(textures[mesh->mMaterialIndex]); 
-    //}
+    if(!materials.empty())
+      geometryState->setMaterial(materials[mesh->mMaterialIndex]);
+    
+    if(!textures.empty() && textures.size() > mesh->mMaterialIndex)
+    {
+      std::cout << "Set texture for geometry" << std::endl;
+      geometryState->addTexture(textures[mesh->mMaterialIndex]); 
+    }
+
+    //Set the state only if state contains any usefull information such as material or textures.
+    if(geometryState->getMaterial() != NULL || !geometryState->getTextures().empty())
+    {
+      loadedGeometry->setState(geometryState);
+    }
   }
 
   for (uint32_t i = 0; i < root_node->mNumChildren; i++)
@@ -307,9 +319,8 @@ std::shared_ptr<Group> load3DModelFile(const std::string& filename)
   transformStack.push(glm::mat4());
 
   std::shared_ptr<Group> group = std::shared_ptr<Group>(new Group);
+  group->name = filename;
   parseNodes(root_node, materials, textures, transformStack, group, aiScene);
-  std::cout << "After parse nodes" << std::endl;
-  //group->getState()->setTextures(textures);
 
   transformStack.pop();
 
@@ -499,7 +510,10 @@ bool loadSceneFile(const std::string& sceneFile, std::shared_ptr<Group>& group)
           std::shared_ptr<Transform> initTransform = std::shared_ptr<Transform>(new Transform());
           initTransform->object2world = t;
           initTransform->addChild(loadedGroup);
-          loadedGroup->name = name;
+          if(loadedGroup->name.empty())
+          {
+            loadedGroup->name = name;
+          }
           group->addChild(initTransform);
         }
 

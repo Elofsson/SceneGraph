@@ -14,6 +14,8 @@ using namespace std;
 
 RenderVisitor::RenderVisitor(GLuint program) : NodeVisitor(program)
 {
+	m_state = std::shared_ptr<State>(new State());
+
 	//TODO consider calling this in a init method for better error checking.
 	//Get the location for model matrix.
 	const char* uniform_name;
@@ -32,15 +34,22 @@ RenderVisitor::RenderVisitor(GLuint program) : NodeVisitor(program)
 }
 
 void RenderVisitor::visit(Group &g)
-{
-	g.getState()->apply();
+{ 
+	//std::cout << "Mergeing state for: " << g.name << std::endl;
+	if(!g.emptyState())
+	{
+		m_state->merge(g.getState());
+	}
 	NodeVisitor::visit(g);
 }
 
 void RenderVisitor::visit(Transform &t)
 {
   //Push on stack.
-	t.getState()->apply();
+	if(!t.emptyState())
+	{
+		m_state->merge(t.getState());
+	}
   //Pop stack.
 }
 
@@ -67,7 +76,12 @@ void RenderVisitor::visit(Geometry &g)
 	glUniformMatrix3fv(m_uniform_m_3x3_inv_transp, 1, GL_FALSE, glm::value_ptr(m_3x3_inv_transp));
 
 	//Apply state.
-	g.getState()->apply();
+	if(!g.emptyState())
+	{
+		m_state->merge(g.getState());
+	}
+	m_state->apply();
 
 	g.draw();
+
 }

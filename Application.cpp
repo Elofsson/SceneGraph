@@ -47,9 +47,9 @@ bool Application::initResources(const std::string& model_filename, const std::st
 
   //Create second light.
   std::shared_ptr<Light> light2 = std::shared_ptr<Light>(new Light);
-  light2->diffuse = glm::vec4(0.5, 0.5, 0.2, 1);
-  light2->specular = glm::vec4(1, 1, 1, 1);
-  light2->position = glm::vec4(1.0, 2.0, -2.0, 0.0);
+  light2->setDiffuse(glm::vec4(1, 1, 1, 1));
+  light2->setSpecular(glm::vec4(1, 1, 1, 1));
+  light2->setPosition(glm::vec4(1.0, 2.0, -2.0, 0.0));
   m_sceneRoot->add(light2);
 
   return 1;
@@ -134,6 +134,7 @@ void Application::initView()
   // Compute a bounding box around the whole scene
   BoundingBox box = m_sceneRoot->calculateBoundingBox();
   float radius = box.getRadius();
+  std::cout << "Radius: " << radius << std::endl;
 
   // Compute the diagonal and a suitable distance so we can see the whole thing
   float distance = radius * 1.5f;
@@ -144,7 +145,7 @@ void Application::initView()
   std::shared_ptr<Light> light = m_sceneRoot->getLights().front();
   glm::vec4 position;
   position = glm::vec4(eye + glm::vec3(3, 2, 0), 1);
-  light->position = position;
+  light->setPosition(position);
 
   m_sceneRoot->resetTransform();
 

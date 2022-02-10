@@ -8,12 +8,12 @@ InitVisitor::~InitVisitor()
 void InitVisitor::visit(Group &g)
 {
   NodeVisitor::visit(g);
-  g.getState()->setProgram(m_program);
+  //g.getState()->setProgram(m_program);
 }
 
 void InitVisitor::visit(Transform &t)
 {
-  t.getState()->setProgram(m_program);
+  //t.getState()->setProgram(m_program);
 }
 
 void InitVisitor::visit(Geometry &g)

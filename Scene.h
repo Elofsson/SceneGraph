@@ -114,6 +114,10 @@ private:
   NodeVector m_nodes;
   GroupVector m_groups;
   LightVector m_lights;
+
+  std::shared_ptr<RenderVisitor> m_renderer;
+  std::shared_ptr<UpdateVisitor> m_updater;
+
   GLuint m_program;
   GLint m_uniform_numberOfLights;
 

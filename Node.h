@@ -30,10 +30,12 @@ public:
 
   //TODO See how state should be able to be modified later, set methods? public attribute? 
   virtual std::shared_ptr<State> getState();
+  virtual void setState(std::shared_ptr<State> state);
+  virtual bool emptyState();
 
 
 protected:
-  std::shared_ptr<State> nodeState;
+  std::shared_ptr<State> m_nodeState;
 
 };
 

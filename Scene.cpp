@@ -1,13 +1,14 @@
 #include "Scene.h"
 #include <iostream>
 #include <vr/shaderUtils.h>
-
+#include "Debug.h"
 #include "CircularMovementCallback.h"
 
 Scene::Scene() : m_uniform_numberOfLights(-1)
 {
   m_camera = std::shared_ptr<Camera>(new Camera);
   m_root = std::shared_ptr<Group>(new Group);
+  m_root->name = "Root ";
   m_program = glCreateProgram();
 }
 
@@ -38,9 +39,17 @@ bool Scene::initShaders(const std::string& vshader_filename, const std::string& 
   }
 
   m_camera->init(m_program);
-  m_root->getState()->setProgram(m_program);
-  m_root->getState()->setPolygonMode(GL_FILL);
-  m_root->getState()->setCullFace(true);
+
+  //Set root state.
+  std::shared_ptr<State> rootState = std::shared_ptr<State>(new State());
+  rootState->setProgram(m_program);
+  rootState->setPolygonMode(GL_FILL);
+  rootState->setCullFace(true);
+  m_root->setState(rootState);
+
+  //Initalize visitors.
+  m_renderer = std::shared_ptr<RenderVisitor>(new RenderVisitor(m_program));
+  m_updater = std::shared_ptr<UpdateVisitor>(new UpdateVisitor(m_program));
 
   return true;
 }
@@ -50,7 +59,6 @@ void Scene::add(std::shared_ptr<Light>& light)
 {
   //std::shared_ptr<Group> group = std::shared_ptr<Group>(new Group());
   //group->addChild(light->m_geometry);
-  m_lights.push_back(light);
   m_root->getState()->addLight(light);
 
   // Also add the mesh-node
@@ -64,8 +72,7 @@ const std::shared_ptr<Group> Scene::getRoot()
 
 const LightVector& Scene::getLights()
 {
-  return
-    m_lights;
+  return m_root->getState()->getLights();
 }
 
 GLuint Scene::getProgram() const
@@ -98,9 +105,6 @@ void Scene::useProgram()
 //TODO See if there is another way to init geometries other than initVisitor.
 void Scene::add(std::shared_ptr<Group> node)
 {
-
-  //node->getState()->setPolygonMode(GL_LINE);
-
   //Initalize new node with initVisitor.
   InitVisitor *initVisitor = new InitVisitor(m_program);
   initVisitor->visit(*node);
@@ -140,9 +144,9 @@ void Scene::render()
 {
   useProgram();
 
-  UpdateVisitor *updater = new UpdateVisitor(m_program);
-  updater->visit(*m_root);
+  //UpdateVisitor *updater = new UpdateVisitor(m_program);
+  //updater->visit(*m_root);
 
-  RenderVisitor *render = new RenderVisitor(m_program);
-  render->visit(*m_root);
+  m_renderer->visit(*m_root);
+  m_updater->visit(*m_root);
 }

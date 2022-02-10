@@ -19,7 +19,6 @@ BoundingBox Geometry::calculateBoundingBox(glm::mat4 modelMat) {
 
 void Geometry::accept(NodeVisitor &visitor)
 {
-  //std::cout << "Geometry::accept " << this << std::endl;
   visitor.visit(*this);
 }
 

@@ -1,5 +1,6 @@
 #include "Group.h"
 #include "NodeVisitor.h"
+#include "Debug.h"
 
 Group::Group() 
 { 
@@ -23,7 +24,6 @@ void Group::accept(NodeVisitor &visitor)
 {
   for(auto child : m_nodes)
   {
-    //std::cout << "Group::accept: Visiting " << child << std::endl;
     child->accept(visitor);
   }
 }

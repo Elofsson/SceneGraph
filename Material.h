@@ -9,7 +9,12 @@
 #include <glm/glm.hpp>
 #include <vector>
 #include <memory>
+#include <math.h>  
 //#include <vr/Texture.h>
+
+
+//Used to determine when two materials are almost equal to each other.
+#define ERROR_BOUND 0.0000005
 
 /// <summary>
 /// Simple class for storing material properties
@@ -23,6 +28,7 @@ private:
   glm::vec4 m_specular;
 
   float m_shininess;
+  float m_epsilon;
 
   //typedef std::vector<std::shared_ptr<vr::Texture>> TextureVector;
   //TextureVector m_textures;
@@ -41,10 +47,13 @@ public:
   void setDiffuse(const glm::vec4& color);
   void setShininess(float s);
 
-  //void setTexture(std::shared_ptr<vr::Texture> texture, unsigned int unit);
+  void merge(std::shared_ptr<Material> material);
 
   void apply(GLuint program);
 
+private:
+  //TODO consider moving to a vector utils class.
+  bool compareVec4(glm::vec4 vec1, glm::vec4 vec2);
 
 };
 

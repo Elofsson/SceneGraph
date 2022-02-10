@@ -9,6 +9,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <string>
 #include <vector>
+#include "Debug.h"
 
 #include <vr/glErrorUtil.h>
 #include <sstream>
@@ -17,6 +18,7 @@
 /// Simple class for storing material properties
 Material::Material() : m_shininess(5)
 {
+  m_epsilon = std::numeric_limits<float>::epsilon();
   m_ambient = glm::vec4(0.1, 1.0, 0.2, 1.0);
   m_diffuse = glm::vec4(0.7, 0.8, 0.8, 1.0);
   m_specular = glm::vec4(1.0, 1.0, 1.0, 1.0);
@@ -75,7 +77,46 @@ void Material::apply(GLuint program)
   CHECK_GL_ERROR_LINE_FILE();*/
 }
 
-//void Material::setTexture(std::shared_ptr<vr::Texture> texture, unsigned int unit)
-//{
-  //m_textures[unit] = texture;
-//}
+void Material::merge(std::shared_ptr<Material> material)
+{
+  if(!compareVec4(material->getAmbient(), m_ambient))
+  {
+    m_ambient = material->getAmbient();
+  }
+
+  if(!compareVec4(material->getDiffuse(), m_diffuse))
+  {
+    m_diffuse = material->getDiffuse();
+  }
+
+  if(!compareVec4(material->getSpecular(), m_specular))
+  {
+    m_specular = material->getSpecular();
+  }
+
+  float shininessDiff = std::fabs(m_shininess) - std::fabs(material->getShininess());
+  if(std::fabs(shininessDiff) > m_epsilon)
+  {
+    m_shininess = material->getShininess();
+  }
+}
+
+bool Material::compareVec4(glm::vec4 vec1, glm::vec4 vec2)
+{
+  vec1 = glm::abs(vec1);
+  vec2 = glm::abs(vec2);
+
+  //TODO Danger of substractive cancelation?
+  //vec1 < ERROR_BOUND && vec2 < ERROR_BOUND)
+
+  glm::vec4 diffVec = glm::abs(vec1 - vec2);
+  for(int i = 0; i < 4; i++)
+  {
+    if(diffVec[i] > m_epsilon)
+    {
+      return false;
+    }
+  }
+
+  return true;
+}

@@ -26,5 +26,5 @@ public:
 private:
   GLuint m_uniform_m_3x3_inv_transp;
   GLuint m_uniform_m;
-  std::shared_ptr<State> prevState;
+  std::shared_ptr<State> m_state;
 };
