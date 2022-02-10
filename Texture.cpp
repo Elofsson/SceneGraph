@@ -91,6 +91,9 @@ unsigned char* Texture::readTexture(std::string filePath, int *width, int *heigh
 //TODO check this apply method, looks wierd.
 void Texture::apply(GLuint program)
 {
+
+	bind();
+
 	std::string uniform = "material.textures[";
 	uniform.append(std::to_string(m_slot));
 	uniform.append("]");
@@ -105,10 +108,21 @@ void Texture::apply(GLuint program)
 
   CHECK_GL_ERROR_LINE_FILE();
 
+	glActiveTexture(GL_TEXTURE0 + m_slot);
+
+	glBindTexture(m_type, m_texture_id);
+}
+
+void Texture::bind()
+{
 	glActiveTextureARB(GL_TEXTURE0 + m_slot);
 
-	// Enable texturing
 	glEnable(GL_TEXTURE_2D);
 
+	glBindTexture(m_type, m_texture_id);
+}
+
+void Texture::unbind()
+{
 	glBindTexture(m_type, m_texture_id);
 }

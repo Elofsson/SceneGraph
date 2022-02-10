@@ -94,8 +94,8 @@ void Material::merge(std::shared_ptr<Material> material)
     m_specular = material->getSpecular();
   }
 
-  float shininessDiff = std::fabs(m_shininess) - std::fabs(material->getShininess());
-  if(std::fabs(shininessDiff) > m_epsilon)
+  float shininessDiff = std::fabs(m_shininess - material->getShininess());
+  if(shininessDiff > m_epsilon)
   {
     m_shininess = material->getShininess();
   }

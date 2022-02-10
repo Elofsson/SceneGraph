@@ -30,7 +30,7 @@ void State::merge(const std::shared_ptr<State> inputState)
   {
     return;
   }
-  
+
   //Update material.
   std::shared_ptr<Material> inputMaterial = inputState->getMaterial();
 
@@ -48,6 +48,12 @@ void State::merge(const std::shared_ptr<State> inputState)
   }
 
   //TODO Update textures here.
+  TextureVector inputTextures = inputState->getTextures();
+  if(!inputTextures.empty())
+  {
+    m_textures.clear();
+    m_textures = inputTextures;
+  }
 
   //Update culling mode
   if(m_backface_culling != inputState->getCullFaceMode())
@@ -202,6 +208,15 @@ bool State::getLocations()
   //m_material_diffuse_uniform = glGetUniformLocation(m_program, "material.diffuse");
   //m_material_shininess_uniform = glGetUniformLocation(m_program, "material.shininess");
   return true;
+}
+
+
+void State::unbindTextures()
+{
+  for(auto texture : m_textures)
+  {
+    texture->unbind();
+  }
 }
 
   //Getters.

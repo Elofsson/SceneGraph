@@ -10,6 +10,7 @@
 #include <vector>
 #include <memory>
 #include <math.h>  
+#include "Texture.h"
 //#include <vr/Texture.h>
 
 

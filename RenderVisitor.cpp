@@ -80,8 +80,17 @@ void RenderVisitor::visit(Geometry &g)
 	{
 		m_state->merge(g.getState());
 	}
+
+
+	if(g.name.find("monkey") != std::string::npos)
+	{
+		std::cout << "Monkey materials" << std::endl;
+		Debug::printMaterial(g.getState()->getMaterial());
+	}
 	m_state->apply();
 
 	g.draw();
+
+	m_state->unbindTextures();
 
 }

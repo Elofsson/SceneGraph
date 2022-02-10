@@ -32,7 +32,8 @@ public:
   void merge(const std::shared_ptr<State> state);
 
   bool apply();
-  //TODO add method to apply new shaders here.
+  
+  void unbindTextures();
 
 private:
   //Retrieve uniform locations.

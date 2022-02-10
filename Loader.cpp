@@ -100,6 +100,7 @@ size_t ExtractMaterials(const aiScene *scene, MaterialVector& materials, Texture
 
     unsigned int count = ai_material->GetTextureCount(aiTextureType_DIFFUSE);
 
+    bool textureFound = false;
     if (ai_material->GetTextureCount(aiTextureType_DIFFUSE) > 0)
     {
       aiString res("res\\");
@@ -111,19 +112,26 @@ size_t ExtractMaterials(const aiScene *scene, MaterialVector& materials, Texture
         std::cerr << "Unable to find texture: " << path.C_Str() << std::endl;
       }
       else {
-        //FIXME segmentation fault here, investigate this.
         std::shared_ptr<Texture> texture = std::shared_ptr<Texture>(new Texture());
-        //if (!texture->init(texturePath.c_str(), 0, GL_TEXTURE_2D, GL_UNSIGNED_INT))
-        //{
-          //std::cout << "Error creating texture: " << texturePath << std::endl;
-        //}
-        //else
-        //{
-          //FIXME fix this method to state.
-          //textures.push_back(texture);
-        //}
+        if (!texture->init(texturePath.c_str(), 0, GL_TEXTURE_2D,  GL_UNSIGNED_BYTE))
+        {
+          std::cout << "Error creating texture: " << texturePath << std::endl;
+        }
+        else
+        {
+          //TODO test this with multiple textures.
+          textures.push_back(texture);
+          textureFound = true;
+        }
       }
     }
+
+     //Insert padding.
+    if(!textureFound)
+    {
+      textures.push_back(nullptr);
+    }
+
 
     if (ai_material->GetTextureCount(aiTextureType_SPECULAR) > 0)
     {
@@ -181,6 +189,7 @@ void parseNodes(aiNode *root_node, MaterialVector& materials, TextureVector& tex
   {
     
     std::shared_ptr<Geometry> loadedGeometry(new Geometry());
+
     loadedGeometry->name = group->name;
     loadedGeometry->name.append(std::to_string(i));
 
@@ -191,8 +200,6 @@ void parseNodes(aiNode *root_node, MaterialVector& materials, TextureVector& tex
     loadedGeometry->vertices.resize(num_vertices);
     loadedGeometry->normals.resize(num_vertices);
     loadedGeometry->texCoords.resize(num_vertices);
-
-    //tangents.resize(num_vertices);
 
     for (uint32_t j = 0; j < num_vertices; j++)
     {
@@ -250,12 +257,20 @@ void parseNodes(aiNode *root_node, MaterialVector& materials, TextureVector& tex
     std::shared_ptr<State> geometryState = std::shared_ptr<State>(new State());
 
     if(!materials.empty())
+    {
       geometryState->setMaterial(materials[mesh->mMaterialIndex]);
+      std::cout << "Materials in parse nodes" << std::endl;
+      Debug::printMaterial(materials[mesh->mMaterialIndex]);
+    }
     
     if(!textures.empty() && textures.size() > mesh->mMaterialIndex)
     {
       std::cout << "Set texture for geometry" << std::endl;
-      geometryState->addTexture(textures[mesh->mMaterialIndex]); 
+      std::shared_ptr<Texture> texture = textures[mesh->mMaterialIndex];
+      if(texture != nullptr)
+      {
+        geometryState->addTexture(texture); 
+      }
     }
 
     //Set the state only if state contains any usefull information such as material or textures.

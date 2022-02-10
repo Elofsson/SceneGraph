@@ -13,6 +13,8 @@ public:
   Texture();
   bool init(const char *image, unsigned int slot, GLenum texType, GLenum pixelType);
   void apply(GLuint program);
+  void bind();
+  void unbind();
 
 private:
   unsigned char* readTexture(std::string filePath, int *width, int *height, int *numChannels);
