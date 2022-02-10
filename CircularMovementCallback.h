@@ -5,7 +5,7 @@
 #include <GLFW/glfw3.h>
 #include <glm/gtc/matrix_transform.hpp>
 
-class CircularMovementCallback : public UpdateCallback<Transform>
+class CircularMovementCallback : public UpdateCallback
 {
 public:
   CircularMovementCallback(float speed, float radius, bool callOnce);

@@ -243,11 +243,6 @@ bool Geometry::initShaders(GLuint program)
   return true;
 }
 
-void Geometry::addCallback(std::shared_ptr<UpdateCallback<Geometry>> callback)
-{
-  m_callbacks.push_back(callback);
-}
-
 void Geometry::executeCallbacks()
 {
   for(int i = 0; i < m_callbacks.size(); i++)

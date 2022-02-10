@@ -80,11 +80,6 @@ BoundingBox Transform::calculateBoundingBox(glm::mat4 modelMat)
   return box;
 }
 
-void Transform::addCallback(std::shared_ptr<UpdateCallback<Transform>> callback)
-{
-  m_callbacks.push_back(callback);
-}
-
 void Transform::executeCallbacks()
 {
   for(int i = 0; i < m_callbacks.size(); i++)

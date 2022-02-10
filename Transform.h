@@ -32,11 +32,10 @@ public:
   bool initShaders(GLuint program);
   virtual BoundingBox calculateBoundingBox(glm::mat4 modelMat) override;
   virtual void accept(NodeVisitor &visitor) override;
-  virtual void addCallback(std::shared_ptr<UpdateCallback<Transform>> callback);
-  virtual void executeCallbacks();
+  //virtual void addCallback(std::shared_ptr<UpdateCallback>> callback);
+  virtual void executeCallbacks() override;
 
 private:
   GLuint m_uniform_m;
   GLuint m_uniform_m_3x3_inv_transp;
-  std::vector<std::shared_ptr<UpdateCallback<Transform>>> m_callbacks;
 };

@@ -8,18 +8,17 @@ class Transform;
 class Geometry;
 class Node;
 
-
-template<typename T>
-
 class UpdateCallback
 {
 public:
   UpdateCallback(bool callOnce) { m_callonce = callOnce; }
   bool callOnce() { return m_callonce; }
-  virtual bool update(T &g) = 0;
+  virtual bool update(Group &g) { return false; }
+  virtual bool update(Geometry &g) { return false; }
+  virtual bool update(Transform &t) { return false; }
 
 private:
   bool m_callonce;
 };
 
-typedef std::vector<std::shared_ptr<UpdateCallback<Node>>> CallbackVector;
+typedef std::vector<std::shared_ptr<UpdateCallback>> CallbackVector;

@@ -40,13 +40,9 @@ public:
   //Initialise shaders with attributes, uniforms e.t.c.
   bool initShaders(GLuint program);
 
-  virtual void addCallback(std::shared_ptr<UpdateCallback<Geometry>> callback);
-  virtual void executeCallbacks();
+  virtual void executeCallbacks() override;
 
 private:
-
-  std::vector<std::shared_ptr<UpdateCallback<Geometry>>> m_callbacks;
-
   //GL attributes.
   GLuint m_vbo_vertices, m_vbo_normals, m_vbo_texCoords, m_ibo_elements;
   GLuint m_vao;
