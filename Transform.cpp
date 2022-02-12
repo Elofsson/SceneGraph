@@ -22,7 +22,7 @@ bool Transform::initShaders(GLuint program)
   m_uniform_m = glGetUniformLocation(program, uniform_name);
   if (m_uniform_m == -1) {
     fprintf(stderr, "Could not bind uniform %s\n", uniform_name);
-    return 0;
+    return false;
   }
 
   //FIXME check where this inverse transpose matrix should be set.
@@ -32,6 +32,8 @@ bool Transform::initShaders(GLuint program)
     fprintf(stderr, "Could not bind uniform %s\n", uniform_name);
     return false;
   }
+
+  return true;
 }
 
 void Transform::accept(NodeVisitor &visitor)

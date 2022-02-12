@@ -595,6 +595,33 @@ RenderVisitor.cpp.s:
 	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab1/CMakeFiles/lab1.dir/build.make examples/lab1/CMakeFiles/lab1.dir/RenderVisitor.cpp.s
 .PHONY : RenderVisitor.cpp.s
 
+RotateCallback.o: RotateCallback.cpp.o
+
+.PHONY : RotateCallback.o
+
+# target to build an object file
+RotateCallback.cpp.o:
+	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab1/CMakeFiles/lab1.dir/build.make examples/lab1/CMakeFiles/lab1.dir/RotateCallback.cpp.o
+.PHONY : RotateCallback.cpp.o
+
+RotateCallback.i: RotateCallback.cpp.i
+
+.PHONY : RotateCallback.i
+
+# target to preprocess a source file
+RotateCallback.cpp.i:
+	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab1/CMakeFiles/lab1.dir/build.make examples/lab1/CMakeFiles/lab1.dir/RotateCallback.cpp.i
+.PHONY : RotateCallback.cpp.i
+
+RotateCallback.s: RotateCallback.cpp.s
+
+.PHONY : RotateCallback.s
+
+# target to generate assembly for a file
+RotateCallback.cpp.s:
+	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab1/CMakeFiles/lab1.dir/build.make examples/lab1/CMakeFiles/lab1.dir/RotateCallback.cpp.s
+.PHONY : RotateCallback.cpp.s
+
 Scene.o: Scene.cpp.o
 
 .PHONY : Scene.o
@@ -842,6 +869,9 @@ help:
 	@echo "... RenderVisitor.o"
 	@echo "... RenderVisitor.i"
 	@echo "... RenderVisitor.s"
+	@echo "... RotateCallback.o"
+	@echo "... RotateCallback.i"
+	@echo "... RotateCallback.s"
 	@echo "... Scene.o"
 	@echo "... Scene.i"
 	@echo "... Scene.s"

@@ -14,8 +14,8 @@ using namespace std;
 
 RenderVisitor::RenderVisitor(GLuint program) : NodeVisitor(program)
 {
-	m_state = std::shared_ptr<State>(new State());
-
+	std::shared_ptr<State> defaultState = std::shared_ptr<State>(new State());
+	m_states.push(defaultState);
 	//TODO consider calling this in a init method for better error checking.
 	//Get the location for model matrix.
 	const char* uniform_name;
@@ -36,18 +36,28 @@ RenderVisitor::RenderVisitor(GLuint program) : NodeVisitor(program)
 void RenderVisitor::visit(Group &g)
 { 
 
+	bool pushedState = false;
 	if(!g.emptyState())
 	{
-		m_state->merge(g.getState());
+		pushedState = true;
+		mergeAndPushState(g.getState());
 	}
+
 	NodeVisitor::visit(g);
+
+	if(pushedState)
+	{
+		m_states.pop();
+	}
 }
 
 void RenderVisitor::visit(Transform &t)
 {
+	bool pushedState = false;
 	if(!t.emptyState())
 	{
-		m_state->merge(t.getState());
+		pushedState = true;
+		mergeAndPushState(t.getState());
 	}
 
   //Push on stack.
@@ -70,6 +80,11 @@ void RenderVisitor::visit(Transform &t)
 
   //Pop stack.
 	m_transform_matrices.pop();
+
+	if(pushedState)
+	{
+		m_states.pop();
+	}
 }
 
 
@@ -93,16 +108,19 @@ void RenderVisitor::visit(Geometry &g)
 	glm::mat3 m_3x3_inv_transp = glm::transpose(glm::inverse(glm::mat3(object2world)));
 	glUniformMatrix3fv(m_uniform_m_3x3_inv_transp, 1, GL_FALSE, glm::value_ptr(m_3x3_inv_transp));
 
-	//Apply state.
-	if(!g.emptyState())
-	{
-		m_state->merge(g.getState());
-	}
 
-	m_state->apply();
+	std::shared_ptr<State> geometryState = m_states.top();
+	geometryState->merge(g.getState()); 
+	geometryState->apply();
 
 	g.draw();
 
-	m_state->unbindTextures();
+	geometryState->unbindTextures();
+}
 
+void RenderVisitor::mergeAndPushState(std::shared_ptr<State> inputState)
+{
+	std::shared_ptr<State> newState = std::shared_ptr<State>(new State(m_states.top()));
+	newState->merge(inputState);
+	m_states.push(newState);
 }

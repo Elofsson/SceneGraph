@@ -14,6 +14,16 @@ State::State()
   m_material = std::shared_ptr<Material>(new Material());
 }
 
+State::State(std::shared_ptr<State> state)
+{
+  m_lights = state->getLights();
+  m_textures = state->getTextures();
+  m_material = state->getMaterial();
+  m_polygonmode = state->getPolygonMode();
+  m_backface_culling = state->getCullFaceMode();
+  m_program = state->getProgram();
+}
+
 void State::setProgram(GLuint program)
 {
   m_program = program;
@@ -22,6 +32,11 @@ void State::setProgram(GLuint program)
 void State::setMaterial(std::shared_ptr<Material>& material)
 {
   m_material = material;
+}
+
+void State::setTextures(TextureVector &textures)
+{
+  m_textures = textures;
 }
 
 void State::merge(const std::shared_ptr<State> inputState)
@@ -52,7 +67,6 @@ void State::merge(const std::shared_ptr<State> inputState)
   TextureVector inputTextures = inputState->getTextures();
   if(!inputTextures.empty())
   {
-    m_textures.clear();
     m_textures = inputTextures;
   }
 

@@ -95,7 +95,12 @@ size_t ExtractMaterials(const aiScene *scene, MaterialVector& materials, Texture
     ai_material->Get(AI_MATKEY_COLOR_SPECULAR, color);
     material->setSpecular(glm::vec4(color.r, color.g, color.b, color.a));
 
+    //Set default shininess if shininess is 0
     ai_material->Get(AI_MATKEY_SHININESS, shiniess);
+    if(shiniess <= 0)
+    {
+      shiniess = 32.0f;
+    }
     material->setShininess(shiniess);
 
     unsigned int count = ai_material->GetTextureCount(aiTextureType_DIFFUSE);
@@ -153,7 +158,8 @@ size_t ExtractMaterials(const aiScene *scene, MaterialVector& materials, Texture
       path.Clear();
       ai_material->GetTexture(aiTextureType_DISPLACEMENT, 0, &path);
     }
-
+    
+    Debug::printMaterial(material);
     materials.push_back(material);
   }
 
@@ -259,8 +265,6 @@ void parseNodes(aiNode *root_node, MaterialVector& materials, TextureVector& tex
     if(!materials.empty())
     {
       geometryState->setMaterial(materials[mesh->mMaterialIndex]);
-      std::cout << "Materials in parse nodes" << std::endl;
-      Debug::printMaterial(materials[mesh->mMaterialIndex]);
     }
     
     if(!textures.empty() && textures.size() > mesh->mMaterialIndex)
@@ -313,6 +317,7 @@ std::shared_ptr<Group> load3DModelFile(const std::string& filename)
     aiProcess_CalcTangentSpace |
     aiProcess_GenSmoothNormals |
     aiProcess_Triangulate |
+    aiProcess_RemoveRedundantMaterials |
     aiProcess_JoinIdenticalVertices |
     aiProcess_SortByPType);
 

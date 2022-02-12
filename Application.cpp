@@ -14,6 +14,7 @@
 #include "Scene.h"
 #include "Loader.h"
 #include "CircularMovementCallback.h"
+#include "RotateCallback.h"
 
 Application::Application(unsigned int width, unsigned height) : m_screenSize(width, height)
 {
@@ -65,6 +66,19 @@ bool Application::buildGeometry()
     return false;
   }
 
+  /*std::string pokeball = "scenes/pokeball.xml";
+  std::shared_ptr<Group> pokeballModel = std::shared_ptr<Group>(new Group());
+  if(!loadGroup(pokeball, pokeballModel))
+  {
+    return false;
+  }
+
+  std::shared_ptr<Transform> movePokeball = std::shared_ptr<Transform>(new Transform(1, 1, 1));
+  std::shared_ptr<RotateCallback> rotateCallback = std::shared_ptr<RotateCallback>(new RotateCallback(movePokeball));
+  movePokeball->addCallback(rotateCallback);
+  movePokeball->addChild(pokeballModel);
+  //m_sceneRoot->add(movePokeball);*/
+
   //Add 5 ironmans.
   std::shared_ptr<Group> ironmanGroup = std::shared_ptr<Group>(new Group());
   int translateOffset = 20;
@@ -88,7 +102,6 @@ bool Application::buildGeometry()
   std::shared_ptr<CircularMovementCallback> ironmanMovement = std::shared_ptr<CircularMovementCallback>(new CircularMovementCallback(0.02f, 1.0f, moveIronManModels));
   moveIronManModels->addChild(ironmanGroup);
   moveIronManModels->addCallback(ironmanMovement);
-
   m_sceneRoot->add(moveIronManModels);
 
 

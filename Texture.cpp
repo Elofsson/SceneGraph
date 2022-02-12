@@ -117,5 +117,5 @@ void Texture::bind()
 
 void Texture::unbind()
 {
-	glBindTexture(m_type, m_texture_id);
+	glBindTexture(m_type, 0);
 }
