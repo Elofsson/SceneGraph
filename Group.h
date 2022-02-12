@@ -20,7 +20,6 @@ public:
   bool empty();
 
   virtual void accept(NodeVisitor &visitor) override;
-  virtual void executeCallbacks() override;
 
 protected:
   NodeVector m_nodes;

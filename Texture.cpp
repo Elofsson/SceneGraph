@@ -51,7 +51,7 @@ bool Texture::init(const char *image, unsigned int slot, GLenum texType, GLenum 
 	glGenTextures(1, &m_texture_id);
 
 	// Assigns the texture to a Texture Unit
-	glActiveTexture(GL_TEXTURE0 + slot);
+	glActiveTextureARB(GL_TEXTURE0 + slot);
 	glBindTexture(texType, m_texture_id);
 
 	CHECK_GL_ERROR_LINE_FILE();
@@ -103,14 +103,7 @@ void Texture::apply(GLuint program)
 
   CHECK_GL_ERROR_LINE_FILE();
 
-  texUni = glGetUniformLocation(program, "material.activeTextures");
-  glUniform1i(texUni,(int) true);
-
-  CHECK_GL_ERROR_LINE_FILE();
-
-	glActiveTexture(GL_TEXTURE0 + m_slot);
-
-	glBindTexture(m_type, m_texture_id);
+	glActiveTextureARB(GL_TEXTURE0 + m_slot);
 }
 
 void Texture::bind()

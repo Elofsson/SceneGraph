@@ -40,8 +40,6 @@ public:
   //Initialise shaders with attributes, uniforms e.t.c.
   bool initShaders(GLuint program);
 
-  virtual void executeCallbacks() override;
-
 private:
   //GL attributes.
   GLuint m_vbo_vertices, m_vbo_normals, m_vbo_texCoords, m_ibo_elements;

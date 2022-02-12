@@ -31,7 +31,7 @@ public:
   //TODO See how state should be able to be modified later, set methods? public attribute? 
   virtual std::shared_ptr<State> getState();
   virtual void addCallback(std::shared_ptr<UpdateCallback> callback);
-  virtual void executeCallbacks() = 0;
+  virtual void executeCallbacks();
   virtual void setState(std::shared_ptr<State> state);
   virtual bool emptyState();
 

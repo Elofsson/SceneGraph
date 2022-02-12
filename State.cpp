@@ -1,6 +1,7 @@
 #include "State.h"
 #include <iostream>
 #include "Debug.h"
+#include <vr/glErrorUtil.h>
 //State::State(GLuint program)
 //{
   //m_program = program;
@@ -129,14 +130,29 @@ bool State::apply()
   if(m_material)
     m_material->apply(m_program);
 
+  std::vector<int> slotActive;
   //Apply textures.
   if(!m_textures.empty())
   {
-    for(auto texture : m_textures)
+    for(int i = 0; i < SHADER_NUMBER_TEXTURES; i++)
     {
-      //std::cout << "Apply texture" << std::endl;
-      texture->apply(m_program);
+      if(m_textures.size() > i)
+      {
+        std::shared_ptr<Texture> texture = m_textures[i];
+        texture->apply(m_program);
+        //std::cout << "Apply texture " << i << std::endl;
+        slotActive.push_back((int) true);  
+      }
+
+      else 
+      {
+        //std::cout << "Add inactive" << std::endl;
+        slotActive.push_back((int) false);    
+      }
     }
+
+    GLuint loc = glGetUniformLocation(m_program, "material.activeTextures");
+    glUniform1iv(loc, (GLsizei)slotActive.size(), slotActive.data());
   }
 
   //Apply lights.

@@ -39,16 +39,3 @@ BoundingBox Group::calculateBoundingBox(glm::mat4 modelMat)
   return box;
 }
 
-void Group::executeCallbacks()
-{
-  for(int i = 0; i < m_callbacks.size(); i++)
-  {
-    m_callbacks[i]->update(*this);
-
-    if(m_callbacks[i]->callOnce())
-    {
-      m_callbacks.erase(m_callbacks.begin() + i);
-    }
-  }
-}
-

@@ -5,6 +5,8 @@
 #include "glm/gtc/type_ptr.hpp"
 #include "Light.h"
 
+#define SHADER_NUMBER_TEXTURES 2
+
 class Light;
 
 class State

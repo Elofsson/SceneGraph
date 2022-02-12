@@ -70,7 +70,7 @@ bool Application::buildGeometry()
   int translateOffset = 20;
   glm::vec3 pos = glm::vec3(0.0f, 0.0f, 0.0f);
   
-  for(int i = 0; i < 5; i++)
+  for(int i = 0; i < 2; i++)
   {
     std::shared_ptr<Transform> transformPositive = std::shared_ptr<Transform>(new Transform(pos.x, pos.y, pos.z));
     std::shared_ptr<Transform> transformNegative = std::shared_ptr<Transform>(new Transform(-pos.x, pos.y, -pos.z));
@@ -84,8 +84,8 @@ bool Application::buildGeometry()
     pos += translateOffset;
   }
 
-  std::shared_ptr<CircularMovementCallback> ironmanMovement = std::shared_ptr<CircularMovementCallback>(new CircularMovementCallback(0.02f, 1.0f, false));
   std::shared_ptr<Transform> moveIronManModels = std::shared_ptr<Transform>(new Transform(1, 1, 1));
+  std::shared_ptr<CircularMovementCallback> ironmanMovement = std::shared_ptr<CircularMovementCallback>(new CircularMovementCallback(0.02f, 1.0f, moveIronManModels));
   moveIronManModels->addChild(ironmanGroup);
   moveIronManModels->addCallback(ironmanMovement);
 

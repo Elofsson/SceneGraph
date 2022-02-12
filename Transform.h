@@ -32,8 +32,6 @@ public:
   bool initShaders(GLuint program);
   virtual BoundingBox calculateBoundingBox(glm::mat4 modelMat) override;
   virtual void accept(NodeVisitor &visitor) override;
-  //virtual void addCallback(std::shared_ptr<UpdateCallback>> callback);
-  virtual void executeCallbacks() override;
 
 private:
   GLuint m_uniform_m;
