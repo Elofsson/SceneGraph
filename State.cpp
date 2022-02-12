@@ -63,7 +63,6 @@ void State::merge(const std::shared_ptr<State> inputState)
     updateLights(inputLights);
   }
 
-  //TODO Update textures here.
   TextureVector inputTextures = inputState->getTextures();
   if(!inputTextures.empty())
   {

@@ -55,17 +55,17 @@ void Material::apply(GLuint program)
 
 void Material::merge(std::shared_ptr<Material> material)
 {
-  if(!compareVec4(material->getAmbient(), m_ambient))
+  if(!VectorUtils::compareVec4(material->getAmbient(), m_ambient))
   {
     m_ambient = material->getAmbient();
   }
 
-  if(!compareVec4(material->getDiffuse(), m_diffuse))
+  if(!VectorUtils::compareVec4(material->getDiffuse(), m_diffuse))
   {
     m_diffuse = material->getDiffuse();
   }
 
-  if(!compareVec4(material->getSpecular(), m_specular))
+  if(!VectorUtils::compareVec4(material->getSpecular(), m_specular))
   {
     m_specular = material->getSpecular();
   }
@@ -75,22 +75,4 @@ void Material::merge(std::shared_ptr<Material> material)
   {
     m_shininess = material->getShininess();
   }
-}
-
-bool Material::compareVec4(glm::vec4 vec1, glm::vec4 vec2)
-{
-  vec1 = glm::abs(vec1);
-  vec2 = glm::abs(vec2);
-
-  //TODO Danger of substractive cancelation?
-  glm::vec4 diffVec = glm::abs(vec1 - vec2);
-  for(int i = 0; i < 4; i++)
-  {
-    if(diffVec[i] > m_epsilon)
-    {
-      return false;
-    }
-  }
-
-  return true;
 }

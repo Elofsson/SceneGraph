@@ -11,6 +11,7 @@
 #include <memory>
 #include <math.h>  
 #include "Texture.h"
+#include "VectorUtils.h"
 //#include <vr/Texture.h>
 
 
@@ -53,8 +54,6 @@ public:
   void apply(GLuint program);
 
 private:
-  //TODO consider moving to a vector utils class.
-  bool compareVec4(glm::vec4 vec1, glm::vec4 vec2);
 
 };
 

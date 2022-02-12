@@ -757,6 +757,33 @@ UpdateVisitor.cpp.s:
 	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab1/CMakeFiles/lab1.dir/build.make examples/lab1/CMakeFiles/lab1.dir/UpdateVisitor.cpp.s
 .PHONY : UpdateVisitor.cpp.s
 
+VectorUtils.o: VectorUtils.cpp.o
+
+.PHONY : VectorUtils.o
+
+# target to build an object file
+VectorUtils.cpp.o:
+	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab1/CMakeFiles/lab1.dir/build.make examples/lab1/CMakeFiles/lab1.dir/VectorUtils.cpp.o
+.PHONY : VectorUtils.cpp.o
+
+VectorUtils.i: VectorUtils.cpp.i
+
+.PHONY : VectorUtils.i
+
+# target to preprocess a source file
+VectorUtils.cpp.i:
+	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab1/CMakeFiles/lab1.dir/build.make examples/lab1/CMakeFiles/lab1.dir/VectorUtils.cpp.i
+.PHONY : VectorUtils.cpp.i
+
+VectorUtils.s: VectorUtils.cpp.s
+
+.PHONY : VectorUtils.s
+
+# target to generate assembly for a file
+VectorUtils.cpp.s:
+	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab1/CMakeFiles/lab1.dir/build.make examples/lab1/CMakeFiles/lab1.dir/VectorUtils.cpp.s
+.PHONY : VectorUtils.cpp.s
+
 main.o: main.cpp.o
 
 .PHONY : main.o
@@ -887,6 +914,9 @@ help:
 	@echo "... UpdateVisitor.o"
 	@echo "... UpdateVisitor.i"
 	@echo "... UpdateVisitor.s"
+	@echo "... VectorUtils.o"
+	@echo "... VectorUtils.i"
+	@echo "... VectorUtils.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
