@@ -26,5 +26,6 @@ public:
 private:
   GLuint m_uniform_m_3x3_inv_transp;
   GLuint m_uniform_m;
+  std::stack<glm::mat4> m_transform_matrices;
   std::shared_ptr<State> m_state;
 };

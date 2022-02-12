@@ -36,35 +36,7 @@ bool Transform::initShaders(GLuint program)
 
 void Transform::accept(NodeVisitor &visitor)
 {
-  //std::cout << "Transform::accept " << this << std::endl;
-  //Debug::printMat4(object2world);
-
-  //Push transform.
-  //Empty stack, add transformation matrix directly.
-  if(visitor.isTransformsEmpty())
-  {
-    visitor.pushMat4(object2world);
-  }
-
-  //calculate and concat matrix.
-  else
-  {
-    glm::mat4 prevMat = visitor.getLastTransform();
-    glm::mat4 newObject2world = prevMat * object2world;
-    visitor.pushMat4(newObject2world); 
-  }
-
-  //Go to visitor before searching for other
   visitor.visit(*this);
-
-  Group::accept(visitor);
-  
-  //Pop transform.
-  visitor.popMat4();
-
-
-
-  //visit.
 }
 
 BoundingBox Transform::calculateBoundingBox(glm::mat4 modelMat)

@@ -13,6 +13,7 @@ void InitVisitor::visit(Group &g)
 
 void InitVisitor::visit(Transform &t)
 {
+  NodeVisitor::visit(t);
   //t.getState()->setProgram(m_program);
 }
 

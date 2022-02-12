@@ -22,6 +22,11 @@ bool Group::empty()
 
 void Group::accept(NodeVisitor &visitor)
 {
+  traverse(visitor);
+}
+
+void Group::traverse(NodeVisitor &visitor)
+{
   for(auto child : m_nodes)
   {
     child->accept(visitor);

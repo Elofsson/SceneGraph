@@ -1,4 +1,5 @@
 #include "NodeVisitor.h"
+#include "Transform.h"
 
 using namespace std;
 
@@ -17,26 +18,10 @@ NodeVisitor::~NodeVisitor()
 void NodeVisitor::visit(Group &g)
 {
   //cout << "NodeVisitor: Visit group " << endl;
-  g.accept(*this);
-  
+  g.traverse(*this);
 }
 
-bool NodeVisitor::isTransformsEmpty()
+void NodeVisitor::visit(Transform &t)
 {
-  return m_transform_matrices.empty();
-}
-
-glm::mat4 NodeVisitor::getLastTransform()
-{
-  return m_transform_matrices.top();
-}
-
-void NodeVisitor::pushMat4(glm::mat4 matrix)
-{
-  m_transform_matrices.push(matrix);
-}
-
-void NodeVisitor::popMat4()
-{
-  m_transform_matrices.pop();
+  t.traverse(*this);
 }

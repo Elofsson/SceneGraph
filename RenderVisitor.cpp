@@ -35,7 +35,7 @@ RenderVisitor::RenderVisitor(GLuint program) : NodeVisitor(program)
 
 void RenderVisitor::visit(Group &g)
 { 
-	//std::cout << "Mergeing state for: " << g.name << std::endl;
+
 	if(!g.emptyState())
 	{
 		m_state->merge(g.getState());
@@ -45,12 +45,31 @@ void RenderVisitor::visit(Group &g)
 
 void RenderVisitor::visit(Transform &t)
 {
-  //Push on stack.
 	if(!t.emptyState())
 	{
 		m_state->merge(t.getState());
 	}
+
+  //Push on stack.
+
+	if(m_transform_matrices.empty())
+  {
+    m_transform_matrices.push(t.object2world);
+  }
+
+  //calculate and concat matrix.
+  else
+  {
+    glm::mat4 prevMat = m_transform_matrices.top();
+    glm::mat4 newObject2world = prevMat * t.object2world;
+    m_transform_matrices.push(newObject2world); 
+  }
+
+	//Traverse transforms children.
+	NodeVisitor::visit(t);
+
   //Pop stack.
+	m_transform_matrices.pop();
 }
 
 
@@ -58,7 +77,6 @@ void RenderVisitor::visit(Geometry &g)
 {
 	
 	//Set uniforms here maybe?
-
 	if(m_transform_matrices.empty())
 	{
 		//cout << "Empty transform stack" << endl;

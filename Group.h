@@ -18,6 +18,7 @@ public:
 
   //Check if this group contains any children.
   bool empty();
+  void traverse(NodeVisitor &visitor);
 
   virtual void accept(NodeVisitor &visitor) override;
 

@@ -10,7 +10,7 @@ void Node::accept(NodeVisitor &visitor)
 
 bool Node::emptyState()
 {
-  return m_nodeState == NULL;
+  return m_nodeState == nullptr;
 }
 
 void Node::addCallback(std::shared_ptr<UpdateCallback> callback)
