@@ -38,6 +38,7 @@ private:
 public:
 
   Material();
+  Material(std::shared_ptr<Material> &material);
 
   glm::vec4 getAmbient() const;
   glm::vec4 getSpecular() const;

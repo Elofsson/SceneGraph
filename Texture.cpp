@@ -102,8 +102,6 @@ void Texture::apply(GLuint program)
   glUniform1i(texUni, m_slot);
 
   CHECK_GL_ERROR_LINE_FILE();
-
-	glActiveTextureARB(GL_TEXTURE0 + m_slot);
 }
 
 void Texture::bind()
@@ -117,5 +115,5 @@ void Texture::bind()
 
 void Texture::unbind()
 {
-	glBindTexture(m_type, 0);
+	glBindTexture(m_type, m_texture_id);
 }

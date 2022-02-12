@@ -273,7 +273,7 @@ void parseNodes(aiNode *root_node, MaterialVector& materials, TextureVector& tex
       std::shared_ptr<Texture> texture = textures[mesh->mMaterialIndex];
       if(texture != nullptr)
       {
-        geometryState->addTexture(texture); 
+        geometryState->addTexture(texture, 0); 
       }
     }
 

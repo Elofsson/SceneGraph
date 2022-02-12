@@ -25,6 +25,15 @@ Material::Material()
   m_shininess = 32.0f;
 }
 
+Material::Material(std::shared_ptr<Material> &material)
+{
+  m_epsilon = std::numeric_limits<float>::epsilon();
+  m_ambient = material->getAmbient();
+  m_diffuse = material->getDiffuse();
+  m_specular = material->getSpecular();
+  m_shininess = material->getShininess();
+}
+
 glm::vec4 Material::getAmbient() const { return m_ambient; }
 glm::vec4 Material::getSpecular() const { return m_specular; }
 glm::vec4 Material::getDiffuse() const { return m_diffuse; }
@@ -55,17 +64,17 @@ void Material::apply(GLuint program)
 
 void Material::merge(std::shared_ptr<Material> material)
 {
-  if(!VectorUtils::compareVec4(material->getAmbient(), m_ambient))
+  if(!(VectorUtils::compareVec4(material->getAmbient(), m_ambient)))
   {
     m_ambient = material->getAmbient();
   }
 
-  if(!VectorUtils::compareVec4(material->getDiffuse(), m_diffuse))
+  if(!(VectorUtils::compareVec4(material->getDiffuse(), m_diffuse)))
   {
     m_diffuse = material->getDiffuse();
   }
 
-  if(!VectorUtils::compareVec4(material->getSpecular(), m_specular))
+  if(!(VectorUtils::compareVec4(material->getSpecular(), m_specular)))
   {
     m_specular = material->getSpecular();
   }

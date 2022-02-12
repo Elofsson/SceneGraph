@@ -18,7 +18,7 @@ public:
 
   //Setters.
   void setMaterial(std::shared_ptr<Material> &material);
-  void addTexture(std::shared_ptr<Texture> &texture);
+  void addTexture(std::shared_ptr<Texture> &texture, unsigned int unit);
   void setTextures(TextureVector &textures);
   void addLight(std::shared_ptr<Light> &light);
   void setPolygonMode(GLuint mode);

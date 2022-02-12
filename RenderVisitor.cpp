@@ -114,8 +114,6 @@ void RenderVisitor::visit(Geometry &g)
 	geometryState->apply();
 
 	g.draw();
-
-	geometryState->unbindTextures();
 }
 
 void RenderVisitor::mergeAndPushState(std::shared_ptr<State> inputState)

@@ -10,7 +10,7 @@
 State::State()
 {
   m_lights.resize(0);
-  m_textures.resize(0);
+  m_textures.resize(2);
   m_material = std::shared_ptr<Material>(new Material());
 }
 
@@ -18,7 +18,10 @@ State::State(std::shared_ptr<State> state)
 {
   m_lights = state->getLights();
   m_textures = state->getTextures();
-  m_material = state->getMaterial();
+  if(state->getMaterial() != nullptr)
+  {
+    m_material = std::shared_ptr<Material>(new Material(state->getMaterial()));
+  }
   m_polygonmode = state->getPolygonMode();
   m_backface_culling = state->getCullFaceMode();
   m_program = state->getProgram();
@@ -32,11 +35,6 @@ void State::setProgram(GLuint program)
 void State::setMaterial(std::shared_ptr<Material>& material)
 {
   m_material = material;
-}
-
-void State::setTextures(TextureVector &textures)
-{
-  m_textures = textures;
 }
 
 void State::merge(const std::shared_ptr<State> inputState)
@@ -66,7 +64,11 @@ void State::merge(const std::shared_ptr<State> inputState)
   TextureVector inputTextures = inputState->getTextures();
   if(!inputTextures.empty())
   {
-    m_textures = inputTextures;
+    m_textures.clear();
+    for(auto texture : inputTextures)
+    {
+      m_textures.push_back(texture);
+    }
   }
 
   //Update culling mode
@@ -144,29 +146,21 @@ bool State::apply()
     m_material->apply(m_program);
 
   std::vector<int> slotActive;
-  //Apply textures.
-  if(!m_textures.empty())
+  slotActive.resize(m_textures.size());
+
+  for(int i = 0; i < m_textures.size(); i++)
   {
-    for(int i = 0; i < SHADER_NUMBER_TEXTURES; i++)
+    slotActive[i] = m_textures[i] != nullptr;
+
+    if(slotActive[i])
     {
-      if(m_textures.size() > i)
-      {
-        std::shared_ptr<Texture> texture = m_textures[i];
-        texture->apply(m_program);
-        //std::cout << "Apply texture " << i << std::endl;
-        slotActive.push_back((int) true);  
-      }
-
-      else 
-      {
-        //std::cout << "Add inactive" << std::endl;
-        slotActive.push_back((int) false);    
-      }
+      m_textures[i]->apply(m_program);
     }
-
-    GLuint loc = glGetUniformLocation(m_program, "material.activeTextures");
-    glUniform1iv(loc, (GLsizei)slotActive.size(), slotActive.data());
   }
+
+  GLuint loc = glGetUniformLocation(m_program, "material.activeTextures");
+  glUniform1iv(loc, (GLsizei)slotActive.size(), slotActive.data());
+
 
   //Apply lights.
   if(!m_lights.empty())
@@ -185,9 +179,9 @@ bool State::apply()
   return true;
 }
 
-void State::addTexture(std::shared_ptr<Texture> &texture)
+void State::addTexture(std::shared_ptr<Texture> &texture, unsigned int unit)
 {
-  m_textures.push_back(texture);
+  m_textures[unit] = texture;
 }
 
 void State::addLight(std::shared_ptr<Light> &light)
