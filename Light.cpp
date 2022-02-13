@@ -75,6 +75,31 @@ void Light::apply(GLuint program, size_t idx)
   APPLY_UNIFORM4V(program, "position", this->m_position);
 }
 
+bool Light::equals(std::shared_ptr<Light> light)
+{
+  if(!VectorUtils::compareVec4(m_ambient, light->getAmbient()))
+  {
+    return false;
+  }
+
+  if(!VectorUtils::compareVec4(m_diffuse, light->getDiffuse()))
+  {
+    return false;
+  }
+
+  if(!VectorUtils::compareVec4(m_specular, light->getSpecular()))
+  {
+    return false;
+  }
+
+  if(!VectorUtils::compareVec4(m_position, light->getPosition()))
+  {
+    return false;
+  }
+
+  return true;
+}
+
 //Setters.
 void Light::setAmbient(glm::vec4 ambient) { m_ambient = ambient; }
 void Light::setDiffuse(glm::vec4 diffuse) { m_diffuse = diffuse; }

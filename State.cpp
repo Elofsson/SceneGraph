@@ -95,44 +95,20 @@ void State::merge(const std::shared_ptr<State> inputState)
 
 void State::updateLights(LightVector inputLights)
 {
-  //std::cout << "Update state lights" << std::endl;
-  if(m_lights.empty())
-  {
-    for(auto light : inputLights)
-    {
-      m_lights.push_back(light);
-    }
-    return;
-  }
-
-  for(auto inputLight : inputLights)
-  {
-    glm::vec4 inputLightAmbient = inputLight->getAmbient(); 
-    glm::vec4 inputLightDiffuse = inputLight->getDiffuse();
-    glm::vec4 inputLightSpecular = inputLight->getSpecular();
-    glm::vec4 inputLightPosition = inputLight->getPosition();
-
+  for(auto newLight : inputLights)
+  {   
+    bool addNewLight = true;
     for(auto light : m_lights)
     {
-      if(light->getAmbient() != inputLightAmbient)
+      if(light->equals(newLight))
       {
-        light->setAmbient(inputLightAmbient);
+        addNewLight = false;
       }
+    }
 
-      if(light->getDiffuse() != inputLightDiffuse)
-      {
-        light->setDiffuse(inputLightDiffuse);
-      }
-
-      if(light->getSpecular() != inputLightSpecular)
-      {
-        light->setSpecular(inputLightSpecular);
-      }
-
-      if(light->getPosition() != inputLightPosition)
-      {
-        light->setPosition(inputLightPosition);
-      }
+    if(addNewLight)
+    {
+      m_lights.push_back(newLight);
     }
   }
 }

@@ -4,6 +4,7 @@
 #include "GL/glew.h"
 #include <memory>
 #include <vector>
+#include "VectorUtils.h"
 
 class Geometry;
 
@@ -13,7 +14,9 @@ class Light
 public:
   Light();
 
-  //TODO check where to put this.
+  
+  bool equals(std::shared_ptr<Light> light);
+
   void apply(GLuint program, size_t idx);
 
   glm::vec4 getAmbient();
