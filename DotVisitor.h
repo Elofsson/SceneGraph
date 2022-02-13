@@ -10,7 +10,6 @@ class DotVisitor : public NodeVisitor
 {
 public:
   DotVisitor(std::string fileName);
-  DotVisitor(GLuint program);
   virtual ~DotVisitor() override;
   virtual void visit(Group &g) override;
   virtual void visit(Transform &t) override;

@@ -9,10 +9,6 @@ DotVisitor::DotVisitor(std::string fileName)
   m_geometryCounter = 0;
 }
 
-DotVisitor::DotVisitor(GLuint program) : NodeVisitor(program)
-{
-}
-  
 DotVisitor::~DotVisitor()
 {
 }

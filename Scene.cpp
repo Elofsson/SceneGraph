@@ -49,8 +49,8 @@ bool Scene::initShaders(const std::string& vshader_filename, const std::string& 
   m_root->setState(rootState);
 
   //Initalize visitors.
-  m_renderer = std::shared_ptr<RenderVisitor>(new RenderVisitor(m_program));
-  m_updater = std::shared_ptr<UpdateVisitor>(new UpdateVisitor(m_program));
+  m_renderer = std::shared_ptr<RenderVisitor>(new RenderVisitor());
+  m_updater = std::shared_ptr<UpdateVisitor>(new UpdateVisitor());
 
   return true;
 }

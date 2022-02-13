@@ -35,6 +35,8 @@ public:
   //Draw this geometry.
   void draw();
 
+  void apply(glm::mat4 transformMatrix);
+
   virtual void accept(NodeVisitor& visitor) override;
 
   //Initialise shaders with attributes, uniforms e.t.c.
@@ -47,6 +49,8 @@ private:
   GLint m_attribute_v_coord;
   GLint m_attribute_v_normal;
   GLint m_attribute_v_texCoords;
+  GLuint m_uniform_m_3x3_inv_transp;
+  GLuint m_uniform_m;
   
   bool m_useVAO;
 }; 

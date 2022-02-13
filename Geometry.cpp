@@ -220,6 +220,16 @@ void Geometry::upload()
   }
 }
 
+void Geometry::apply(glm::mat4 transformMatrix)
+{
+  glUniformMatrix4fv(m_uniform_m, 1, GL_FALSE, glm::value_ptr(transformMatrix));
+
+  	/* Transform normal vectors with transpose of inverse of upper left
+	3x3 model matrix (ex-gl_NormalMatrix): */
+	glm::mat3 m_3x3_inv_transp = glm::transpose(glm::inverse(glm::mat3(transformMatrix)));
+	glUniformMatrix3fv(m_uniform_m_3x3_inv_transp, 1, GL_FALSE, glm::value_ptr(m_3x3_inv_transp));
+}
+
 bool Geometry::initShaders(GLuint program)
 {
    const char* attribute_name;
@@ -242,6 +252,20 @@ bool Geometry::initShaders(GLuint program)
     fprintf(stderr, "Could not bind attribute %s\n", attribute_name);
     return false;
   }
+
+  const char* uniform_name;
+	uniform_name = "m";
+	m_uniform_m = glGetUniformLocation(program, uniform_name);
+	if (m_uniform_m == -1) {
+		fprintf(stderr, "Could not bind uniform %s\n", uniform_name);
+	}
+
+	//Get the location for normal matrix.
+	uniform_name = "m_3x3_inv_transp";
+	m_uniform_m_3x3_inv_transp = glGetUniformLocation(program, uniform_name);
+	if (m_uniform_m_3x3_inv_transp == -1) {
+		fprintf(stderr, "Could not bind uniform %s\n", uniform_name);
+	}
 
   return true;
 }

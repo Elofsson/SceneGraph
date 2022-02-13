@@ -7,10 +7,6 @@
 #include <iostream>
 #include <stack>
 
-//TODO Abstract baseclass for nodevisitors used to traverse scene graph.
-//TODO Implement group traversing. 
-//TODO Check out the visitor pattern.
-
 class Transform;
 class Group;
 class Geometry;
@@ -18,7 +14,6 @@ class Geometry;
 class NodeVisitor 
 {
 public:
-  NodeVisitor(GLuint program);
   NodeVisitor();
   virtual ~NodeVisitor();
   virtual void visit(Group &g);

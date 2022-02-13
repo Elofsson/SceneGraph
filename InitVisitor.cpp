@@ -1,20 +1,22 @@
 #include "InitVisitor.h"
 
+InitVisitor::InitVisitor(GLuint program)
+{
+  m_program = program;
+}
+
 InitVisitor::~InitVisitor()
 {
-
 }
 
 void InitVisitor::visit(Group &g)
 {
   NodeVisitor::visit(g);
-  //g.getState()->setProgram(m_program);
 }
 
 void InitVisitor::visit(Transform &t)
 {
   NodeVisitor::visit(t);
-  //t.getState()->setProgram(m_program);
 }
 
 void InitVisitor::visit(Geometry &g)

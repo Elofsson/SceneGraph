@@ -6,9 +6,11 @@
 class InitVisitor : public NodeVisitor 
 {
 public:
-  using NodeVisitor::NodeVisitor;
+  InitVisitor(GLuint program);
   ~InitVisitor();
   virtual void visit(Group &g) override;
   virtual void visit(Transform &t) override;
   virtual void visit(Geometry &g) override;
+private:
+  GLuint m_program;
 };
