@@ -3,7 +3,8 @@
 #include "Debug.h"
 
 Group::Group() 
-{ 
+{
+  std::cout << "New group" << std::endl; 
 }
 
 Group::~Group()
@@ -22,7 +23,15 @@ bool Group::empty()
 
 void Group::accept(NodeVisitor &visitor)
 {
-  traverse(visitor);
+  if(isEnabled())
+  {
+    traverse(visitor);
+  }
+}
+
+NodeVector Group::getChildren()
+{
+  return m_nodes;
 }
 
 void Group::traverse(NodeVisitor &visitor)

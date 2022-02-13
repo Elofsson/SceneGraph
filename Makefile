@@ -298,6 +298,33 @@ Debug.cpp.s:
 	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab1/CMakeFiles/lab1.dir/build.make examples/lab1/CMakeFiles/lab1.dir/Debug.cpp.s
 .PHONY : Debug.cpp.s
 
+DotVisitor.o: DotVisitor.cpp.o
+
+.PHONY : DotVisitor.o
+
+# target to build an object file
+DotVisitor.cpp.o:
+	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab1/CMakeFiles/lab1.dir/build.make examples/lab1/CMakeFiles/lab1.dir/DotVisitor.cpp.o
+.PHONY : DotVisitor.cpp.o
+
+DotVisitor.i: DotVisitor.cpp.i
+
+.PHONY : DotVisitor.i
+
+# target to preprocess a source file
+DotVisitor.cpp.i:
+	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab1/CMakeFiles/lab1.dir/build.make examples/lab1/CMakeFiles/lab1.dir/DotVisitor.cpp.i
+.PHONY : DotVisitor.cpp.i
+
+DotVisitor.s: DotVisitor.cpp.s
+
+.PHONY : DotVisitor.s
+
+# target to generate assembly for a file
+DotVisitor.cpp.s:
+	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab1/CMakeFiles/lab1.dir/build.make examples/lab1/CMakeFiles/lab1.dir/DotVisitor.cpp.s
+.PHONY : DotVisitor.cpp.s
+
 FPSCounter.o: FPSCounter.cpp.o
 
 .PHONY : FPSCounter.o
@@ -459,6 +486,33 @@ Loader.s: Loader.cpp.s
 Loader.cpp.s:
 	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab1/CMakeFiles/lab1.dir/build.make examples/lab1/CMakeFiles/lab1.dir/Loader.cpp.s
 .PHONY : Loader.cpp.s
+
+LodCallback.o: LodCallback.cpp.o
+
+.PHONY : LodCallback.o
+
+# target to build an object file
+LodCallback.cpp.o:
+	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab1/CMakeFiles/lab1.dir/build.make examples/lab1/CMakeFiles/lab1.dir/LodCallback.cpp.o
+.PHONY : LodCallback.cpp.o
+
+LodCallback.i: LodCallback.cpp.i
+
+.PHONY : LodCallback.i
+
+# target to preprocess a source file
+LodCallback.cpp.i:
+	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab1/CMakeFiles/lab1.dir/build.make examples/lab1/CMakeFiles/lab1.dir/LodCallback.cpp.i
+.PHONY : LodCallback.cpp.i
+
+LodCallback.s: LodCallback.cpp.s
+
+.PHONY : LodCallback.s
+
+# target to generate assembly for a file
+LodCallback.cpp.s:
+	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab1/CMakeFiles/lab1.dir/build.make examples/lab1/CMakeFiles/lab1.dir/LodCallback.cpp.s
+.PHONY : LodCallback.cpp.s
 
 Material.o: Material.cpp.o
 
@@ -863,6 +917,9 @@ help:
 	@echo "... Debug.o"
 	@echo "... Debug.i"
 	@echo "... Debug.s"
+	@echo "... DotVisitor.o"
+	@echo "... DotVisitor.i"
+	@echo "... DotVisitor.s"
 	@echo "... FPSCounter.o"
 	@echo "... FPSCounter.i"
 	@echo "... FPSCounter.s"
@@ -881,6 +938,9 @@ help:
 	@echo "... Loader.o"
 	@echo "... Loader.i"
 	@echo "... Loader.s"
+	@echo "... LodCallback.o"
+	@echo "... LodCallback.i"
+	@echo "... LodCallback.s"
 	@echo "... Material.o"
 	@echo "... Material.i"
 	@echo "... Material.s"

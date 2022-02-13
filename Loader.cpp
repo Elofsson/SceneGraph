@@ -340,8 +340,9 @@ std::shared_ptr<Group> load3DModelFile(const std::string& filename)
 
   std::shared_ptr<Group> group = std::shared_ptr<Group>(new Group);
   group->name = filename;
-  parseNodes(root_node, materials, textures, transformStack, group, aiScene);
 
+  parseNodes(root_node, materials, textures, transformStack, group, aiScene);
+  
   transformStack.pop();
 
   if (group->empty())

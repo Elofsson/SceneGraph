@@ -66,45 +66,33 @@ bool Application::buildGeometry()
     return false;
   }
 
-  /*std::string pokeball = "scenes/pokeball.xml";
-  std::shared_ptr<Group> pokeballModel = std::shared_ptr<Group>(new Group());
-  if(!loadGroup(pokeball, pokeballModel))
+  m_sceneRoot->add(ironmanModel);
+
+  return true;
+}
+
+bool Application::loadLodObjects(std::vector<std::string> objectFiles)
+{
+  std::shared_ptr<Group> lodRoot = std::shared_ptr<Group>(new Group());
+  lodRoot->name = "Lod root";
+  for(auto modelFile : objectFiles)
   {
-    return false;
+    std::shared_ptr<Group> lodGroup = std::shared_ptr<Group>(new Group());
+    lodGroup->name = modelFile;
+    if(!loadGroup(modelFile, lodGroup))
+    {
+      return false;
+    }
+
+    lodRoot->addChild(lodGroup);
   }
-
-  std::shared_ptr<Transform> movePokeball = std::shared_ptr<Transform>(new Transform(1, 1, 1));
-  std::shared_ptr<RotateCallback> rotateCallback = std::shared_ptr<RotateCallback>(new RotateCallback(movePokeball));
-  movePokeball->addCallback(rotateCallback);
-  movePokeball->addChild(pokeballModel);
-  //m_sceneRoot->add(movePokeball);*/
-
-  //Add 5 ironmans.
-  std::shared_ptr<Group> ironmanGroup = std::shared_ptr<Group>(new Group());
-  int translateOffset = 20;
-  glm::vec3 pos = glm::vec3(0.0f, 0.0f, 0.0f);
   
-  for(int i = 0; i < 2; i++)
-  {
-    std::shared_ptr<Transform> transformPositive = std::shared_ptr<Transform>(new Transform(pos.x, pos.y, pos.z));
-    std::shared_ptr<Transform> transformNegative = std::shared_ptr<Transform>(new Transform(-pos.x, pos.y, -pos.z));
-    transformPositive->addChild(ironmanModel);
-    transformNegative->addChild(ironmanModel);
+  //Create callbacks.
+  std::shared_ptr<LodCallback> lodCallback = std::shared_ptr<LodCallback>(new LodCallback(lodRoot, m_sceneRoot->getCamera()));
+  m_sceneRoot->getRoot()->addCallback(lodCallback);
+  m_sceneRoot->add(lodRoot);
 
-    ironmanGroup->addChild(transformPositive);
-    ironmanGroup->addChild(transformNegative);
-    
-    //Increase offsets.
-    pos += translateOffset;
-  }
-
-  std::shared_ptr<Transform> moveIronManModels = std::shared_ptr<Transform>(new Transform(1, 1, 1));
-  std::shared_ptr<CircularMovementCallback> ironmanMovement = std::shared_ptr<CircularMovementCallback>(new CircularMovementCallback(0.02f, 1.0f, moveIronManModels));
-  moveIronManModels->addChild(ironmanGroup);
-  moveIronManModels->addCallback(ironmanMovement);
-  m_sceneRoot->add(moveIronManModels);
-
-
+  m_sceneRoot->createDotFile("dotfile");
   return true;
 }
 

@@ -7,6 +7,7 @@
 #include "Debug.h"
 #include "Material.h"
 #include "Texture.h"
+#include <fstream> 
 
 /// Load a given file and add content to the scene
 std::shared_ptr<Group> load3DModelFile(const std::string& filename);

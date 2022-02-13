@@ -28,16 +28,20 @@ public:
   
   virtual void accept(NodeVisitor& visitor) = 0;
 
-  //TODO See how state should be able to be modified later, set methods? public attribute? 
-  virtual std::shared_ptr<State> getState();
-  virtual void addCallback(std::shared_ptr<UpdateCallback> callback);
-  virtual void executeCallbacks();
-  virtual void setState(std::shared_ptr<State> state);
-  virtual bool emptyState();
+  std::shared_ptr<State> getState();
+  void addCallback(std::shared_ptr<UpdateCallback> callback);
+  void executeCallbacks();
+  CallbackVector getCallbacks();
+  void setState(std::shared_ptr<State> state);
+  void setEnabled(bool enabled);
+  bool isEnabled();
+  bool emptyState();
 
-protected:
+private:
   std::shared_ptr<State> m_nodeState;
   CallbackVector m_callbacks;
+  bool m_enabled;
+  
 
 };
 

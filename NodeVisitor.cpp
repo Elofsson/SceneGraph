@@ -9,9 +9,12 @@ NodeVisitor::NodeVisitor(GLuint program)
   //cout << "NodeVisitor constructor" << endl;
 }
 
+NodeVisitor::NodeVisitor()
+{
+}
+
 NodeVisitor::~NodeVisitor()
 {
-
 }
 
 //Group traversal implementation?

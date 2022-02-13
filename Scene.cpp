@@ -3,6 +3,7 @@
 #include <vr/shaderUtils.h>
 #include "Debug.h"
 #include "CircularMovementCallback.h"
+#include "DotVisitor.h"
 
 Scene::Scene() : m_uniform_numberOfLights(-1)
 {
@@ -102,6 +103,13 @@ void Scene::useProgram()
   glUseProgram(m_program);
 }
 
+void Scene::createDotFile(std::string fileName)
+{
+  DotVisitor *dotVisitor = new DotVisitor(fileName);
+  dotVisitor->visit(*m_root);
+  dotVisitor->close();
+}
+
 //TODO See if there is another way to init geometries other than initVisitor.
 void Scene::add(std::shared_ptr<Group> node)
 {
@@ -143,10 +151,6 @@ const GroupVector& Scene::getGroups()
 void Scene::render()
 {
   useProgram();
-
-  //UpdateVisitor *updater = new UpdateVisitor(m_program);
-  //updater->visit(*m_root);
-
-  m_renderer->visit(*m_root);
   m_updater->visit(*m_root);
+  m_renderer->visit(*m_root);
 }

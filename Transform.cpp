@@ -38,7 +38,10 @@ bool Transform::initShaders(GLuint program)
 
 void Transform::accept(NodeVisitor &visitor)
 {
-  visitor.visit(*this);
+  if(isEnabled())
+  {
+    visitor.visit(*this);
+  }
 }
 
 BoundingBox Transform::calculateBoundingBox(glm::mat4 modelMat)

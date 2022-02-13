@@ -3,11 +3,6 @@
 #include <vector>
 #include <memory>
 
-class Group;
-class Transform;
-class Geometry;
-class Node;
-
 class UpdateCallback
 {
 public:

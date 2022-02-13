@@ -19,7 +19,10 @@ BoundingBox Geometry::calculateBoundingBox(glm::mat4 modelMat) {
 
 void Geometry::accept(NodeVisitor &visitor)
 {
-  visitor.visit(*this);
+  if(isEnabled())
+  {
+    visitor.visit(*this);
+  }
 }
 
 void Geometry::draw() {

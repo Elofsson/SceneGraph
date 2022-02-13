@@ -74,7 +74,7 @@ public:
   /// Add a new group.
   /// </summary>
   /// <param name="node">A new node</param>
-  void add(std::shared_ptr<Group> group);
+  void add(std::shared_ptr<Group> node);
 
   /// <summary>
   /// Reset all nodes transform to its initial value
@@ -108,6 +108,8 @@ public:
   /// Render the whole scene
   /// </summary>
   void render();
+
+  void createDotFile(std::string fileName);
 
 private:
   std::shared_ptr<Group> m_root;

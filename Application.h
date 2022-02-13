@@ -4,6 +4,7 @@
 #include "Scene.h"
 #include "FPSCounter.h"
 #include "Camera.h"
+#include "LodCallback.h"
 
 class Application
 {
@@ -27,6 +28,7 @@ public:
   void processInput(GLFWwindow* window);
 
   bool buildGeometry();
+  bool loadLodObjects(std::vector<std::string> objectFiles);
   bool loadGroup(std::string model_filename, std::shared_ptr<Group> &group);
 
 private:

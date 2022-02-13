@@ -19,6 +19,7 @@ class NodeVisitor
 {
 public:
   NodeVisitor(GLuint program);
+  NodeVisitor();
   virtual ~NodeVisitor();
   virtual void visit(Group &g);
   virtual void visit(Transform &t);

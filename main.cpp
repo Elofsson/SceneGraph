@@ -129,6 +129,20 @@ int main(int argc, char** argv)
     return 1;
   }*/
 
+  std::vector<std::string> cowLodModels;
+  cowLodModels.push_back("models/cow_0.99.obj");
+  cowLodModels.push_back("models/cow_0.5.obj");
+  cowLodModels.push_back("models/cow_0.3.obj");
+  cowLodModels.push_back("models/cow_0.1.obj");
+  cowLodModels.push_back("models/cow_0.05.obj");
+  cowLodModels.push_back("models/cow_0.01.obj");
+  if(!application->loadLodObjects(cowLodModels))
+  {
+    std::cerr << "Failed to load LOD models" << std::endl;
+    return 1;
+  }
+
+
   application->initView();
 
   glEnable(GL_BLEND);
