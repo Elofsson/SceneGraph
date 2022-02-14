@@ -4,6 +4,11 @@
 #include <iostream>
 #include "Material.h"
 
+/**
+ * @brief Simple debug class used to debug
+ *        matrices, vectors and materials.
+ * 
+ */
 class Debug
 {
 public:

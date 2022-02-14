@@ -8,21 +8,67 @@
 
 class Geometry;
 
-/// Simple class that store light properties and apply them to Uniforms
+/**
+ * @brief Simple class that store light properties and apply them to Uniforms
+ * 
+ */
 class Light
 {
 public:
   Light();
 
-  
+  /**
+   * @brief Check if a light is almost equal to this light.
+   *        uses the presciion of std::numeric_limits<Float>.
+   * 
+   * @param light Light to check
+   * @return true if almost equal
+   * @return false if not considered equal
+   */
   bool equals(std::shared_ptr<Light> light);
 
+  /**
+   * @brief Apply this light to the shader
+   * 
+   * @param program Program light should be applied to
+   * @param idx Index of the light.
+   */
   void apply(GLuint program, size_t idx);
 
+  /**
+   * @brief Get the Ambient object
+   * 
+   * @return glm::vec4 
+   */
   glm::vec4 getAmbient();
+
+  /**
+   * @brief Get the Diffuse object
+   * 
+   * @return glm::vec4 
+   */
   glm::vec4 getDiffuse();
+
+  /**
+   * @brief Get the Specular object
+   * 
+   * @return glm::vec4 
+   */
   glm::vec4 getSpecular();
+
+  /**
+   * @brief Get the Position object
+   * 
+   * @return glm::vec4 
+   */
   glm::vec4 getPosition();
+
+  /**
+   * @brief Checks if this light is enabled.
+   * 
+   * @return true 
+   * @return false 
+   */
   bool isEnabled();
 
   void setAmbient(glm::vec4 ambient);

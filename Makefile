@@ -244,33 +244,6 @@ Camera.cpp.s:
 	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab1/CMakeFiles/lab1.dir/build.make examples/lab1/CMakeFiles/lab1.dir/Camera.cpp.s
 .PHONY : Camera.cpp.s
 
-CircularMovementCallback.o: CircularMovementCallback.cpp.o
-
-.PHONY : CircularMovementCallback.o
-
-# target to build an object file
-CircularMovementCallback.cpp.o:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab1/CMakeFiles/lab1.dir/build.make examples/lab1/CMakeFiles/lab1.dir/CircularMovementCallback.cpp.o
-.PHONY : CircularMovementCallback.cpp.o
-
-CircularMovementCallback.i: CircularMovementCallback.cpp.i
-
-.PHONY : CircularMovementCallback.i
-
-# target to preprocess a source file
-CircularMovementCallback.cpp.i:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab1/CMakeFiles/lab1.dir/build.make examples/lab1/CMakeFiles/lab1.dir/CircularMovementCallback.cpp.i
-.PHONY : CircularMovementCallback.cpp.i
-
-CircularMovementCallback.s: CircularMovementCallback.cpp.s
-
-.PHONY : CircularMovementCallback.s
-
-# target to generate assembly for a file
-CircularMovementCallback.cpp.s:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab1/CMakeFiles/lab1.dir/build.make examples/lab1/CMakeFiles/lab1.dir/CircularMovementCallback.cpp.s
-.PHONY : CircularMovementCallback.cpp.s
-
 Debug.o: Debug.cpp.o
 
 .PHONY : Debug.o
@@ -938,9 +911,6 @@ help:
 	@echo "... Camera.o"
 	@echo "... Camera.i"
 	@echo "... Camera.s"
-	@echo "... CircularMovementCallback.o"
-	@echo "... CircularMovementCallback.i"
-	@echo "... CircularMovementCallback.s"
 	@echo "... Debug.o"
 	@echo "... Debug.i"
 	@echo "... Debug.s"

@@ -27,7 +27,6 @@ void DotVisitor::visit(Group &g)
   groupDotStr.append(" -- ");
   groupDotStr.append(thisGroup);
 
-  std::cout << "Group " << groupDotStr << std::endl;
   m_dotfile << groupDotStr << "[type=s]" << std::endl;
 
   NodeVisitor::traverse(g);
@@ -49,7 +48,6 @@ void DotVisitor::visit(Transform &t)
   transformDotStr.append(" --");
   transformDotStr.append(thisTransform);
   
-  std::cout << "Transform " << transformDotStr << std::endl;
   m_dotfile << transformDotStr << "[type=s]" << std::endl;
 
   NodeVisitor::traverse(t);
@@ -67,7 +65,6 @@ void DotVisitor::visit(Geometry &g)
   std::string geometryDotStr = previous;
   geometryDotStr.append(" --");
   geometryDotStr.append(thisGeometry);
-  std::cout << "Geometry " << geometryDotStr << std::endl;
 
   m_dotfile << geometryDotStr << "[type=s]" << std::endl;
 }

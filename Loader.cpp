@@ -9,7 +9,6 @@
 #include <glm/vec4.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtc/matrix_transform.hpp>
-#include "CircularMovementCallback.h"
 
 #include <vr/FileSystem.h>
 #include <vr/shaderUtils.h>

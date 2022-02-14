@@ -2,7 +2,6 @@
 #include <iostream>
 #include <vr/shaderUtils.h>
 #include "Debug.h"
-#include "CircularMovementCallback.h"
 #include "DotVisitor.h"
 
 Scene::Scene() : m_uniform_numberOfLights(-1)

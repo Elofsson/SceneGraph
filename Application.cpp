@@ -13,7 +13,6 @@
 
 #include "Scene.h"
 #include "Loader.h"
-#include "CircularMovementCallback.h"
 #include "MovingLightCallback.h"
 #include "RotateCallback.h"
 #include <stdlib.h>
