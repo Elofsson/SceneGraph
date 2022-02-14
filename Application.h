@@ -27,12 +27,20 @@ public:
 
   void processInput(GLFWwindow* window);
 
-  bool buildGeometry();
   bool loadLodObjects(std::vector<std::string> objectFiles);
   bool loadGroup(std::string model_filename, std::shared_ptr<Group> &group);
 
 private:
 
+  //Default geometry if no argument is provided or failes to be loaded in.
+  bool buildGeometry();
+
+  //Load default terrain.
+  bool loadTerrain();
+
+  //Load a moving light with attached to a object.
+  bool loadMovingLight();
+  
   // Parent of all to be rendered
   std::shared_ptr<Scene> m_sceneRoot;
 

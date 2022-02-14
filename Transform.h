@@ -29,11 +29,19 @@ public:
   Transform();
   Transform(float x, float y, float z);
   ~Transform();
+  void scale(glm::vec3 scale);
+  void translate(glm::vec3 translation);
+  void rotate(glm::vec3 axis, float angle);
   bool initShaders(GLuint program);
   virtual BoundingBox calculateBoundingBox(glm::mat4 modelMat) override;
   virtual void accept(NodeVisitor &visitor) override;
 
 private:
+  void updateObject2world();
+  glm::mat4 m_scale;
+  glm::mat4 m_rotation;
+  glm::mat4 m_translation;
+
   GLuint m_uniform_m;
   GLuint m_uniform_m_3x3_inv_transp;
 };

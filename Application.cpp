@@ -14,7 +14,10 @@
 #include "Scene.h"
 #include "Loader.h"
 #include "CircularMovementCallback.h"
+#include "MovingLightCallback.h"
 #include "RotateCallback.h"
+#include <stdlib.h>
+#include <time.h> 
 
 Application::Application(unsigned int width, unsigned height) : m_screenSize(width, height)
 {
@@ -35,17 +38,6 @@ bool Application::initResources(const std::string& model_filename, const std::st
   if (!m_sceneRoot->initShaders(vshader_filename, fshader_filename))
     return false;
 
-  getCamera()->setScreenSize(m_screenSize);
-
-  std::shared_ptr<Group> rootGroup = std::shared_ptr<Group>(new Group());
-  if(!loadGroup(model_filename, rootGroup))
-  {
-    std::cerr << "Failed to load scene" << std::endl;
-    return false;
-  }
-
-  m_sceneRoot->add(rootGroup);
-
   //Create light.
   std::shared_ptr<Light> light2 = std::shared_ptr<Light>(new Light);
   light2->setDiffuse(glm::vec4(1, 1, 1, 1));
@@ -53,14 +45,67 @@ bool Application::initResources(const std::string& model_filename, const std::st
   light2->setPosition(glm::vec4(1.0, 2.0, -2.0, 0.0));
   m_sceneRoot->add(light2);
 
-  buildGeometry();
+  getCamera()->setScreenSize(m_screenSize);
+  std::shared_ptr<Group> rootGroup = std::shared_ptr<Group>(new Group());
 
-  m_sceneRoot->createDotFile("dotfile");
+  if(!loadGroup(model_filename, rootGroup))
+  {
+    std::cerr << "Failed to load scene" << std::endl;
+
+    //Build default
+    if(!buildGeometry())
+    {
+      std::cerr << "Failed to load default" << std::endl;
+      return false;
+    }
+  }
+
+  else
+  {
+    m_sceneRoot->add(rootGroup);
+    m_sceneRoot->createDotFile("dotfile");
+  }
   return 1;
+}
+
+bool Application::loadMovingLight()
+{
+  //Load object to be attached to light.
+  std::string lightObjectPath = "scenes/box.xml";
+  std::shared_ptr<Group> lightObject = std::shared_ptr<Group>(new Group());
+  if(!loadGroup(lightObjectPath, lightObject))
+  {
+    std::cerr << "Failed to load " << lightObjectPath << std::endl;
+    return false;
+  }
+  
+  //Light and object position.
+  glm::vec3 position = glm::vec3(0, 1000, -250);
+
+  //create light and add to root.
+  std::shared_ptr<Light> movingLight = std::shared_ptr<Light>(new Light());
+  movingLight->setAmbient(glm::vec4(0.0, 1.0, 0.5, 1.0));
+  movingLight->setDiffuse(glm::vec4(0.2, 0.9, 0.9, 1.0));
+  movingLight->setSpecular(glm::vec4(0.0, 0.1, 0.1, 1.0));
+  movingLight->setPosition(glm::vec4(position, 1));
+  m_sceneRoot->getRoot()->getState()->addLight(movingLight);
+
+  //Add light and set state to transform.
+  std::shared_ptr<Transform> lightTransform = std::shared_ptr<Transform>(new Transform(position.x, position.y, position.z));
+
+  //Create callback.
+  std::shared_ptr<MovingLightCallback> lightCallback = std::shared_ptr<MovingLightCallback>(new MovingLightCallback(lightTransform, movingLight));
+
+  //Add callback and add to scene.
+  lightTransform->addCallback(lightCallback);
+  lightTransform->addChild(lightObject);
+  m_sceneRoot->add(lightTransform);
+  return true;
 }
 
 bool Application::buildGeometry()
 {
+  //Load default scene.
   std::string ironman_modelfile = "scenes/custom.xml";
   std::shared_ptr<Group> ironmanModel = std::shared_ptr<Group>(new Group());
   if(!loadGroup(ironman_modelfile, ironmanModel))
@@ -79,6 +124,10 @@ bool Application::buildGeometry()
   cowLodModels.push_back("models/cow_0.05.obj");
   cowLodModels.push_back("models/cow_0.01.obj");
   loadLodObjects(cowLodModels);
+  loadTerrain();
+
+  
+  loadMovingLight();
 
   return true;
 }
@@ -95,7 +144,6 @@ bool Application::loadLodObjects(std::vector<std::string> objectFiles)
     {
       return false;
     }
-
     lodRoot->addChild(lodGroup);
   }
   
@@ -107,7 +155,86 @@ bool Application::loadLodObjects(std::vector<std::string> objectFiles)
   //Add LOD callback.
   std::shared_ptr<LodCallback> lodCallback = std::shared_ptr<LodCallback>(new LodCallback(lodRoot, m_sceneRoot->getCamera()));
   m_sceneRoot->getRoot()->addCallback(lodCallback);
-  m_sceneRoot->add(lodRoot);
+  
+  //Set scale.
+  std::shared_ptr<Transform> lodTransform = std::shared_ptr<Transform>(new Transform(0, 0, 0));
+  lodTransform->translate(glm::vec3(-200, -50, 200));
+  lodTransform->scale(glm::vec3(0.1, 0.1, 0.1));
+  lodTransform->addChild(lodRoot);
+  m_sceneRoot->add(lodTransform);
+  return true;
+}
+
+bool Application::loadTerrain()
+{
+  std::srand(time(NULL));
+  std::shared_ptr<Group> terrainRoot = std::shared_ptr<Group>(new Group());
+  terrainRoot->name = "Terrain root";
+
+  //Load trees.
+  std::string treeFile = "models/lowpolytree.obj";
+  std::shared_ptr<Group> treeModel = std::shared_ptr<Group>(new Group());
+  if(!loadGroup(treeFile, treeModel))
+  {
+    std::cerr << "Failed to load " << treeFile << std::endl; 
+    return false;
+  }
+
+
+  //Radius used for random generation translations. 
+  BoundingBox sceneBox = m_sceneRoot->calculateBoundingBox();
+  int radius = sceneBox.getRadius() / 2;
+
+  for(unsigned int i = 0; i < 25; i++)
+  {
+    std::shared_ptr<Transform> treeTransform = std::shared_ptr<Transform>(new Transform(0, 0, 0));
+    treeTransform->addChild(treeModel);
+
+    float x = std::rand() % radius;
+    float z = std::rand() % radius;
+    treeTransform->translate(glm::vec3(x, -22, z));
+    treeTransform->scale(glm::vec3(15, 15, 15));
+    terrainRoot->addChild(treeTransform);
+  }
+
+  //Load montains
+  std::string mountainFile = "scenes/mountain.xml";
+  std::shared_ptr<Group> mountainModel = std::shared_ptr<Group>(new Group());
+  if(!loadGroup(mountainFile, mountainModel))
+  {
+    std::cerr << "Failed to load " << mountainFile << std::endl;
+    return false;
+  }
+
+  for(unsigned int i = 0; i < 25; i++)
+  {
+    std::shared_ptr<Transform> mountainTransform = std::shared_ptr<Transform>(new Transform());
+    mountainTransform->addChild(mountainModel);
+
+    //Randomize x and y values whith whole scene bounding box radius.
+    float x = 0;
+    float z = 0;
+    x -= std::rand() % radius;
+    z -= std::rand() % radius;
+    mountainTransform->translate(glm::vec3(x, -22, z));
+
+    //set random scale with a cap of 20 and lowercap 3.
+    int higherCap = 20;
+    int lowerCap = 3;
+    float scaleX = std::rand() % higherCap + lowerCap;
+    float scaleY = std::rand() % higherCap + lowerCap;
+    float scaleZ = std::rand() % higherCap + lowerCap;
+    mountainTransform->scale(glm::vec3(scaleX, scaleY, scaleZ));
+
+    //Randomize rotations.
+    float rotation = std::rand() % 180;
+    mountainTransform->rotate(glm::vec3(0, 1, 0), rotation);
+
+    //Add to terrain root.
+    terrainRoot->addChild(mountainTransform);
+  }
+
+  m_sceneRoot->add(terrainRoot);
   return true;
 }
 

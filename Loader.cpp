@@ -505,7 +505,7 @@ bool loadSceneFile(const std::string& sceneFile, std::shared_ptr<Group>& group)
         glm::vec3 r_vec;
         if (!getVec<glm::vec3>(r_vec, rotate))
           throw std::runtime_error("Node (" + name + ") Invalid rotate in: " + pathToString(xmlpath));
-
+        
         std::string scale = getAttribute(transform, "scale");
         glm::vec3 s_vec;
         if (!getVec<glm::vec3>(s_vec, scale, glm::vec3(1)))

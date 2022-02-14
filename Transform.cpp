@@ -1,5 +1,6 @@
 #include "Transform.h"
 #include "NodeVisitor.h"
+#include "Debug.h"
 
 Transform::Transform()
 {
@@ -8,6 +9,7 @@ Transform::Transform()
 
 Transform::Transform(float x, float y, float z)
 {
+
   object2world = glm::translate(glm::mat4(1.0f), glm::vec3(x, y, z));
 }
 
@@ -34,6 +36,27 @@ bool Transform::initShaders(GLuint program)
   }
 
   return true;
+}
+
+void Transform::scale(glm::vec3 scale)
+{
+  //Scale object
+  auto scaleMat = glm::scale(glm::mat4(1.0f), scale);
+  object2world = object2world * scaleMat; 
+}
+
+void Transform::translate(glm::vec3 translation)
+{
+  //Translate
+  auto trans = glm::translate(glm::mat4(1.0f), translation); 
+  object2world = object2world * trans;  
+}
+
+void Transform::rotate(glm::vec3 vec, float angle)
+{
+  //Rotate.
+  auto rotationMat = glm::rotate(glm::mat4(), glm::radians(angle), vec);
+  object2world = object2world * rotationMat;
 }
 
 void Transform::accept(NodeVisitor &visitor)

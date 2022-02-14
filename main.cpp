@@ -105,7 +105,7 @@ int main(int argc, char** argv)
   std::shared_ptr<Application> application = std::make_shared<Application>(SCREEN_WIDTH, SCREEN_HEIGHT);
   g_applicationPtr = application;
 
-  std::string model_filename = (char*) "models/monkey.obj";
+  std::string model_filename = (char*) "Test";
   if (argc > 1)
     model_filename = argv[1];
 

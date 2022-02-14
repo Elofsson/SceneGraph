@@ -82,7 +82,6 @@ void State::merge(const std::shared_ptr<State> inputState)
   //Update polygonmode
   if(inputState->getPolygonMode() != -1)
   {
-    std::cout << "Update state polygonmode" << std::endl;
     m_polygonmode = inputState->getPolygonMode();
   }
 
