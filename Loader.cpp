@@ -186,8 +186,8 @@ void parseNodes(aiNode *root_node, MaterialVector& materials, TextureVector& tex
 
   uint32_t num_meshes = root_node->mNumMeshes;
 
-  Geometry::vec3Vector tangents;
-  Geometry::vec2Vector tex_coords;
+  vec3Vector tangents;
+  vec2Vector tex_coords;
 
   for (uint32_t i = 0; i < num_meshes; i++)
   {
@@ -200,52 +200,30 @@ void parseNodes(aiNode *root_node, MaterialVector& materials, TextureVector& tex
     aiMesh *mesh = aiScene->mMeshes[root_node->mMeshes[i]];
     uint32_t num_vertices = mesh->mNumVertices;
     
-
-    loadedGeometry->vertices.resize(num_vertices);
-    loadedGeometry->normals.resize(num_vertices);
-    loadedGeometry->texCoords.resize(num_vertices);
+    loadedGeometry->resize(num_vertices);
 
     for (uint32_t j = 0; j < num_vertices; j++)
     {
-      loadedGeometry->vertices[j] = glm::vec4(mesh->mVertices[j].x, mesh->mVertices[j].y, mesh->mVertices[j].z, 1);
-      loadedGeometry->normals[j] = glm::vec3(mesh->mNormals[j].x, mesh->mNormals[j].y, mesh->mNormals[j].z);
-
-      glm::vec3 tangent;
-      if (mesh->HasTangentsAndBitangents())
-      {
-        tangent.x = mesh->mTangents[j].x;
-        tangent.y = mesh->mTangents[j].y;
-        tangent.z = mesh->mTangents[j].z;
-      }
+      loadedGeometry->insertVertex(glm::vec4(mesh->mVertices[j].x, mesh->mVertices[j].y, mesh->mVertices[j].z, 1), j);
+      loadedGeometry->insertNormal(glm::vec3(mesh->mNormals[j].x, mesh->mNormals[j].y, mesh->mNormals[j].z), j);
 
       glm::vec2 tex_coord;
       if (mesh->mTextureCoords[0])
       {
         tex_coord.x = mesh->mTextureCoords[0][j].x;
         tex_coord.y = mesh->mTextureCoords[0][j].y;
-
-        loadedGeometry->texCoords[j] = tex_coord;
+        loadedGeometry->insertTexCoord(tex_coord, j);
       }
-
-      // Ignore color
-      //       if (mesh->HasVertexColors(j))
-      //       {
-      //         vertex.color.x = mesh->mColors[j]->r;
-      //         vertex.color.y = mesh->mColors[j]->g;
-      //         vertex.color.z = mesh->mColors[j]->b;
-      //       }
-
     }
 
     uint32_t num_faces = mesh->mNumFaces;
-    loadedGeometry->elements.resize(0);
     for (uint32_t j = 0; j < num_faces; j++)
     {
       aiFace face = mesh->mFaces[j];
       uint32_t num_indices = face.mNumIndices;
       for (uint32_t k = 0; k < num_indices; k++)
       {
-        loadedGeometry->elements.push_back(face.mIndices[k]);
+        loadedGeometry->insertElement(face.mIndices[k]);
       }
     }
 

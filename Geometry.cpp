@@ -8,7 +8,7 @@ Geometry::Geometry(bool useVAO) {
 
 BoundingBox Geometry::calculateBoundingBox(glm::mat4 modelMat) {
   BoundingBox box;
-  for(auto v : vertices)
+  for(auto v : m_vertices)
   {
     glm::vec3 vTransformed = modelMat * v;
     box.expand(vTransformed);
@@ -94,12 +94,12 @@ void Geometry::draw() {
     if (!m_useVAO)
       glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->m_ibo_elements);
 
-      GLuint size = GLuint(this->elements.size());
+      GLuint size = GLuint(m_elements.size());
       glDrawElements(GL_TRIANGLES, size, GL_UNSIGNED_SHORT, 0);
       CHECK_GL_ERROR_LINE_FILE();
   }
   else {
-    glDrawArrays(GL_TRIANGLES, 0, (GLsizei)this->vertices.size());
+    glDrawArrays(GL_TRIANGLES, 0, (GLsizei)m_vertices.size());
   }
 
   if (this->m_vbo_normals != 0)
@@ -130,27 +130,27 @@ void Geometry::upload()
     CHECK_GL_ERROR_LINE_FILE();
   }
 
-  if (this->vertices.size() > 0) {
+  if (m_vertices.size() > 0) {
     glGenBuffers(1, &this->m_vbo_vertices);
     glBindBuffer(GL_ARRAY_BUFFER, this->m_vbo_vertices);
-    glBufferData(GL_ARRAY_BUFFER, this->vertices.size() * sizeof(this->vertices[0]),
-      this->vertices.data(), GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, m_vertices.size() * sizeof(m_vertices[0]),
+      m_vertices.data(), GL_STATIC_DRAW);
     CHECK_GL_ERROR_LINE_FILE();
   }
 
-   if (this->normals.size() > 0) {
+   if (m_normals.size() > 0) {
       glGenBuffers(1, &this->m_vbo_normals);
       glBindBuffer(GL_ARRAY_BUFFER, this->m_vbo_normals);
-      glBufferData(GL_ARRAY_BUFFER, this->normals.size() * sizeof(this->normals[0]),
-        this->normals.data(), GL_STATIC_DRAW);
+      glBufferData(GL_ARRAY_BUFFER, m_normals.size() * sizeof(m_normals[0]),
+        m_normals.data(), GL_STATIC_DRAW);
       CHECK_GL_ERROR_LINE_FILE();
    }
 
-   if (this->texCoords.size() > 0) {
+   if (m_texCoords.size() > 0) {
      glGenBuffers(1, &this->m_vbo_texCoords);
      glBindBuffer(GL_ARRAY_BUFFER, this->m_vbo_texCoords);
-     glBufferData(GL_ARRAY_BUFFER, this->texCoords.size() * sizeof(this->texCoords[0]),
-       this->texCoords.data(), GL_STATIC_DRAW);
+     glBufferData(GL_ARRAY_BUFFER, m_texCoords.size() * sizeof(m_texCoords[0]),
+       m_texCoords.data(), GL_STATIC_DRAW);
      CHECK_GL_ERROR_LINE_FILE();
    }
 
@@ -194,11 +194,11 @@ void Geometry::upload()
 
    }
 
-  if (this->elements.size() > 0) {
+  if (m_elements.size() > 0) {
     glGenBuffers(1, &this->m_ibo_elements);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->m_ibo_elements);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, this->elements.size() * sizeof(this->elements[0]),
-      this->elements.data(), GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_elements.size() * sizeof(m_elements[0]),
+      m_elements.data(), GL_STATIC_DRAW);
   }
 
   CHECK_GL_ERROR_LINE_FILE();
@@ -263,3 +263,52 @@ bool Geometry::initShaders(GLuint program)
 
   return true;
 }
+
+
+void Geometry::resize(unsigned int size)
+{
+  m_vertices.resize(size);
+  m_normals.resize(size);
+  m_texCoords.resize(size);
+}
+
+void Geometry::insertVertex(glm::vec4 vertex, int index)
+{
+  m_vertices[index] = vertex;
+}
+
+void Geometry::insertNormal(glm::vec3 normal, int index)
+{
+  m_normals[index] = normal;
+}
+
+void Geometry::insertTexCoord(glm::vec2 texCoord, int index)
+{
+  m_texCoords[index] = texCoord;
+}
+
+void Geometry::insertElement(GLushort element)
+{
+  m_elements.push_back(element);
+}
+
+vec4Vector Geometry::getVertices()
+{
+  return m_vertices;
+}
+
+vec3Vector Geometry::getNormals()
+{
+  return m_normals;
+}
+
+vec2Vector Geometry::getTexCoords()
+{
+  return m_texCoords;
+}
+
+GLushortVector Geometry::getElements()
+{
+  return m_elements;
+}
+

@@ -9,25 +9,18 @@
 //TODO Implement Geometry.
 //TODO Data to contian: Vertices, Vertex colors and Texture Coordinates if present, Normals.
 
+typedef std::vector<glm::vec2> vec2Vector;
+typedef std::vector<glm::vec3> vec3Vector;
+typedef std::vector<glm::vec4> vec4Vector;
+typedef std::vector<GLushort> GLushortVector;
 
 class Geometry : public Node {
 
 public:
-  typedef std::vector<glm::vec2> vec2Vector;
-  typedef std::vector<glm::vec3> vec3Vector;
-  typedef std::vector<glm::vec4> vec4Vector;
-  typedef std::vector<GLushort> GLushortVector;
-
-  //TODO Consider making this private.
-  vec4Vector vertices;
-  vec3Vector normals;
-  vec2Vector texCoords;
-  GLushortVector elements;
 
   Geometry(bool useVAO = true);
 
-  virtual BoundingBox calculateBoundingBox(glm::mat4 modelMat) override;
-  
+  virtual BoundingBox calculateBoundingBox(glm::mat4 modelMat) override;  
 
   //Store object vertices, normals and/or elements in graphic card buffers
   void upload();
@@ -37,12 +30,30 @@ public:
 
   void apply(glm::mat4 transformMatrix);
 
+  void insertVertex(glm::vec4 vertex, int index);
+  void insertNormal(glm::vec3 normal, int index);
+  void insertTexCoord(glm::vec2 texCoord, int index);
+  void insertElement(GLushort element);
+
+  vec4Vector getVertices();
+  vec3Vector getNormals();
+  vec2Vector getTexCoords();
+  GLushortVector getElements();
+
+  //Resize the vertice, normals and texcoord arrays.
+  void resize(unsigned int size);
+
   virtual void accept(NodeVisitor& visitor) override;
 
   //Initialise shaders with attributes, uniforms e.t.c.
   bool initShaders(GLuint program);
 
 private:
+  vec4Vector m_vertices;
+  vec3Vector m_normals;
+  vec2Vector m_texCoords;
+  GLushortVector m_elements;
+
   //GL attributes.
   GLuint m_vbo_vertices, m_vbo_normals, m_vbo_texCoords, m_ibo_elements;
   GLuint m_vao;

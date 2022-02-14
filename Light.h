@@ -38,13 +38,6 @@ private:
   glm::vec4 m_diffuse;
   glm::vec4 m_specular;
   glm::vec4 m_ambient;
-
-  friend class Scene;
-  std::shared_ptr<Geometry> m_geometry;
-
-  void createGeometry();
-  std::shared_ptr<Geometry>& getGeometry();
-  
 };
 typedef std::vector<std::shared_ptr<Light>> LightVector;
 
