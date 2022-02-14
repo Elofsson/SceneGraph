@@ -27,6 +27,6 @@ void InitVisitor::visit(Geometry &g)
       return;
     }
   g.upload();
-  g.getState()->setProgram(m_program);
+  //g.getState()->setProgram(m_program);
 
 }

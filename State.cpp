@@ -13,6 +13,7 @@ State::State()
   m_textures.resize(2);
   m_material = std::shared_ptr<Material>(new Material());
   m_polygonmode = -1;
+  m_program = 0;
 }
 
 State::State(std::shared_ptr<State> state)
@@ -86,7 +87,7 @@ void State::merge(const std::shared_ptr<State> inputState)
   }
 
   //Update program
-  if(m_program != inputState->getProgram())
+  if(0 != inputState->getProgram())
   {
     //std::cout << "Update state program" << std::endl; 
     m_program = inputState->getProgram();

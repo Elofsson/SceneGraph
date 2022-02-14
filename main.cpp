@@ -95,6 +95,135 @@ void cleanupWindows(GLFWwindow *window)
 }
 
 
+//Build geometry to add
+std::shared_ptr<Transform> buildGeometryByHand()
+{
+  std::shared_ptr<Transform> cubeTransform = std::shared_ptr<Transform>(new Transform());
+  cubeTransform->translate(glm::vec3(-150, -10, 250));
+  cubeTransform->scale(glm::vec3(10, 10, 10));
+  std::shared_ptr<Geometry> cube = std::shared_ptr<Geometry>(new Geometry());
+  cubeTransform->addChild(cube);
+  cube->resize(24);
+
+  //Vertices.
+  cube->insertVertex(glm::vec4(-0.5f, -0.5f, 0.5f, 1.0f), 0);
+  cube->insertVertex(glm::vec4(0.5f, -0.5f, 0.5f, 1.0f), 1);
+  cube->insertVertex(glm::vec4(-0.5f, 0.5f, 0.5f, 1.0f), 2);
+  cube->insertVertex(glm::vec4(0.5f, 0.5f, 0.5f, 1.0f), 3);
+  cube->insertVertex(glm::vec4(-0.5f, 0.5f, 0.5f, 1.0f), 4);
+  cube->insertVertex(glm::vec4(0.5f, 0.5f, 0.5f, 1.0f), 5);
+  cube->insertVertex(glm::vec4(-0.5f, 0.5f, -0.5f, 1.0f), 6);
+  cube->insertVertex(glm::vec4(0.5f, 0.5f, -0.5f, 1.0f), 7);
+  cube->insertVertex(glm::vec4(-0.5f, 0.5f, -0.5f, 1.0f), 8);
+  cube->insertVertex(glm::vec4(0.5f, 0.5f, -0.5f, 1.0f), 9);
+  cube->insertVertex(glm::vec4(-0.5f, -0.5f, -0.5f, 1.0f), 10);
+  cube->insertVertex(glm::vec4(0.5f, -0.5f, -0.5f, 1.0f), 11);
+  cube->insertVertex(glm::vec4(-0.5f, -0.5f, -0.5f, 1.0f), 12);
+  cube->insertVertex(glm::vec4(0.5f, -0.5f, -0.5f, 1.0f), 13);
+  cube->insertVertex(glm::vec4(-0.5f, -0.5f, 0.5f, 1.0f), 14);
+  cube->insertVertex(glm::vec4(0.5f, -0.5f, 0.5f, 1.0f), 15);
+  cube->insertVertex(glm::vec4(0.5f, -0.5f, 0.5f, 1.0f), 16);
+  cube->insertVertex(glm::vec4(0.5f, -0.5f, -0.5f, 1.0f), 17);
+  cube->insertVertex(glm::vec4(0.5f, 0.5f, 0.5f, 1.0f), 18);
+  cube->insertVertex(glm::vec4(0.5f, 0.5f, -0.5f, 1.0f), 19);
+  cube->insertVertex(glm::vec4(-0.5f, -0.5f, -0.5f, 1.0f), 20);
+  cube->insertVertex(glm::vec4(-0.5f, -0.5f, 0.5f, 1.0f), 21);
+  cube->insertVertex(glm::vec4(-0.5f, 0.5f, -0.5f, 1.0f), 22);
+  cube->insertVertex(glm::vec4(-0.5f, 0.5f, 0.5f, 1.0f), 23);
+
+  //Normals.
+  cube->insertNormal(glm::vec3(0.0f, 0.0f, 1.0f), 0);
+  cube->insertNormal(glm::vec3(0.0f, 0.0f, 1.0f), 1);
+  cube->insertNormal(glm::vec3(0.0f, 0.0f, 1.0f), 2);
+  cube->insertNormal(glm::vec3(0.0f, 0.0f, 1.0f), 3);
+  cube->insertNormal(glm::vec3(0.0f, 1.0f, 0.0f), 4);
+  cube->insertNormal(glm::vec3(0.0f, 1.0f, 0.0f), 5);
+  cube->insertNormal(glm::vec3(0.0f, 1.0f, 0.0f), 6);
+  cube->insertNormal(glm::vec3(0.0f, 1.0f, 0.0f), 7);
+  cube->insertNormal(glm::vec3(0.0f, 0.0f, -1.0f), 8);
+  cube->insertNormal(glm::vec3(0.0f, 0.0f, -1.0f), 9);
+  cube->insertNormal(glm::vec3(0.0f, 0.0f, -1.0f), 10);
+  cube->insertNormal(glm::vec3(0.0f, 0.0f, -1.0f), 11);
+  cube->insertNormal(glm::vec3(0.0f, -1.0f, 0.0f), 12);
+  cube->insertNormal(glm::vec3(0.0f, -1.0f, 0.0f), 13);
+  cube->insertNormal(glm::vec3(0.0f, -1.0f, 0.0f), 14);
+  cube->insertNormal(glm::vec3(0.0f, -1.0f, 0.0f), 15);
+  cube->insertNormal(glm::vec3(1.0f, 0.0f, 0.0f), 16);
+  cube->insertNormal(glm::vec3(1.0f, 0.0f, 0.0f), 17);
+  cube->insertNormal(glm::vec3(1.0f, 0.0f, 0.0f), 18);
+  cube->insertNormal(glm::vec3(1.0f, 0.0f, 0.0f), 19);
+  cube->insertNormal(glm::vec3(-1.0f, 0.0f, 0.0f), 20);
+  cube->insertNormal(glm::vec3(-1.0f, 0.0f, 0.0f), 21);
+  cube->insertNormal(glm::vec3(-1.0f, 0.0f, 0.0f), 22);
+  cube->insertNormal(glm::vec3(-1.0f, 0.0f, 0.0f), 23);
+
+  //Texture coordinates.
+  cube->insertTexCoord(glm::vec2(0.695913f, -0.25f), 0);
+  cube->insertTexCoord(glm::vec2(0.304087f, -0.25f), 1);
+  cube->insertTexCoord(glm::vec2(0.695913f, 0.25f), 2);
+  cube->insertTexCoord(glm::vec2(0.304087f, 0.25f), 3);
+  cube->insertTexCoord(glm::vec2(0.695913f, 0.25f), 4);
+  cube->insertTexCoord(glm::vec2(0.304087f, 0.25f), 5);
+  cube->insertTexCoord(glm::vec2(0.695913f, -0.25f), 6);
+  cube->insertTexCoord(glm::vec2(0.304087f, -0.25f), 7);
+  cube->insertTexCoord(glm::vec2(0.695913f, -0.25f), 8);
+  cube->insertTexCoord(glm::vec2(0.304087f, -0.25f), 9);
+  cube->insertTexCoord(glm::vec2(0.695913f, 0.25f), 10);
+  cube->insertTexCoord(glm::vec2(0.304087f, 0.25f), 11);
+  cube->insertTexCoord(glm::vec2(0.695913f, 0.25f), 12);
+  cube->insertTexCoord(glm::vec2(0.304087f, 0.25f), 13);
+  cube->insertTexCoord(glm::vec2(0.695913f, -0.25f), 14);
+  cube->insertTexCoord(glm::vec2(0.304087f, -0.25f), 15);
+  cube->insertTexCoord(glm::vec2(0.304087f, -0.25f), 16);
+  cube->insertTexCoord(glm::vec2(0.304087f, 0.25f), 17);
+  cube->insertTexCoord(glm::vec2(0.304087f, 0.25f), 18);
+  cube->insertTexCoord(glm::vec2(0.304087f, -0.25f), 19);
+  cube->insertTexCoord(glm::vec2(0.695913f, 0.25f), 20);
+  cube->insertTexCoord(glm::vec2(0.695913f, -0.25f), 21);
+  cube->insertTexCoord(glm::vec2(0.695913f, -0.25f), 22);
+  cube->insertTexCoord(glm::vec2(0.695913f, 0.25f), 23);
+
+  //Indices.
+  cube->insertElement(0);
+  cube->insertElement(1);
+  cube->insertElement(2);
+  cube->insertElement(2);
+  cube->insertElement(1);
+  cube->insertElement(3);
+  cube->insertElement(4);
+  cube->insertElement(5);
+  cube->insertElement(6);
+  cube->insertElement(6);
+  cube->insertElement(5);
+  cube->insertElement(7);
+  cube->insertElement(8);
+  cube->insertElement(9);
+  cube->insertElement(10);
+  cube->insertElement(10);
+  cube->insertElement(9);
+  cube->insertElement(11);
+  cube->insertElement(12);
+  cube->insertElement(13);
+  cube->insertElement(14);
+  cube->insertElement(14);
+  cube->insertElement(13);
+  cube->insertElement(15);
+  cube->insertElement(16);
+  cube->insertElement(17);
+  cube->insertElement(18);
+  cube->insertElement(18);
+  cube->insertElement(17);
+  cube->insertElement(19);
+  cube->insertElement(20);
+  cube->insertElement(21);
+  cube->insertElement(22);
+  cube->insertElement(22);
+  cube->insertElement(21);
+  cube->insertElement(23);
+
+  return cubeTransform;
+}
+
 int main(int argc, char** argv) 
 {
   const unsigned SCREEN_WIDTH = 1920;
@@ -122,6 +251,9 @@ int main(int argc, char** argv)
     cleanupWindows(window);
     return 1;
   }
+
+  std::shared_ptr<Transform> object = buildGeometryByHand();
+  application->add(object);
 
   application->initView();
 

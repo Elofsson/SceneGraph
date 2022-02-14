@@ -78,7 +78,7 @@ bool Application::loadMovingLight()
     std::cerr << "Failed to load " << lightObjectPath << std::endl;
     return false;
   }
-  
+
   //Light and object position.
   glm::vec3 position = glm::vec3(0, 1000, -250);
 
@@ -341,4 +341,17 @@ void Application::setScreenSize(unsigned int width, unsigned int height)
 std::shared_ptr<Camera> Application::getCamera()
 {
   return m_sceneRoot->getCamera();
+}
+
+void Application::add(std::shared_ptr<Group> group)
+{
+  if(m_sceneRoot != nullptr)
+  {
+    m_sceneRoot->add(group);
+  }
+
+  else
+  {
+    std::cerr << " Failed to add geometry" << std::endl;
+  }
 }

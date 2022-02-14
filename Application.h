@@ -22,13 +22,12 @@ public:
 
   void reloadScene();
   void render(GLFWwindow* window);
-
   void update(GLFWwindow* window);
-
   void processInput(GLFWwindow* window);
 
   bool loadLodObjects(std::vector<std::string> objectFiles);
   bool loadGroup(std::string model_filename, std::shared_ptr<Group> &group);
+  void add(std::shared_ptr<Group> group);
 
 private:
 
