@@ -11,12 +11,12 @@ InitVisitor::~InitVisitor()
 
 void InitVisitor::visit(Group &g)
 {
-  NodeVisitor::visit(g);
+  NodeVisitor::traverse(g);
 }
 
 void InitVisitor::visit(Transform &t)
 {
-  NodeVisitor::visit(t);
+  NodeVisitor::traverse(t);
 }
 
 void InitVisitor::visit(Geometry &g)

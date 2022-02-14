@@ -153,4 +153,5 @@ void Scene::render()
   useProgram();
   m_updater->visit(*m_root);
   m_renderer->visit(*m_root);
+  //std::cout << "Number of root children " << m_root->getChildren().size() << std::endl;
 }

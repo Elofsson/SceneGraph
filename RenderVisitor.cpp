@@ -2,16 +2,6 @@
 
 using namespace std;
 
-//FIXME see where this should be done.
-/* Apply object's transformation matrix */
-//glm::mat4 obj2World = modelMatrix * this->object2world;
-//glUniformMatrix4fv(m_uniform_m, 1, GL_FALSE, glm::value_ptr(obj2World));
-
-/* Transform normal vectors with transpose of inverse of upper left
-3x3 model matrix (ex-gl_NormalMatrix): */
-//glm::mat3 m_3x3_inv_transp = glm::transpose(glm::inverse(glm::mat3(obj2World)));
-//glUniformMatrix3fv(m_uniform_m_3x3_inv_transp, 1, GL_FALSE, glm::value_ptr(m_3x3_inv_transp));
-
 RenderVisitor::RenderVisitor()
 {
 	std::shared_ptr<State> defaultState = std::shared_ptr<State>(new State());
@@ -20,7 +10,8 @@ RenderVisitor::RenderVisitor()
 
 void RenderVisitor::visit(Group &g)
 { 
-
+	
+	//std::cout << "Visit group" << std::endl;
 	bool pushedState = false;
 	if(!g.emptyState())
 	{
@@ -28,7 +19,7 @@ void RenderVisitor::visit(Group &g)
 		mergeAndPushState(g.getState());
 	}
 
-	NodeVisitor::visit(g);
+	NodeVisitor::traverse(g);
 
 	if(pushedState)
 	{
@@ -38,6 +29,7 @@ void RenderVisitor::visit(Group &g)
 
 void RenderVisitor::visit(Transform &t)
 {
+	//std::cout << "Visit transform" << std::endl;
 	bool pushedState = false;
 	if(!t.emptyState())
 	{
@@ -46,7 +38,6 @@ void RenderVisitor::visit(Transform &t)
 	}
 
   //Push on stack.
-
 	if(m_transform_matrices.empty())
   {
     m_transform_matrices.push(t.object2world);
@@ -61,7 +52,7 @@ void RenderVisitor::visit(Transform &t)
   }
 
 	//Traverse transforms children.
-	NodeVisitor::visit(t);
+	NodeVisitor::traverse(t);
 
   //Pop stack.
 	m_transform_matrices.pop();
@@ -75,7 +66,7 @@ void RenderVisitor::visit(Transform &t)
 
 void RenderVisitor::visit(Geometry &g)
 {
-	
+	//std::cout << "Visit geometry " << std::endl;
 	//Set uniforms here maybe?
 	if(m_transform_matrices.empty())
 	{

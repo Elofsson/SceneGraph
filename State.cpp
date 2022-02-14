@@ -12,6 +12,7 @@ State::State()
   m_lights.resize(0);
   m_textures.resize(2);
   m_material = std::shared_ptr<Material>(new Material());
+  m_polygonmode = -1;
 }
 
 State::State(std::shared_ptr<State> state)
@@ -79,9 +80,9 @@ void State::merge(const std::shared_ptr<State> inputState)
   }
 
   //Update polygonmode
-  if(m_polygonmode != inputState->getPolygonMode())
+  if(inputState->getPolygonMode() != -1)
   {
-    //std::cout << "Update state polygonmode" << std::endl;
+    std::cout << "Update state polygonmode" << std::endl;
     m_polygonmode = inputState->getPolygonMode();
   }
 
@@ -150,6 +151,17 @@ bool State::apply()
       //std::cout << "Apply light[" << i << "]" << std::endl;
       l->apply(m_program, i++);
     }
+  }
+
+  //Apply polygonmode
+  if(m_polygonmode != -1)
+  {
+    glPolygonMode(GL_FRONT_AND_BACK, m_polygonmode);
+  }
+
+  else
+  {
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
   }
 
   return true;

@@ -4,7 +4,6 @@
 
 Group::Group() 
 {
-  std::cout << "New group" << std::endl; 
 }
 
 Group::~Group()
@@ -25,21 +24,13 @@ void Group::accept(NodeVisitor &visitor)
 {
   if(isEnabled())
   {
-    traverse(visitor);
+    visitor.visit(*this);
   }
 }
 
 NodeVector Group::getChildren()
 {
   return m_nodes;
-}
-
-void Group::traverse(NodeVisitor &visitor)
-{
-  for(auto child : m_nodes)
-  {
-    child->accept(visitor);
-  }
 }
 
 BoundingBox Group::calculateBoundingBox(glm::mat4 modelMat)

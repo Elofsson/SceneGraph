@@ -158,8 +158,6 @@ size_t ExtractMaterials(const aiScene *scene, MaterialVector& materials, Texture
       path.Clear();
       ai_material->GetTexture(aiTextureType_DISPLACEMENT, 0, &path);
     }
-    
-    Debug::printMaterial(material);
     materials.push_back(material);
   }
 
@@ -338,7 +336,7 @@ std::shared_ptr<Group> load3DModelFile(const std::string& filename)
   std::stack<glm::mat4> transformStack;
   transformStack.push(glm::mat4());
 
-  std::shared_ptr<Group> group = std::shared_ptr<Group>(new Group);
+  std::shared_ptr<Group> group = std::shared_ptr<Group>(new Group());
   group->name = filename;
 
   parseNodes(root_node, materials, textures, transformStack, group, aiScene);
@@ -527,7 +525,6 @@ bool loadSceneFile(const std::string& sceneFile, std::shared_ptr<Group>& group)
 
           auto t = mt * rz * ry * rx;
           t = glm::scale(t, s_vec);
-          Debug::printMat4("Root matrix", t);
           std::shared_ptr<Transform> initTransform = std::shared_ptr<Transform>(new Transform());
           initTransform->object2world = t;
           initTransform->addChild(loadedGroup);

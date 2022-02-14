@@ -30,13 +30,6 @@ void Geometry::draw() {
     glBindVertexArray(m_vao);
     CHECK_GL_ERROR_LINE_FILE();
   }
-
-  //FIXME see where these should go.
-  //if (normals.size() == 0)
-  //{
-    //draw_bbox();
-    //return;
-  //}
   
   CHECK_GL_ERROR_LINE_FILE();
 
@@ -222,6 +215,7 @@ void Geometry::upload()
 
 void Geometry::apply(glm::mat4 transformMatrix)
 {
+
   glUniformMatrix4fv(m_uniform_m, 1, GL_FALSE, glm::value_ptr(transformMatrix));
 
   	/* Transform normal vectors with transpose of inverse of upper left

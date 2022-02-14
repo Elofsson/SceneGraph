@@ -14,7 +14,7 @@ void LodCallback::update()
 {
   glm::vec3 cameraPos = m_camera->getPosition();
   float objectCameraDiff =  glm::distance(m_boundingbox.getCenter(), cameraPos);
-  float levelIncrease = m_boundingbox.getRadius();
+  float levelIncrease = m_boundingbox.getRadius() / 2;
   float currentLevel = levelIncrease;
 
   NodeVector children = m_group->getChildren();

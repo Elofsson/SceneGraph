@@ -46,17 +46,19 @@ bool Application::initResources(const std::string& model_filename, const std::st
 
   m_sceneRoot->add(rootGroup);
 
-  //Create second light.
+  //Create light.
   std::shared_ptr<Light> light2 = std::shared_ptr<Light>(new Light);
   light2->setDiffuse(glm::vec4(1, 1, 1, 1));
   light2->setSpecular(glm::vec4(1, 1, 1, 1));
   light2->setPosition(glm::vec4(1.0, 2.0, -2.0, 0.0));
   m_sceneRoot->add(light2);
 
+  buildGeometry();
+
+  m_sceneRoot->createDotFile("dotfile");
   return 1;
 }
 
-//TODO move to main.
 bool Application::buildGeometry()
 {
   std::string ironman_modelfile = "scenes/custom.xml";
@@ -67,6 +69,16 @@ bool Application::buildGeometry()
   }
 
   m_sceneRoot->add(ironmanModel);
+
+  //Build level of detail objects.
+  std::vector<std::string> cowLodModels;
+  cowLodModels.push_back("models/cow_0.99.obj");
+  cowLodModels.push_back("models/cow_0.5.obj");
+  cowLodModels.push_back("models/cow_0.3.obj");
+  cowLodModels.push_back("models/cow_0.1.obj");
+  cowLodModels.push_back("models/cow_0.05.obj");
+  cowLodModels.push_back("models/cow_0.01.obj");
+  loadLodObjects(cowLodModels);
 
   return true;
 }
@@ -87,12 +99,15 @@ bool Application::loadLodObjects(std::vector<std::string> objectFiles)
     lodRoot->addChild(lodGroup);
   }
   
-  //Create callbacks.
+  //Set wireframe for the whole lod group.
+  std::shared_ptr<State> lodState = std::shared_ptr<State>(new State());
+  lodState->setPolygonMode(GL_LINE);
+  lodRoot->setState(lodState);
+
+  //Add LOD callback.
   std::shared_ptr<LodCallback> lodCallback = std::shared_ptr<LodCallback>(new LodCallback(lodRoot, m_sceneRoot->getCamera()));
   m_sceneRoot->getRoot()->addCallback(lodCallback);
   m_sceneRoot->add(lodRoot);
-
-  m_sceneRoot->createDotFile("dotfile");
   return true;
 }
 

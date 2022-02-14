@@ -16,13 +16,9 @@ class NodeVisitor
 public:
   NodeVisitor();
   virtual ~NodeVisitor();
-  virtual void visit(Group &g);
-  virtual void visit(Transform &t);
+  virtual void visit(Group &g) = 0;
+  virtual void visit(Transform &t) = 0;
   virtual void visit(Geometry &g) = 0;
-
-protected:
-  GLuint m_program;
-
-private:
   void traverse(Group &group);
+  void traverse(Transform &t);
 };

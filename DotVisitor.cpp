@@ -30,7 +30,7 @@ void DotVisitor::visit(Group &g)
   std::cout << "Group " << groupDotStr << std::endl;
   m_dotfile << groupDotStr << "[type=s]" << std::endl;
 
-  NodeVisitor::visit(g);
+  NodeVisitor::traverse(g);
 
   m_dotstack.pop();
 }
@@ -52,7 +52,7 @@ void DotVisitor::visit(Transform &t)
   std::cout << "Transform " << transformDotStr << std::endl;
   m_dotfile << transformDotStr << "[type=s]" << std::endl;
 
-  NodeVisitor::visit(t);
+  NodeVisitor::traverse(t);
 
   m_dotstack.pop();
 }
