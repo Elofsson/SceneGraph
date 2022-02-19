@@ -244,7 +244,6 @@ void parseNodes(aiNode *root_node, MaterialVector& materials, TextureVector& tex
     
     if(!textures.empty() && textures.size() > mesh->mMaterialIndex)
     {
-      std::cout << "Set texture for geometry" << std::endl;
       std::shared_ptr<Texture> texture = textures[mesh->mMaterialIndex];
       if(texture != nullptr)
       {

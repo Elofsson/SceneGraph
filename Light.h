@@ -71,10 +71,39 @@ public:
    */
   bool isEnabled();
 
+  /**
+   * @brief Set the Ambient object
+   * 
+   * @param ambient 
+   */
   void setAmbient(glm::vec4 ambient);
+
+  /**
+   * @brief Set the Diffuse object
+   * 
+   * @param diffuse 
+   */
   void setDiffuse(glm::vec4 diffuse);
+
+  /**
+   * @brief Set the Specular object
+   * 
+   * @param specular 
+   */
   void setSpecular(glm::vec4 specular);
+
+  /**
+   * @brief Set the Position object
+   * 
+   * @param position 
+   */
   void setPosition(glm::vec4 position);
+
+  /**
+   * @brief Set the Enabled object
+   * 
+   * @param enabled 
+   */
   void setEnabled(bool enabled);
 
 private:

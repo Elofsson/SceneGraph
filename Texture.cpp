@@ -10,59 +10,31 @@ Texture::Texture()
 bool Texture::init(const char *image, unsigned int slot, GLenum texType, GLenum pixelType)
 {
 
-  //Check if the image is valid
-  std::string filepath = image;
-
-	bool exist = vr::FileSystem::exists(filepath);
-
-	std::string vrPath = vr::FileSystem::getEnv("VR_PATH");
-	if (vrPath.empty())
-		std::cerr << "The environment variable VR_PATH is not set. It should point to the directory where the vr library is (just above models)" << std::endl;
-
-	if (!exist && !vrPath.empty())
+	//Get texture path.
+	std::string filePath = getFilePath(image);
+	if(filePath.empty())
 	{
-		filepath = std::string(vrPath) + "/" + filepath;
-		exist = vr::FileSystem::exists(filepath);
-	}
-	if (!exist)
-	{
-		std::cerr << "Unable to locate image: " << image << std::endl;
 		return false;
 	}
   
   //Read the image.
   int widthImg, heightImg, numColCh;
-  unsigned char *bytes = readTexture(filepath, &widthImg, &heightImg, &numColCh);
+  unsigned char *bytes = readTexture(filePath, &widthImg, &heightImg, &numColCh);
   if(!bytes)
   {
     std::cerr << "Error reading image: " << image << std::endl;
 		return false;
   }
 
-  GLenum texFormat = GL_RGBA;
+	//Setup texture attributes.
   m_slot = slot;
   m_type = texType;
 
-
+	GLenum texFormat = GL_RGBA;
   if (numColCh == 3)
 		texFormat = GL_RGB;
 
-  //Generates an OpenGL texture object
-	glGenTextures(1, &m_texture_id);
-
-	// Assigns the texture to a Texture Unit
-	glActiveTextureARB(GL_TEXTURE0 + slot);
-	glBindTexture(texType, m_texture_id);
-
-	CHECK_GL_ERROR_LINE_FILE();
-
-	// Configures the type of algorithm that is used to make the image smaller or bigger
-	glTexParameteri(texType, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexParameteri(texType, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-
-	// Configures the way the texture repeats (if it does at all)
-	glTexParameteri(texType, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(texType, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	setupTexture();
 
 	// Assigns the image to the OpenGL Texture object
 	glTexImage2D(texType, 0, GL_RGBA, widthImg, heightImg, 0, texFormat, pixelType, bytes);
@@ -73,9 +45,115 @@ bool Texture::init(const char *image, unsigned int slot, GLenum texType, GLenum 
 	stbi_image_free(bytes);
 
 	// Unbinds the OpenGL Texture object so that it can't accidentally be modified
-	glBindTexture(texType, 0);
-
+	glBindTexture(m_type, 0);
   return true;
+}
+
+bool Texture::initCubemap(std::vector<std::string> textures, unsigned int slot, GLenum texType, GLenum pixelType)
+{
+	//Setup texture attributes with defaults.
+  m_slot = slot;
+  m_type = texType;
+	setupTexture();
+
+	for(int i = 0; i < textures.size(); i++)
+	{	
+		//Validate image.
+		std::string filePath = getFilePath(textures[i].c_str());
+		if(filePath.empty())
+		{
+			return false;
+		}
+
+		//Default format
+		GLenum texFormat = GL_RGBA;
+
+		//Read the image.
+		int widthImg, heightImg, numColCh;
+		unsigned char *bytes = readTexture(filePath, &widthImg, &heightImg, &numColCh);
+		if(!bytes)
+		{
+			std::cerr << "Error reading image: " << filePath << std::endl;
+			return false;
+		}
+
+		//Update format depending on the type of image.
+		if (numColCh == 3)
+			texFormat = GL_RGB;
+
+		glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 
+                    0, GL_RGBA, widthImg, heightImg, 0, texFormat, pixelType, bytes);
+
+		stbi_image_free(bytes);
+	}
+
+	//Update filter and wrap settings.
+	setFilterSetting(GL_LINEAR);
+	setWrapSetting(GL_CLAMP_TO_EDGE);
+
+	glBindTexture(m_type, 0);
+	return true;
+}
+
+//NOTE Call unbind after this is called.
+void Texture::setupTexture()
+{
+	//Generates an OpenGL texture object
+	glGenTextures(1, &m_texture_id);
+
+	// Assigns the texture to a Texture Unit
+	glActiveTextureARB(GL_TEXTURE0 + m_slot);
+	glBindTexture(m_type, m_texture_id);
+
+	CHECK_GL_ERROR_LINE_FILE();
+
+	// Configures the type of algorithm that is used to make the image smaller or bigger
+	setFilterSetting(GL_NEAREST);
+
+	// Configures the way the texture repeats (if it does at all)
+	setWrapSetting(GL_REPEAT);
+}
+
+std::string Texture::getFilePath(const char *image)
+{
+	//Check if the image is valid
+	std::string empty = "";
+  std::string filepath = image;
+
+	bool exist = vr::FileSystem::exists(filepath);
+
+	std::string vrPath = vr::FileSystem::getEnv("VR_PATH");
+	if (vrPath.empty())
+	{
+		std::cerr << "The environment variable VR_PATH is not set. It should point to the directory where the vr library is (just above models)" << std::endl;
+		return empty;
+	}
+
+	if (!exist && !vrPath.empty())
+	{
+		filepath = std::string(vrPath) + "/" + filepath;
+		exist = vr::FileSystem::exists(filepath);
+	}
+	if (!exist)
+	{
+		std::cerr << "Unable to locate image: " << image << std::endl;
+		return empty;
+	}
+
+	return filepath;
+}
+
+void Texture::setWrapSetting(GLuint wrapSetting)
+{
+	glTexParameteri(m_type, GL_TEXTURE_WRAP_S, wrapSetting);
+	glTexParameteri(m_type, GL_TEXTURE_WRAP_T, wrapSetting);
+	//glTexParameteri(m_type, GL_TEXUTRE_WRAP_R, wrapSetting);
+}
+
+void Texture::setFilterSetting(GLuint filterSetting)
+{
+	glTexParameteri(m_type, GL_TEXTURE_MIN_FILTER, filterSetting);
+	glTexParameteri(m_type, GL_TEXTURE_MAG_FILTER, filterSetting);
 }
 
 unsigned char* Texture::readTexture(std::string filePath, int *width, int *height, int *numChannels)
@@ -89,14 +167,10 @@ unsigned char* Texture::readTexture(std::string filePath, int *width, int *heigh
 
 
 //TODO check this apply method, looks wierd.
-void Texture::apply(GLuint program)
+void Texture::apply(GLuint program, std::string uniform)
 {
 
 	bind();
-
-	std::string uniform = "material.textures[";
-	uniform.append(std::to_string(m_slot));
-	uniform.append("]");
 
   GLuint texUni = glGetUniformLocation(program, uniform.c_str());
   glUniform1i(texUni, m_slot);

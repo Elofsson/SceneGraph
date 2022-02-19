@@ -3,6 +3,7 @@
 #include "GL/glew.h"
 #include <vector>
 #include <memory>
+#include <string>
 
 //TODO Should contain textures to be applied to surfaces.
 //TODO Method to apply texture.
@@ -12,11 +13,18 @@ class Texture
 public:
   Texture();
   bool init(const char *image, unsigned int slot, GLenum texType, GLenum pixelType);
-  void apply(GLuint program);
+  bool initCubemap(std::vector<std::string> textures, unsigned int slot, GLenum texType, GLenum pixelType);
+  void apply(GLuint program, std::string uniform);
+  void setWrapSetting(GLuint wrapSetting);
+  void setFilterSetting(GLuint filterSetting);
   void bind();
   void unbind();
 
 private:
+  std::string getFilePath(const char *image);
+  void setupTexture();
+  void cleanupInit(unsigned char *bytes);
+  
   unsigned char* readTexture(std::string filePath, int *width, int *height, int *numChannels);
 
   GLuint m_texture_id;

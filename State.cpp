@@ -2,10 +2,6 @@
 #include <iostream>
 #include "Debug.h"
 #include <vr/glErrorUtil.h>
-//State::State(GLuint program)
-//{
-  //m_program = program;
-//}
 
 State::State()
 {
@@ -131,7 +127,10 @@ bool State::apply()
 
     if(slotActive[i])
     {
-      m_textures[i]->apply(m_program);
+      std::string uniform = "material.textures[";
+	    uniform.append(std::to_string(i));
+	    uniform.append("]");
+      m_textures[i]->apply(m_program, uniform);
     }
   }
 

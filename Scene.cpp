@@ -9,40 +9,20 @@ Scene::Scene() : m_uniform_numberOfLights(-1)
   m_camera = std::shared_ptr<Camera>(new Camera);
   m_root = std::shared_ptr<Group>(new Group);
   m_root->name = "Root ";
-  m_program = glCreateProgram();
 }
 
 bool Scene::initShaders(const std::string& vshader_filename, const std::string& fshader_filename)
 {
   /* Compile and link shaders */
-  GLint link_ok = GL_FALSE;
-  GLint validate_ok = GL_FALSE;
-  GLuint vs, fs;
-  if ((vs = vr::loadShader(vshader_filename, GL_VERTEX_SHADER)) == 0) return false;
-  if ((fs = vr::loadShader(fshader_filename, GL_FRAGMENT_SHADER)) == 0) return false;
-
-  glAttachShader(m_program, vs);
-  glAttachShader(m_program, fs);
-  glLinkProgram(m_program);
-  glGetProgramiv(m_program, GL_LINK_STATUS, &link_ok);
-  if (!link_ok) {
-    fprintf(stderr, "glLinkProgram:");
-    vr::printCompilationError(m_program);
+  int id = addShader(vshader_filename, fshader_filename);
+  if(id == -1)
     return false;
-  }
-  glValidateProgram(m_program);
-  glGetProgramiv(m_program, GL_VALIDATE_STATUS, &validate_ok);
-  if (!validate_ok) {
-    fprintf(stderr, "glValidateProgram:");
-    vr::printCompilationError(m_program);
-    return false;
-  }
 
-  m_camera->init(m_program);
+  m_camera->init(m_programs[id]);
 
   //Set root state.
   std::shared_ptr<State> rootState = std::shared_ptr<State>(new State());
-  rootState->setProgram(m_program);
+  rootState->setProgram(m_programs[id]);
   rootState->setPolygonMode(GL_FILL);
   rootState->setCullFace(true);
   m_root->setState(rootState);
@@ -52,6 +32,38 @@ bool Scene::initShaders(const std::string& vshader_filename, const std::string& 
   m_updater = std::shared_ptr<UpdateVisitor>(new UpdateVisitor());
 
   return true;
+}
+
+int Scene::addShader(const std::string& vshader_filename, const std::string& fshader_filename)
+{
+  /* Compile and link shaders */
+  GLuint program = glCreateProgram();
+  GLint link_ok = GL_FALSE;
+  GLint validate_ok = GL_FALSE;
+  GLuint vs, fs;
+  if ((vs = vr::loadShader(vshader_filename, GL_VERTEX_SHADER)) == 0) return false;
+  if ((fs = vr::loadShader(fshader_filename, GL_FRAGMENT_SHADER)) == 0) return false;
+
+  glAttachShader(program, vs);
+  glAttachShader(program, fs);
+  glLinkProgram(program);
+  glGetProgramiv(program, GL_LINK_STATUS, &link_ok);
+  if (!link_ok) {
+    fprintf(stderr, "glLinkProgram:");
+    vr::printCompilationError(program);
+    return -1;
+  }
+  glValidateProgram(program);
+  glGetProgramiv(program, GL_VALIDATE_STATUS, &validate_ok);
+  if (!validate_ok) {
+    fprintf(stderr, "glValidateProgram:");
+    vr::printCompilationError(program);
+    return -1;
+  }
+
+  //Add new program and return id to the program.
+  m_programs.push_back(program);
+  return m_programs.size() - 1;
 }
 
 //Currently apply lights to all children.
@@ -75,10 +87,9 @@ const LightVector& Scene::getLights()
   return m_root->getState()->getLights();
 }
 
-GLuint Scene::getProgram() const
+std::vector<GLuint> Scene::getPrograms() const
 {
-  return
-    m_program;
+  return m_programs;
 }
 
 std::shared_ptr<Camera> Scene::getCamera()
@@ -89,17 +100,26 @@ std::shared_ptr<Camera> Scene::getCamera()
 
 Scene::~Scene()
 {
-  glDeleteProgram(m_program);
+  for(auto program : m_programs)
+  {
+    glDeleteProgram(program);
+  }
 }
 
 void Scene::applyCamera()
 {
-  m_camera->apply(m_program);
+  for(auto program: m_programs)
+  {
+    m_camera->apply(program);
+  }
 }
 
-void Scene::useProgram()
+void Scene::useProgram(int programId)
 {
-  glUseProgram(m_program);
+  if(m_programs.size() > programId && !(programId < 0))
+  {
+    glUseProgram(m_programs[programId]);
+  }
 }
 
 void Scene::createDotFile(std::string fileName)
@@ -110,14 +130,18 @@ void Scene::createDotFile(std::string fileName)
 }
 
 //TODO See if there is another way to init geometries other than initVisitor.
-void Scene::add(std::shared_ptr<Group> node)
+void Scene::add(std::shared_ptr<Group> node, int shader)
 {
   //Initalize new node with initVisitor.
-  InitVisitor *initVisitor = new InitVisitor(m_program);
-  initVisitor->visit(*node);
+  if(m_programs.size() > shader &&!(shader < 0))
+  {
+    GLuint program = m_programs[shader];
+    InitVisitor *initVisitor = new InitVisitor(program);
+    initVisitor->visit(*node);
 
-  //Add the new node to root graph.
-  m_root->addChild(node);
+    //Add the new node to root graph.
+    m_root->addChild(node);
+  }
 }
 
 void Scene::resetTransform()

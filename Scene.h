@@ -14,6 +14,8 @@
 #include "InitVisitor.h"
 class Scene;
 
+#define DEFAULT_SHADER 0
+
 /// <summary>
 /// Class that holds all mesh objects, lights and a camera
 /// </summary>
@@ -50,7 +52,7 @@ public:
   /// Get the shader program
   /// </summary>
   /// <returns>The shader program</returns>
-  GLuint getProgram() const;
+  std::vector<GLuint> getPrograms() const;
 
   /// <summary>
   /// Get the camera
@@ -68,13 +70,13 @@ public:
   /// <summary>
   /// Use the shader program
   /// </summary>
-  void useProgram();
+  void useProgram(int shaderId = DEFAULT_SHADER);
 
   /// <summary>
   /// Add a new group.
   /// </summary>
   /// <param name="node">A new node</param>
-  void add(std::shared_ptr<Group> node);
+  void add(std::shared_ptr<Group> node, int shader = DEFAULT_SHADER);
 
   /// <summary>
   /// Reset all nodes transform to its initial value
@@ -104,6 +106,8 @@ public:
   /// <returns>A bounding box for the whole scene</returns>
   BoundingBox calculateBoundingBox();
 
+  int addShader(const std::string& vshader_filename, const std::string& fshader_filename);
+
   /// <summary>
   /// Render the whole scene
   /// </summary>
@@ -112,6 +116,7 @@ public:
   void createDotFile(std::string fileName);
 
 private:
+  std::vector<GLuint> m_programs;
   std::shared_ptr<Group> m_root;
   NodeVector m_nodes;
   GroupVector m_groups;

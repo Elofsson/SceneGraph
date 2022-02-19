@@ -19,8 +19,6 @@ void DotVisitor::visit(Group &g)
   thisGroup.append(std::to_string(m_groupCounter));
   m_groupCounter++;
 
-  std::cout << thisGroup << std::endl;
-
   std::string previous = m_dotstack.top();
   m_dotstack.push(thisGroup);
   std::string groupDotStr = previous;
