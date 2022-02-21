@@ -57,6 +57,8 @@ bool Application::initResources(const std::string& model_filename, const std::st
       std::cerr << "Failed to load default" << std::endl;
       return false;
     }
+
+    m_sceneRoot->createDotFile("dotfile");
   }
 
   else
@@ -123,10 +125,18 @@ bool Application::buildGeometry()
   cowLodModels.push_back("models/cow_0.05.obj");
   cowLodModels.push_back("models/cow_0.01.obj");
   loadLodObjects(cowLodModels);
-  loadTerrain();
 
+  //Create the terrain within a certain radius.
+  BoundingBox sceneBox = m_sceneRoot->calculateBoundingBox();
+  int radius = sceneBox.getRadius() / 2;
+  if(!loadTrees(radius))
+    return false;
   
-  loadMovingLight();
+  if(!loadMountains(radius))
+    return false;
+
+  if(!loadMovingLight())
+    return false;
 
   return true;
 }
@@ -164,12 +174,8 @@ bool Application::loadLodObjects(std::vector<std::string> objectFiles)
   return true;
 }
 
-bool Application::loadTerrain()
+bool Application::loadTrees(int radius)
 {
-  std::srand(time(NULL));
-  std::shared_ptr<Group> terrainRoot = std::shared_ptr<Group>(new Group());
-  terrainRoot->name = "Terrain root";
-
   //Load trees.
   std::string treeFile = "models/lowpolytree.obj";
   std::shared_ptr<Group> treeModel = std::shared_ptr<Group>(new Group());
@@ -179,11 +185,10 @@ bool Application::loadTerrain()
     return false;
   }
 
+  std::srand(time(NULL));
 
   //Radius used for random generation translations. 
-  BoundingBox sceneBox = m_sceneRoot->calculateBoundingBox();
-  int radius = sceneBox.getRadius() / 2;
-
+  std::shared_ptr<Group> treeRoot = std::shared_ptr<Group>(new Group());
   for(unsigned int i = 0; i < 25; i++)
   {
     std::shared_ptr<Transform> treeTransform = std::shared_ptr<Transform>(new Transform(0, 0, 0));
@@ -193,10 +198,16 @@ bool Application::loadTerrain()
     float z = std::rand() % radius;
     treeTransform->translate(glm::vec3(x, -22, z));
     treeTransform->scale(glm::vec3(15, 15, 15));
-    terrainRoot->addChild(treeTransform);
+    treeRoot->addChild(treeTransform);
   }
 
-  //Load montains
+  m_sceneRoot->add(treeRoot);
+  return true;
+}
+
+bool Application::loadMountains(int radius)
+{
+  //Load model.
   std::string mountainFile = "scenes/mountain.xml";
   std::shared_ptr<Group> mountainModel = std::shared_ptr<Group>(new Group());
   if(!loadGroup(mountainFile, mountainModel))
@@ -205,6 +216,20 @@ bool Application::loadTerrain()
     return false;
   }
 
+  //Load mountain shaders.
+  std::string vmountainShader = "shaders/simple-test-shading.vert.glsl";
+  std::string fmountainShader = "shaders/simple-test-shading.frag.glsl";
+  int shaderId = m_sceneRoot->addShader(vmountainShader, fmountainShader);
+  if(shaderId == -1)
+  {
+    std::cerr << "Failed to load shader: " << vmountainShader << " : " << fmountainShader << std::endl;
+    return false;
+  }
+
+  std::srand(time(NULL));
+
+  //Create 25 transforms containing mountain model.
+  std::shared_ptr<Group> montainRoot = std::shared_ptr<Group>(new Group());
   for(unsigned int i = 0; i < 25; i++)
   {
     std::shared_ptr<Transform> mountainTransform = std::shared_ptr<Transform>(new Transform());
@@ -230,10 +255,11 @@ bool Application::loadTerrain()
     mountainTransform->rotate(glm::vec3(0, 1, 0), rotation);
 
     //Add to terrain root.
-    terrainRoot->addChild(mountainTransform);
+    montainRoot->addChild(mountainTransform);
   }
 
-  m_sceneRoot->add(terrainRoot);
+  //Add montains to scene.
+  m_sceneRoot->add(montainRoot, shaderId);
   return true;
 }
 
@@ -312,15 +338,12 @@ void Application::render(GLFWwindow* window)
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
   m_fpsCounter->render(window);
-
   m_sceneRoot->render();
 }
 
 void Application::update(GLFWwindow* window)
 {
-  m_sceneRoot->useProgram();
   m_sceneRoot->applyCamera();
-
   render(window);
 }
 
@@ -335,7 +358,6 @@ void Application::setScreenSize(unsigned int width, unsigned int height)
   getCamera()->setScreenSize(glm::uvec2(width, height));
   glViewport(0, 0, width, height);
 }
-
 
 std::shared_ptr<Camera> Application::getCamera()
 {

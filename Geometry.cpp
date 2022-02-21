@@ -226,13 +226,14 @@ void Geometry::apply(glm::mat4 transformMatrix)
 
 bool Geometry::initShaders(GLuint program)
 {
-   const char* attribute_name;
+  const char* attribute_name;
   attribute_name = "vertex.position";
   m_attribute_v_coord = glGetAttribLocation(program, attribute_name);
   if (m_attribute_v_coord == -1) {
     fprintf(stderr, "Could not bind attribute %s\n", attribute_name);
     return false;
   }
+
   attribute_name = "vertex.normal";
   m_attribute_v_normal = glGetAttribLocation(program, attribute_name);
   if (m_attribute_v_normal == -1) {

@@ -83,19 +83,6 @@ public:
   /// </summary>
   void resetTransform();
 
-  /// <summary>
-  /// Get a all nodes
-  /// </summary>
-  /// <returns>A vector containing all nodes</returns>
-  const NodeVector& getNodes();
-
-  /// <summary>
-  /// Get the i:th node
-  /// </summary>
-  /// <param name="i">Index in vector</param>
-  /// <returns>A node</returns>
-  std::shared_ptr<Node> getNode(size_t i);
-
   const GroupVector& getGroups();
 
   const std::shared_ptr<Group> getRoot();
@@ -124,8 +111,6 @@ private:
 
   std::shared_ptr<RenderVisitor> m_renderer;
   std::shared_ptr<UpdateVisitor> m_updater;
-
-  GLuint m_program;
   GLint m_uniform_numberOfLights;
 
   std::shared_ptr<Camera> m_camera;

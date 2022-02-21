@@ -116,7 +116,9 @@ private:
   bool buildGeometry();
 
   //Load default terrain.
-  bool loadTerrain();
+  bool loadTrees(int radius);
+
+  bool loadMountains(int radius);
 
   //Load a moving light with attached to a object.
   bool loadMovingLight();

@@ -37,7 +37,6 @@ void State::setMaterial(std::shared_ptr<Material>& material)
 
 void State::merge(const std::shared_ptr<State> inputState)
 {
-
   if(inputState == NULL)
   {
     return;
@@ -83,7 +82,7 @@ void State::merge(const std::shared_ptr<State> inputState)
   }
 
   //Update program
-  if(0 != inputState->getProgram())
+  if(inputState->getProgram() != 0)
   {
     //std::cout << "Update state program" << std::endl; 
     m_program = inputState->getProgram();
@@ -112,6 +111,9 @@ void State::updateLights(LightVector inputLights)
 
 bool State::apply()
 {
+  //std::cout << "Program in state: " << m_program << std::endl;
+  glUseProgram(m_program);
+
   getLocations();
 
   //Apply materials.
@@ -162,7 +164,7 @@ bool State::apply()
   {
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
   }
-
+    
   return true;
 }
 
@@ -221,11 +223,16 @@ bool State::getLocations()
 }
 
 
-void State::unbindTextures()
+void State::unbind()
 {
+  glUseProgram(0);
+
   for(auto texture : m_textures)
   {
-    texture->unbind();
+    if(texture != nullptr)
+    {
+      texture->unbind();
+    }
   }
 }
 

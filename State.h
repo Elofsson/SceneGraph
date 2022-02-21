@@ -37,7 +37,7 @@ public:
 
   bool apply();
   
-  void unbindTextures();
+  void unbind();
 
 private:
   //Retrieve uniform locations.

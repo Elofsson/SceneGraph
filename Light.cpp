@@ -37,6 +37,7 @@ void Light::apply(GLuint program, size_t idx)
             } \
     glUniform4fv(loc, 1, glm::value_ptr(VALUE));
 
+  //TODO make ambient work.
   APPLY_UNIFORM4V(program, "diffuse", this->m_diffuse);
   APPLY_UNIFORM4V(program, "specular", this->m_specular);
   APPLY_UNIFORM4V(program, "position", this->m_position);

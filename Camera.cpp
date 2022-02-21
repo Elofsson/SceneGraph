@@ -181,7 +181,7 @@ bool Camera::init(GLuint program)
     std::cerr << "Could not bind uniform " << uniform_name << std::endl;
     return false;
   }
-
+	
   return true;
 }
 

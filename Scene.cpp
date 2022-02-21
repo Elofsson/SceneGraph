@@ -27,6 +27,8 @@ bool Scene::initShaders(const std::string& vshader_filename, const std::string& 
   rootState->setCullFace(true);
   m_root->setState(rootState);
 
+  std::cout << "Main program: " << m_programs[id] << std::endl;
+
   //Initalize visitors.
   m_renderer = std::shared_ptr<RenderVisitor>(new RenderVisitor());
   m_updater = std::shared_ptr<UpdateVisitor>(new UpdateVisitor());
@@ -50,6 +52,7 @@ int Scene::addShader(const std::string& vshader_filename, const std::string& fsh
   glGetProgramiv(program, GL_LINK_STATUS, &link_ok);
   if (!link_ok) {
     fprintf(stderr, "glLinkProgram:");
+    std::cout << "\t linking failed" << std::endl;
     vr::printCompilationError(program);
     return -1;
   }
@@ -61,20 +64,15 @@ int Scene::addShader(const std::string& vshader_filename, const std::string& fsh
     return -1;
   }
 
+  std::cout << "Created program: " << program << std::endl;
   //Add new program and return id to the program.
   m_programs.push_back(program);
   return m_programs.size() - 1;
 }
 
-//Currently apply lights to all children.
 void Scene::add(std::shared_ptr<Light>& light)
 {
-  //std::shared_ptr<Group> group = std::shared_ptr<Group>(new Group());
-  //group->addChild(light->m_geometry);
   m_root->getState()->addLight(light);
-
-  // Also add the mesh-node
-  //add(group);
 }
 
 const std::shared_ptr<Group> Scene::getRoot()
@@ -108,8 +106,10 @@ Scene::~Scene()
 
 void Scene::applyCamera()
 {
-  for(auto program: m_programs)
+  for(auto program : m_programs)
   {
+    glUseProgram(program);
+    m_camera->init(program);
     m_camera->apply(program);
   }
 }
@@ -132,16 +132,38 @@ void Scene::createDotFile(std::string fileName)
 //TODO See if there is another way to init geometries other than initVisitor.
 void Scene::add(std::shared_ptr<Group> node, int shader)
 {
-  //Initalize new node with initVisitor.
-  if(m_programs.size() > shader &&!(shader < 0))
-  {
-    GLuint program = m_programs[shader];
-    InitVisitor *initVisitor = new InitVisitor(program);
-    initVisitor->visit(*node);
 
-    //Add the new node to root graph.
-    m_root->addChild(node);
+  //Set shader in state from default shader.
+  //Do not have to set default shader explicitly in the state since this is set as default on the root.
+  GLuint programToUse = m_programs[DEFAULT_SHADER];
+  if(shader != DEFAULT_SHADER && m_programs.size() > shader && !(shader < 0))
+  {
+    programToUse = m_programs[shader];
+
+    //Create a new state if there is currently no state set on the node.
+    if(node->emptyState())
+    {
+      std::shared_ptr<State> newState = std::shared_ptr<State>(new State());
+      newState->setProgram(programToUse);
+      node->setState(newState);
+    }
+
+    //Set the program on a already existing state in the node.
+    else
+    {
+      node->getState()->setProgram(programToUse);
+    }
   }
+
+  std::cout << "Init with programid: " << shader << " Actual program: " << programToUse << std::endl;
+
+  //Initalize new node with initVisitor.
+  glUseProgram(programToUse);
+  InitVisitor *initVisitor = new InitVisitor(programToUse);
+  initVisitor->visit(*node);
+
+  //Add the new node to root graph.
+  m_root->addChild(node);
 }
 
 void Scene::resetTransform()
@@ -149,16 +171,6 @@ void Scene::resetTransform()
   //FIXME move reset of transforms to transform.
   //for (auto n : m_nodes)
     //n->resetTransform();
-}
-
-const NodeVector& Scene::getNodes()
-{
-  return m_nodes;
-}
-
-std::shared_ptr<Node> Scene::getNode(size_t i)
-{
-  return m_nodes[i];
 }
 
 BoundingBox Scene::calculateBoundingBox()
@@ -173,8 +185,8 @@ const GroupVector& Scene::getGroups()
 
 void Scene::render()
 {
-  useProgram();
   m_updater->visit(*m_root);
   m_renderer->visit(*m_root);
+  m_renderer->cleanup();
   //std::cout << "Number of root children " << m_root->getChildren().size() << std::endl;
 }
