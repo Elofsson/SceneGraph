@@ -128,5 +128,7 @@ private:
 
   std::shared_ptr<FPSCounter> m_fpsCounter;
   std::string m_loadedFilename, m_loadedVShader, m_loadedFShader;
+  std::vector<int> m_cameras;
+  std::vector<int> m_programs;
   glm::uvec2 m_screenSize;
 };

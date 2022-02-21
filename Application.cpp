@@ -320,10 +320,17 @@ void Application::initView()
   // Set the position/direction of the camera
   getCamera()->set(eye, direction, glm::vec3(0.0, 1.0, 0.0));
   getCamera()->setNearFar(glm::vec2(0.1, distance * 20));
-
   getCamera()->setSceneScale(0.01f * radius);
-
   getCamera()->setFov(90);
+
+  //Create a second camera and use this one.
+  std::shared_ptr<Camera> secondCamera = std::shared_ptr<Camera>(new Camera);
+  secondCamera->set(glm::vec3(eye.x, eye.y, -eye.z), glm::vec3(direction.x, direction.y, -direction.z), glm::vec3(0.0, 1.0, 0.0));
+  secondCamera->setNearFar(glm::vec2(0.1, distance * 20));
+  secondCamera->setSceneScale(0.01f * radius);
+  secondCamera->setFov(90);
+  int cameraId = m_sceneRoot->addCamera(secondCamera);
+  m_sceneRoot->selectCamera(cameraId);
 
   glEnable(GL_CULL_FACE);
   glEnable(GL_DEPTH_TEST);
@@ -361,7 +368,7 @@ void Application::setScreenSize(unsigned int width, unsigned int height)
 
 std::shared_ptr<Camera> Application::getCamera()
 {
-  return m_sceneRoot->getCamera();
+  return m_sceneRoot->getSelectedCamera();
 }
 
 void Application::add(std::shared_ptr<Group> group)

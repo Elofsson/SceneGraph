@@ -6,10 +6,20 @@
 
 Scene::Scene() : m_uniform_numberOfLights(-1)
 {
-  m_camera = std::shared_ptr<Camera>(new Camera);
+  m_cameras.push_back(std::shared_ptr<Camera>(new Camera));
+  m_selectedCamera = DEFAULT_CAMERA;
   m_root = std::shared_ptr<Group>(new Group);
   m_root->name = "Root ";
 }
+
+Scene::~Scene()
+{
+  for(auto program : m_programs)
+  {
+    glDeleteProgram(program);
+  }
+}
+
 
 bool Scene::initShaders(const std::string& vshader_filename, const std::string& fshader_filename)
 {
@@ -17,8 +27,8 @@ bool Scene::initShaders(const std::string& vshader_filename, const std::string& 
   int id = addShader(vshader_filename, fshader_filename);
   if(id == -1)
     return false;
-
-  m_camera->init(m_programs[id]);
+  
+  m_cameras[DEFAULT_CAMERA]->init(m_programs[id]);
 
   //Set root state.
   std::shared_ptr<State> rootState = std::shared_ptr<State>(new State());
@@ -26,8 +36,6 @@ bool Scene::initShaders(const std::string& vshader_filename, const std::string& 
   rootState->setPolygonMode(GL_FILL);
   rootState->setCullFace(true);
   m_root->setState(rootState);
-
-  std::cout << "Main program: " << m_programs[id] << std::endl;
 
   //Initalize visitors.
   m_renderer = std::shared_ptr<RenderVisitor>(new RenderVisitor());
@@ -64,7 +72,6 @@ int Scene::addShader(const std::string& vshader_filename, const std::string& fsh
     return -1;
   }
 
-  std::cout << "Created program: " << program << std::endl;
   //Add new program and return id to the program.
   m_programs.push_back(program);
   return m_programs.size() - 1;
@@ -90,18 +97,22 @@ std::vector<GLuint> Scene::getPrograms() const
   return m_programs;
 }
 
-std::shared_ptr<Camera> Scene::getCamera()
-{
-  return
-    m_camera;
+std::shared_ptr<Camera> Scene::getCamera(int cameraId)
+{ 
+  //check if such a camera exists.
+  if(cameraId < m_cameras.size())
+  {
+    return m_cameras[cameraId];
+  }
+
+  //Otherwise, return default camera
+  return m_cameras[DEFAULT_CAMERA];
 }
 
-Scene::~Scene()
+int Scene::addCamera(std::shared_ptr<Camera> camera)
 {
-  for(auto program : m_programs)
-  {
-    glDeleteProgram(program);
-  }
+  m_cameras.push_back(camera);
+  return m_cameras.size() - 1;
 }
 
 void Scene::applyCamera()
@@ -109,9 +120,27 @@ void Scene::applyCamera()
   for(auto program : m_programs)
   {
     glUseProgram(program);
-    m_camera->init(program);
-    m_camera->apply(program);
+    m_cameras[m_selectedCamera]->init(program);
+    m_cameras[m_selectedCamera]->apply(program);
   }
+}
+
+bool Scene::selectCamera(int cameraId)
+{
+  //Select the new camera if id exists, otherwise keep using the previous camera.
+  if(cameraId < m_cameras.size())
+  {
+    m_selectedCamera = cameraId;
+    applyCamera();
+    return true;
+  }
+
+  return false;
+}
+
+std::shared_ptr<Camera> Scene::getSelectedCamera()
+{
+  return m_cameras[m_selectedCamera];
 }
 
 void Scene::useProgram(int programId)

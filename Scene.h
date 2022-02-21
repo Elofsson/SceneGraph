@@ -15,6 +15,7 @@
 class Scene;
 
 #define DEFAULT_SHADER 0
+#define DEFAULT_CAMERA 0
 
 /// <summary>
 /// Class that holds all mesh objects, lights and a camera
@@ -58,7 +59,13 @@ public:
   /// Get the camera
   /// </summary>
   /// <returns>The camera</returns>
-  std::shared_ptr<Camera> getCamera();
+  std::shared_ptr<Camera> getCamera(int cameraId = DEFAULT_CAMERA);
+
+  int addCamera(std::shared_ptr<Camera> camera);
+
+  bool selectCamera(int cameraId);
+
+  std::shared_ptr<Camera> getSelectedCamera();
 
   ~Scene();
 
@@ -104,6 +111,8 @@ public:
 
 private:
   std::vector<GLuint> m_programs;
+  std::vector<std::shared_ptr<Camera>> m_cameras;
+  unsigned int m_selectedCamera;
   std::shared_ptr<Group> m_root;
   NodeVector m_nodes;
   GroupVector m_groups;
@@ -112,7 +121,5 @@ private:
   std::shared_ptr<RenderVisitor> m_renderer;
   std::shared_ptr<UpdateVisitor> m_updater;
   GLint m_uniform_numberOfLights;
-
-  std::shared_ptr<Camera> m_camera;
 };
 
