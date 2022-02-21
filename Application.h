@@ -110,6 +110,10 @@ public:
    */
   void add(std::shared_ptr<Group> group);
 
+  void switchCamera();
+
+  int addCamera(std::shared_ptr<Camera> camera, bool selectCamera = false);
+
 private:
 
   //Default geometry if no argument is provided or failes to be loaded in.

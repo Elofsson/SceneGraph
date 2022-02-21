@@ -39,6 +39,15 @@ void keyboard_callback(GLFWwindow* window, int key, int scancode, int action, in
     if (auto app = g_applicationPtr.lock())
       app->reloadScene();
 
+  if (key == GLFW_KEY_C && action == GLFW_PRESS)
+  {
+    if (auto app = g_applicationPtr.lock())
+    {
+      std::cout << "Switch camera main" << std::endl;
+      app->switchCamera();
+    }
+  }
+
 }
 
 void window_size_callback(GLFWwindow* window, int width, int height)

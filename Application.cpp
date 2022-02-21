@@ -36,6 +36,8 @@ bool Application::initResources(const std::string& model_filename, const std::st
 
   if (!m_sceneRoot->initShaders(vshader_filename, fshader_filename))
     return false;
+  
+  m_cameras.push_back(m_sceneRoot->getSelectedCameraId());
 
   //Create light.
   std::shared_ptr<Light> light2 = std::shared_ptr<Light>(new Light);
@@ -329,14 +331,31 @@ void Application::initView()
   secondCamera->setNearFar(glm::vec2(0.1, distance * 20));
   secondCamera->setSceneScale(0.01f * radius);
   secondCamera->setFov(90);
-  int cameraId = m_sceneRoot->addCamera(secondCamera);
-  m_sceneRoot->selectCamera(cameraId);
+  addCamera(secondCamera);
+
+  //Create a third camera and use this one.
+  std::shared_ptr<Camera> centerCamera = std::shared_ptr<Camera>(new Camera);
+  centerCamera->set(box.getCenter(), direction, glm::vec3(0.0, 1.0, 0.0));
+  centerCamera->setNearFar(glm::vec2(0.1, distance * 20));
+  centerCamera->setSceneScale(0.01f * radius);
+  centerCamera->setFov(90);
+  addCamera(centerCamera);
 
   glEnable(GL_CULL_FACE);
   glEnable(GL_DEPTH_TEST);
   glDepthFunc(GL_LESS);
   glFrontFace(GL_CCW);
   glCullFace(GL_BACK);
+}
+
+int Application::addCamera(std::shared_ptr<Camera> camera, bool selectCamera)
+{
+  int cameraId = m_sceneRoot->addCamera(camera);
+  m_cameras.push_back(cameraId);
+
+  if(selectCamera)
+    m_sceneRoot->selectCamera(cameraId);
+  return cameraId;
 }
 
 void Application::render(GLFWwindow* window)
@@ -381,5 +400,40 @@ void Application::add(std::shared_ptr<Group> group)
   else
   {
     std::cerr << " Failed to add geometry" << std::endl;
+  }
+}
+
+void Application::switchCamera()
+{
+  int currentCameraId = m_sceneRoot->getSelectedCameraId();
+  std::cout << "Current camera: " << currentCameraId << std::endl;
+  for(unsigned int i = 0; i < m_cameras.size(); i++)
+  {
+    int cameraId = m_cameras[i];
+    if(currentCameraId == cameraId)
+    {
+      std::cout << "FOund camera" << std::endl;
+
+      //Determine if the next element should be used or if the
+      //The if the first camera is to be selected again.
+      i++;
+      int cameraIndex = 0;
+      if(i < m_cameras.size())
+      {
+        std::cout << "Use next camera" << std::endl;
+        cameraIndex = i;
+      }
+
+      //If the this was the last camera, select the first one again,
+      else
+      {
+        std::cout << "Start from beginning" << std::endl;
+        cameraIndex = 0;
+      }
+      
+      std::cout << "Use camera at index: " << cameraIndex << std::endl;
+      m_sceneRoot->selectCamera(m_cameras[cameraIndex]);
+      return;
+    }
   }
 }

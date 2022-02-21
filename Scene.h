@@ -67,6 +67,8 @@ public:
 
   std::shared_ptr<Camera> getSelectedCamera();
 
+  int getSelectedCameraId();
+
   ~Scene();
 
   /// <summary>

@@ -143,6 +143,11 @@ std::shared_ptr<Camera> Scene::getSelectedCamera()
   return m_cameras[m_selectedCamera];
 }
 
+int Scene::getSelectedCameraId()
+{
+  return m_selectedCamera;
+}
+
 void Scene::useProgram(int programId)
 {
   if(m_programs.size() > programId && !(programId < 0))
