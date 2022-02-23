@@ -227,21 +227,21 @@ void Geometry::apply(glm::mat4 transformMatrix)
 bool Geometry::initShaders(GLuint program)
 {
   const char* attribute_name;
-  attribute_name = "vertex.position";
+  attribute_name = "inPosition";
   m_attribute_v_coord = glGetAttribLocation(program, attribute_name);
   if (m_attribute_v_coord == -1) {
     fprintf(stderr, "Could not bind attribute %s\n", attribute_name);
     return false;
   }
 
-  attribute_name = "vertex.normal";
+  attribute_name = "inNormal";
   m_attribute_v_normal = glGetAttribLocation(program, attribute_name);
   if (m_attribute_v_normal == -1) {
     fprintf(stderr, "Could not bind attribute %s\n", attribute_name);
     return false;
   }
 
-  attribute_name = "vertex.texCoord";
+  attribute_name = "inTexCoord";
   m_attribute_v_texCoords = glGetAttribLocation(program, attribute_name);
   if (m_attribute_v_texCoords == -1) {
     fprintf(stderr, "Could not bind attribute %s\n", attribute_name);
