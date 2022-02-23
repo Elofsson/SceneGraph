@@ -11,7 +11,7 @@ public:
   RenderToTexture(unsigned int width, unsigned int height, GLuint program);
   void render(std::shared_ptr<Camera> camera, std::shared_ptr<Group> startNode);
   GLuint getProgram();
-  void bind();
+  std::shared_ptr<Texture> getTexture();
 
 private:
   GLuint m_framebuffer;

@@ -57,8 +57,10 @@ void Texture::initEmpty(unsigned int width, unsigned int height, unsigned int sl
 
 	setupTexture();
 
+  setWrapSetting(GL_CLAMP_TO_EDGE);
+
 	// Assigns the image to the OpenGL Texture object
-	glTexImage2D(texType, 0, GL_DEPTH_COMPONENT, width, height, 0, GL_DEPTH_COMPONENT, pixelType, 0);
+	glTexImage2D(texType, 0, GL_DEPTH_COMPONENT24, width, height, 0, GL_DEPTH_COMPONENT, pixelType, 0);
 
 	// Unbinds the OpenGL Texture object so that it can't accidentally be modified
 	glBindTexture(m_type, 0);
@@ -185,7 +187,7 @@ unsigned char* Texture::readTexture(std::string filePath, int *width, int *heigh
 void Texture::apply(GLuint program, std::string uniform)
 {
 
-	bind();
+  bind();
 
   GLuint texUni = glGetUniformLocation(program, uniform.c_str());
   glUniform1i(texUni, m_slot);

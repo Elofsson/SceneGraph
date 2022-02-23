@@ -190,11 +190,11 @@ void Camera::setNearFar(const glm::vec2& nearFar)
   m_nearFar = nearFar;
 }
 
-void Camera::apply(GLuint program)
+void Camera::apply(GLuint program, int projectionType)
 {
 	// Initializes matrices since otherwise they will be the null matrix
 	glm::mat4 view = glm::mat4(1.0f);
-	glm::mat4 projection = glm::mat4(1.0f);
+	glm::mat4 projectionMat = glm::mat4(1.0f);
 
 	// Makes camera look in the right direction from the right position
 	view = glm::lookAt(m_position, m_position + m_direction, m_up);
@@ -202,11 +202,18 @@ void Camera::apply(GLuint program)
 	float aspect = (float)m_screenSize[0] / (float)m_screenSize[1];
 
 	// Adds perspective to the scene
-	projection = glm::perspective(glm::radians(m_fov), aspect, m_nearFar[0], m_nearFar[1]);
-	//Debug::printMat4("Camera projection matrix", projection);
-	//Debug::printMat4("Camera view matrix", view);
+	if(projectionType == PROJECTION_PARALLEL)
+  {
+    projectionMat = getOrthoProjection();
+  }
+
+  else
+  {
+    projectionMat = glm::perspective(glm::radians(m_fov), aspect, m_nearFar[0], m_nearFar[1]);
+  }
+
   glUniformMatrix4fv(m_uniform_v, 1, GL_FALSE, glm::value_ptr(view));
-  glUniformMatrix4fv(m_uniform_p, 1, GL_FALSE, glm::value_ptr(projection));
+  glUniformMatrix4fv(m_uniform_p, 1, GL_FALSE, glm::value_ptr(projectionMat));
   glm::mat4 v_inv = glm::inverse(view);
   glUniformMatrix4fv(m_uniform_v_inv, 1, GL_FALSE, glm::value_ptr(v_inv));
 }
@@ -218,5 +225,10 @@ void Camera::setFov(float fov)
 
 glm::vec3 Camera::getDirection() const
 {
-	return m_direction;
+  return m_direction;
+}
+
+glm::mat4 Camera::getOrthoProjection()
+{
+  return glm::ortho<float>(-10, 10, -10, 10, m_nearFar[0], m_nearFar[1]);
 }

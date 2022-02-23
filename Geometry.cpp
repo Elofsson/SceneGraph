@@ -28,10 +28,10 @@ void Geometry::accept(NodeVisitor &visitor)
 void Geometry::draw() {
   if (m_useVAO) {
     glBindVertexArray(m_vao);
-    CHECK_GL_ERROR_LINE_FILE();
+    //CHECK_GL_ERROR_LINE_FILE();
   }
   
-  CHECK_GL_ERROR_LINE_FILE();
+  //CHECK_GL_ERROR_LINE_FILE();
 
   if (!m_useVAO)
   {
@@ -78,15 +78,15 @@ void Geometry::draw() {
   }
   else {
     glEnableVertexAttribArray(m_attribute_v_coord);
-    CHECK_GL_ERROR_LINE_FILE();
+    //CHECK_GL_ERROR_LINE_FILE();
     glEnableVertexAttribArray(m_attribute_v_normal);
-    CHECK_GL_ERROR_LINE_FILE();
+    //CHECK_GL_ERROR_LINE_FILE();
     if (m_vbo_texCoords != 0)
       glEnableVertexAttribArray(m_attribute_v_texCoords);
-    CHECK_GL_ERROR_LINE_FILE();
+    //CHECK_GL_ERROR_LINE_FILE();
     
   }
-  CHECK_GL_ERROR_LINE_FILE();
+  //CHECK_GL_ERROR_LINE_FILE();
 
   /* Push each element in buffer_vertices to the vertex shader */
   if (this->m_ibo_elements != 0) 
@@ -96,7 +96,7 @@ void Geometry::draw() {
 
       GLuint size = GLuint(m_elements.size());
       glDrawElements(GL_TRIANGLES, size, GL_UNSIGNED_SHORT, 0);
-      CHECK_GL_ERROR_LINE_FILE();
+      //CHECK_GL_ERROR_LINE_FILE();
   }
   else {
     glDrawArrays(GL_TRIANGLES, 0, (GLsizei)m_vertices.size());
@@ -227,21 +227,21 @@ void Geometry::apply(glm::mat4 transformMatrix)
 bool Geometry::initShaders(GLuint program)
 {
   const char* attribute_name;
-  attribute_name = "vertex.position";
+  attribute_name = "inPosition";
   m_attribute_v_coord = glGetAttribLocation(program, attribute_name);
   if (m_attribute_v_coord == -1) {
     fprintf(stderr, "Could not bind attribute %s\n", attribute_name);
     return false;
   }
 
-  attribute_name = "vertex.normal";
+  attribute_name = "inNormal";
   m_attribute_v_normal = glGetAttribLocation(program, attribute_name);
   if (m_attribute_v_normal == -1) {
     fprintf(stderr, "Could not bind attribute %s\n", attribute_name);
     return false;
   }
 
-  attribute_name = "vertex.texCoord";
+  attribute_name = "inTexCoord";
   m_attribute_v_texCoords = glGetAttribLocation(program, attribute_name);
   if (m_attribute_v_texCoords == -1) {
     fprintf(stderr, "Could not bind attribute %s\n", attribute_name);

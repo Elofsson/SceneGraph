@@ -51,7 +51,7 @@ bool Scene::initShaders(const std::string& vshader_filename, const std::string& 
   std::shared_ptr<State> rootState = std::shared_ptr<State>(new State());
   rootState->setProgram(m_programs[id]);
   rootState->setPolygonMode(GL_FILL);
-  rootState->setCullFace(true);
+  rootState->setCullFace(false);
   m_root->setState(rootState);
 
   return true;
@@ -216,7 +216,7 @@ void Scene::add(std::shared_ptr<Group> node, int shader)
   //Init shadows if shadows is enabled.
   if(m_shadowsEnabled)
   {
-    std::cout << "Init shadows" << std::endl;
+    std::cout << "Init shadows for geometry" << std::endl;
     glUseProgram(m_shadowMap->getProgram());
     InitVisitor *initShadows = new InitVisitor(m_shadowMap->getProgram());
     initShadows->visit(*node);
@@ -256,22 +256,37 @@ void Scene::render()
     GLuint currentProgram = m_programs[DEFAULT_SHADER];
 
     m_shadowMap->render(camera, m_root);
+    std::shared_ptr<Texture> shadowTexture = m_shadowMap->getTexture();
+    
     glUseProgram(currentProgram);
-    m_shadowMap->bind();
 
-    //Compute the MVP matrix from the lights point of view.
+    //Bind and apply shadowmap in shader.
+    std::string shadowUniform = "shadowMap";
+    shadowTexture->bind();
+    shadowTexture->apply(currentProgram, shadowUniform.c_str());
+
+    //Compute the View Projection matrix from the lights point of view.
     glm::vec3 cameraPos = camera->getPosition();
     glm::vec3 cameraDir = camera->getDirection();
-    glm::mat4 depthProjectionMatrix = glm::ortho<float>(-10,10,-10,10,-10,10);
-    glm::mat4 depthViewMatrix = glm::lookAt(cameraPos, cameraPos + cameraDir, glm::vec3(0.0001,1,0.0001));
-    glm::mat4 depthModelMatrix = glm::mat4(1.0);
-    glm::mat4 depthMVP = depthProjectionMatrix * depthViewMatrix * depthModelMatrix;
+    glm::mat4 depthProjectionMatrix = camera->getOrthoProjection();
+    glm::mat4 depthViewMatrix = glm::lookAt(cameraPos, cameraPos + cameraDir, glm::vec3(0,1,0));
+
+    //Add bias matrix
+    glm::mat4 biasMatrix(
+      0.5, 0.0, 0.0, 0.0,
+      0.0, 0.5, 0.0, 0.0,
+      0.0, 0.0, 0.5, 0.0,
+      0.5, 0.5, 0.5, 1.0);
+
+    glm::mat4 depthMVP = biasMatrix * depthProjectionMatrix * depthViewMatrix;
 
     //Set lights MVP matric in shader.
     std::string uniform = "lightSpaceMatrix";
     GLuint depthMatrixID = glGetUniformLocation(currentProgram, uniform.c_str());
-    glUniformMatrix4fv(depthMatrixID, 1, GL_FALSE, &depthMVP[0][0]);
+    glUniformMatrix4fv(depthMatrixID, 1, GL_FALSE, glm::value_ptr(depthMVP));
   }
+
+  applyCamera();
 
   m_updater->visit(*m_root);
   m_renderer->visit(*m_root);

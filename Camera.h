@@ -2,6 +2,10 @@
 
 #include <glm/glm.hpp>
 #include <GLFW/glfw3.h>
+#include "BoundingBox.h"
+
+#define PROJECTION_PARALLEL 0
+#define PROJECTION_PERSPECTIVE 1
 
 /// <summary>
 /// Class that defines a Camera for OpenGL.
@@ -9,7 +13,6 @@
 /// </summary>
 class Camera
 {
-
 public:
 
   /// <summary>
@@ -58,7 +61,7 @@ public:
   /// Called when uniforms should be processed within the active program
   /// </summary>
   /// <param name="program"></param>
-  void apply(GLuint program);
+  void apply(GLuint program, int projection = PROJECTION_PERSPECTIVE);
 
   /// <summary>
   /// Set the overall transform of the camera (position, up, direction)
@@ -94,6 +97,8 @@ public:
   void setSceneScale(float scale);
 
   glm::vec3 getDirection() const;
+
+  glm::mat4 getOrthoProjection();
 
 private:
   GLint m_uniform_v;

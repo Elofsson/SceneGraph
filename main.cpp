@@ -261,8 +261,8 @@ int main(int argc, char** argv)
     return 1;
   }
 
-  std::shared_ptr<Transform> object = buildGeometryByHand();
-  application->add(object);
+  //std::shared_ptr<Transform> object = buildGeometryByHand();
+  //application->add(object);
 
   application->initView();
 

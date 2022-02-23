@@ -61,10 +61,9 @@ void State::merge(const std::shared_ptr<State> inputState)
   TextureVector inputTextures = inputState->getTextures();
   if(!inputTextures.empty())
   {
-    m_textures.clear();
-    for(auto texture : inputTextures)
+    for(unsigned int i = 0; i < inputTextures.size(); i++)
     {
-      m_textures.push_back(texture);
+      addTexture(inputTextures[i], i);
     }
   }
 
@@ -113,7 +112,6 @@ bool State::apply()
 {
   //std::cout << "Program in state: " << m_program << std::endl;
   glUseProgram(m_program);
-
   getLocations();
 
   //Apply materials.
@@ -157,12 +155,12 @@ bool State::apply()
   //Apply polygonmode
   if(m_polygonmode != -1)
   {
-    glPolygonMode(GL_FRONT_AND_BACK, m_polygonmode);
+    glPolygonMode(GL_BACK, m_polygonmode);
   }
 
   else
   {
-    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+    glPolygonMode(GL_BACK, GL_FILL);
   }
     
   return true;
@@ -188,7 +186,7 @@ void State::setPolygonMode(GLuint mode)
   
   std::cout << "Update polygonmode" << std::endl;
   m_polygonmode = mode;
-  glPolygonMode(GL_FRONT_AND_BACK, m_polygonmode);
+  glPolygonMode(GL_BACK, m_polygonmode);
 }
 
 void State::setCullFace(bool useCullFace)

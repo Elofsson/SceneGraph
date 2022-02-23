@@ -17,6 +17,7 @@
 #include "RotateCallback.h"
 #include <stdlib.h>
 #include <time.h> 
+#include "ControllableLightCallback.h"
 
 Application::Application(unsigned int width, unsigned height) : m_screenSize(width, height)
 {
@@ -50,7 +51,7 @@ bool Application::initResources(const std::string& model_filename, const std::st
   std::shared_ptr<Light> light2 = std::shared_ptr<Light>(new Light);
   light2->setDiffuse(glm::vec4(1, 1, 1, 1));
   light2->setSpecular(glm::vec4(1, 1, 1, 1));
-  light2->setPosition(glm::vec4(1.0, 2.0, -2.0, 0.0));
+  light2->setPosition(glm::vec4(1.0, 2.0, -2.0, 1.0));
   m_sceneRoot->add(light2);
 
   getCamera()->setScreenSize(m_screenSize);
@@ -311,7 +312,7 @@ void Application::initView()
 {
   // Compute a bounding box around the whole scene
   BoundingBox box = m_sceneRoot->calculateBoundingBox();
-  float radius = box.getRadius() / 10;
+  float radius = box.getRadius();
   std::cout << "Radius: " << radius << std::endl;
 
   // Compute the diagonal and a suitable distance so we can see the whole thing
@@ -322,13 +323,11 @@ void Application::initView()
 
   std::shared_ptr<Light> light = m_sceneRoot->getLights().front();
   glm::vec4 position;
-  position = glm::vec4(eye + glm::vec3(3, 2, 0), 1);
+  position = glm::vec4(eye + glm::vec3(3, 2, 0), 1.0);
   light->setPosition(position);
 
-  m_sceneRoot->resetTransform();
-
   // Set the position/direction of the camera
-  getCamera()->set(eye, direction, glm::vec3(0.0, 1.0, 0.0));
+  getCamera()->set(glm::vec3(0.0, 0.5, 0.0), direction, glm::vec3(0.0, 1.0, 0.0));
   getCamera()->setNearFar(glm::vec2(0.1, distance * 20));
   getCamera()->setSceneScale(0.01f * radius);
   getCamera()->setFov(90);
@@ -341,13 +340,13 @@ void Application::initView()
   secondCamera->setFov(90);
   addCamera(secondCamera);
 
-  //Create a third camera and use this one.
-  /*std::shared_ptr<Camera> centerCamera = std::shared_ptr<Camera>(new Camera);
-  centerCamera->set(box.getCenter(), direction, glm::vec3(0.0, 1.0, 0.0));
-  centerCamera->setNearFar(glm::vec2(0.1, distance * 20));
-  centerCamera->setSceneScale(0.01f * radius);
-  centerCamera->setFov(90);
-  addCamera(centerCamera);*/
+  std::shared_ptr<ControllableLightCallback> movableLightCallback = std::shared_ptr<ControllableLightCallback>(new ControllableLightCallback(light, secondCamera));
+  std::shared_ptr<Group> lightGroup = std::shared_ptr<Group>(new Group);
+  std::shared_ptr<State> groupState = std::shared_ptr<State>(new State);
+  groupState->addLight(light);
+  lightGroup->setState(groupState);
+  lightGroup->addCallback(movableLightCallback);
+  m_sceneRoot->add(lightGroup);
 
   glEnable(GL_CULL_FACE);
   glEnable(GL_DEPTH_TEST);

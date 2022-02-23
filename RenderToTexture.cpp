@@ -10,6 +10,7 @@ RenderToTexture::RenderToTexture(unsigned int width, unsigned int height, GLuint
 
   m_texture = std::shared_ptr<Texture>(new Texture());
   //TODO set the slot from constructor.
+
   m_texture->initEmpty(width, height, 1, GL_TEXTURE_2D, GL_FLOAT);
   m_texture->bind();
 
@@ -32,19 +33,18 @@ void RenderToTexture::render(std::shared_ptr<Camera> camera, std::shared_ptr<Gro
 {
   glBindFramebuffer(GL_FRAMEBUFFER, m_framebuffer);
   glViewport(0,0,m_width, m_height);
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
   glUseProgram(m_program); 
 
   //Apply camera.
-  std::cout << "apply camera " << std::endl;
   camera->init(m_program);
-  camera->apply(m_program);
+  camera->apply(m_program, PROJECTION_PARALLEL);
 
   //Set program on node.
   GLuint previousProgram = -1;
   if(!startNode->emptyState())
   {
-    std::cout << "Render to texture: Update program in existing state" << std::endl;
     previousProgram = startNode->getState()->getProgram();
     startNode->getState()->setProgram(m_program);
   }
@@ -52,7 +52,6 @@ void RenderToTexture::render(std::shared_ptr<Camera> camera, std::shared_ptr<Gro
   //If no state is set on the given node, create one containing this class program.
   else
   {
-    std::cout << "Render to texture: create new state" << std::endl;
     std::shared_ptr<State> state = std::shared_ptr<State>(new State());
     state->setProgram(m_program);
     startNode->setState(state);
@@ -68,15 +67,17 @@ void RenderToTexture::render(std::shared_ptr<Camera> camera, std::shared_ptr<Gro
   }
   
   glBindFramebuffer(GL_FRAMEBUFFER, 0);
-}
-
-void RenderToTexture::bind()
-{
-  m_texture->bind();
+  glViewport(0,0,m_width, m_height);
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 //TODO find another way to init this program.
 GLuint RenderToTexture::getProgram()
 {
   return m_program;
+}
+
+std::shared_ptr<Texture> RenderToTexture::getTexture()
+{
+  return m_texture;
 }

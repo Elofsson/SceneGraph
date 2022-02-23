@@ -84,7 +84,6 @@ void RenderVisitor::visit(Geometry &g)
 
 	geometryState->apply();
 	g.initShaders(geometryState->getProgram());
-
 	glm::mat4 object2world = m_transform_matrices.top();
 	g.apply(object2world);
 	g.draw();
