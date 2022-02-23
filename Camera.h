@@ -93,6 +93,8 @@ public:
   /// <param name="scale">New scaling factor for speed of the camera movement</param>
   void setSceneScale(float scale);
 
+  glm::vec3 getDirection() const;
+
 private:
   GLint m_uniform_v;
   GLint m_uniform_p;

@@ -49,6 +49,21 @@ bool Texture::init(const char *image, unsigned int slot, GLenum texType, GLenum 
   return true;
 }
 
+void Texture::initEmpty(unsigned int width, unsigned int height, unsigned int slot, GLenum texType, GLenum pixelType)
+{
+	//Setup texture attributes.
+  m_slot = slot;
+  m_type = texType;
+
+	setupTexture();
+
+	// Assigns the image to the OpenGL Texture object
+	glTexImage2D(texType, 0, GL_DEPTH_COMPONENT, width, height, 0, GL_DEPTH_COMPONENT, pixelType, 0);
+
+	// Unbinds the OpenGL Texture object so that it can't accidentally be modified
+	glBindTexture(m_type, 0);
+}
+
 bool Texture::initCubemap(std::vector<std::string> textures, unsigned int slot, GLenum texType, GLenum pixelType)
 {
 	//Setup texture attributes with defaults.
@@ -190,4 +205,10 @@ void Texture::bind()
 void Texture::unbind()
 {
 	glBindTexture(m_type, m_texture_id);
+}
+
+//TODO find another solution to this.
+GLuint Texture::getTextureId()
+{
+	return m_texture_id;
 }

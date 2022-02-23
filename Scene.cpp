@@ -10,6 +10,10 @@ Scene::Scene() : m_uniform_numberOfLights(-1)
   m_selectedCamera = DEFAULT_CAMERA;
   m_root = std::shared_ptr<Group>(new Group);
   m_root->name = "Root ";
+  m_shadowsEnabled = false;
+  //Initalize visitors.
+  m_renderer = std::shared_ptr<RenderVisitor>(new RenderVisitor());
+  m_updater = std::shared_ptr<UpdateVisitor>(new UpdateVisitor());
 }
 
 Scene::~Scene()
@@ -20,6 +24,19 @@ Scene::~Scene()
   }
 }
 
+bool Scene::initShadows(const std::string& vshader_filename, const std::string& fshader_filename)
+{
+  int id = addShader(vshader_filename, fshader_filename);
+  if(id == -1)
+    return false;
+
+  int width = 1920;
+  int height = 1080;
+  GLuint shadowProgram = m_programs[id];
+  m_shadowMap = std::shared_ptr<RenderToTexture>(new RenderToTexture(width, height, shadowProgram));
+  m_shadowsEnabled = true;
+  return true;
+}
 
 bool Scene::initShaders(const std::string& vshader_filename, const std::string& fshader_filename)
 {
@@ -36,10 +53,6 @@ bool Scene::initShaders(const std::string& vshader_filename, const std::string& 
   rootState->setPolygonMode(GL_FILL);
   rootState->setCullFace(true);
   m_root->setState(rootState);
-
-  //Initalize visitors.
-  m_renderer = std::shared_ptr<RenderVisitor>(new RenderVisitor());
-  m_updater = std::shared_ptr<UpdateVisitor>(new UpdateVisitor());
 
   return true;
 }
@@ -197,6 +210,19 @@ void Scene::add(std::shared_ptr<Group> node, int shader)
   initVisitor->visit(*node);
 
   //Add the new node to root graph.
+  free(initVisitor);
+
+
+  //Init shadows if shadows is enabled.
+  if(m_shadowsEnabled)
+  {
+    std::cout << "Init shadows" << std::endl;
+    glUseProgram(m_shadowMap->getProgram());
+    InitVisitor *initShadows = new InitVisitor(m_shadowMap->getProgram());
+    initShadows->visit(*node);
+    free(initShadows);
+  }
+
   m_root->addChild(node);
 }
 
@@ -219,6 +245,34 @@ const GroupVector& Scene::getGroups()
 
 void Scene::render()
 {
+
+  //Render shadows
+  if(m_shadowsEnabled)
+  { 
+    //TODO check where to put all of  this.
+    //TODO make it work for multiple shaders.
+    //TODO make it work for multiple lights.
+    std::shared_ptr<Camera> camera = m_cameras[1];
+    GLuint currentProgram = m_programs[DEFAULT_SHADER];
+
+    m_shadowMap->render(camera, m_root);
+    glUseProgram(currentProgram);
+    m_shadowMap->bind();
+
+    //Compute the MVP matrix from the lights point of view.
+    glm::vec3 cameraPos = camera->getPosition();
+    glm::vec3 cameraDir = camera->getDirection();
+    glm::mat4 depthProjectionMatrix = glm::ortho<float>(-10,10,-10,10,-10,10);
+    glm::mat4 depthViewMatrix = glm::lookAt(cameraPos, cameraPos + cameraDir, glm::vec3(0.0001,1,0.0001));
+    glm::mat4 depthModelMatrix = glm::mat4(1.0);
+    glm::mat4 depthMVP = depthProjectionMatrix * depthViewMatrix * depthModelMatrix;
+
+    //Set lights MVP matric in shader.
+    std::string uniform = "lightSpaceMatrix";
+    GLuint depthMatrixID = glGetUniformLocation(currentProgram, uniform.c_str());
+    glUniformMatrix4fv(depthMatrixID, 1, GL_FALSE, &depthMVP[0][0]);
+  }
+
   m_updater->visit(*m_root);
   m_renderer->visit(*m_root);
   m_renderer->cleanup();

@@ -37,7 +37,14 @@ bool Application::initResources(const std::string& model_filename, const std::st
   if (!m_sceneRoot->initShaders(vshader_filename, fshader_filename))
     return false;
   
+  //Init shadows.
+  std::string vshadowShader = "shaders/shadowmap-shading.vert.glsl";
+  std::string fshadowShader = "shaders/shadowmap-shading.frag.glsl";
+  if(!m_sceneRoot->initShadows(vshadowShader, fshadowShader))
+    return false;
+
   m_cameras.push_back(m_sceneRoot->getSelectedCameraId());
+
 
   //Create light.
   std::shared_ptr<Light> light2 = std::shared_ptr<Light>(new Light);
@@ -68,6 +75,7 @@ bool Application::initResources(const std::string& model_filename, const std::st
     m_sceneRoot->add(rootGroup);
     m_sceneRoot->createDotFile("dotfile");
   }
+
   return 1;
 }
 
@@ -137,8 +145,8 @@ bool Application::buildGeometry()
   if(!loadMountains(radius))
     return false;
 
-  if(!loadMovingLight())
-    return false;
+  //if(!loadMovingLight())
+    //return false;
 
   return true;
 }
@@ -219,14 +227,14 @@ bool Application::loadMountains(int radius)
   }
 
   //Load mountain shaders.
-  std::string vmountainShader = "shaders/simple-test-shading.vert.glsl";
+  /*std::string vmountainShader = "shaders/simple-test-shading.vert.glsl";
   std::string fmountainShader = "shaders/simple-test-shading.frag.glsl";
   int shaderId = m_sceneRoot->addShader(vmountainShader, fmountainShader);
   if(shaderId == -1)
   {
     std::cerr << "Failed to load shader: " << vmountainShader << " : " << fmountainShader << std::endl;
     return false;
-  }
+  }*/
 
   std::srand(time(NULL));
 
@@ -261,7 +269,7 @@ bool Application::loadMountains(int radius)
   }
 
   //Add montains to scene.
-  m_sceneRoot->add(montainRoot, shaderId);
+  m_sceneRoot->add(montainRoot);
   return true;
 }
 
@@ -303,7 +311,7 @@ void Application::initView()
 {
   // Compute a bounding box around the whole scene
   BoundingBox box = m_sceneRoot->calculateBoundingBox();
-  float radius = box.getRadius();
+  float radius = box.getRadius() / 10;
   std::cout << "Radius: " << radius << std::endl;
 
   // Compute the diagonal and a suitable distance so we can see the whole thing
@@ -325,21 +333,21 @@ void Application::initView()
   getCamera()->setSceneScale(0.01f * radius);
   getCamera()->setFov(90);
 
-  //Create a second camera and use this one.
+  //Create a second camera and with the same position as the lightning..
   std::shared_ptr<Camera> secondCamera = std::shared_ptr<Camera>(new Camera);
-  secondCamera->set(glm::vec3(eye.x, eye.y, -eye.z), glm::vec3(direction.x, direction.y, -direction.z), glm::vec3(0.0, 1.0, 0.0));
+  secondCamera->set(position, direction, glm::vec3(0.0, 1.0, 0.0));
   secondCamera->setNearFar(glm::vec2(0.1, distance * 20));
   secondCamera->setSceneScale(0.01f * radius);
   secondCamera->setFov(90);
   addCamera(secondCamera);
 
   //Create a third camera and use this one.
-  std::shared_ptr<Camera> centerCamera = std::shared_ptr<Camera>(new Camera);
+  /*std::shared_ptr<Camera> centerCamera = std::shared_ptr<Camera>(new Camera);
   centerCamera->set(box.getCenter(), direction, glm::vec3(0.0, 1.0, 0.0));
   centerCamera->setNearFar(glm::vec2(0.1, distance * 20));
   centerCamera->setSceneScale(0.01f * radius);
   centerCamera->setFov(90);
-  addCamera(centerCamera);
+  addCamera(centerCamera);*/
 
   glEnable(GL_CULL_FACE);
   glEnable(GL_DEPTH_TEST);

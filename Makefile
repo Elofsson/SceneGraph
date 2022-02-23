@@ -622,6 +622,33 @@ NodeVisitor.cpp.s:
 	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab1/CMakeFiles/lab1.dir/build.make examples/lab1/CMakeFiles/lab1.dir/NodeVisitor.cpp.s
 .PHONY : NodeVisitor.cpp.s
 
+RenderToTexture.o: RenderToTexture.cpp.o
+
+.PHONY : RenderToTexture.o
+
+# target to build an object file
+RenderToTexture.cpp.o:
+	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab1/CMakeFiles/lab1.dir/build.make examples/lab1/CMakeFiles/lab1.dir/RenderToTexture.cpp.o
+.PHONY : RenderToTexture.cpp.o
+
+RenderToTexture.i: RenderToTexture.cpp.i
+
+.PHONY : RenderToTexture.i
+
+# target to preprocess a source file
+RenderToTexture.cpp.i:
+	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab1/CMakeFiles/lab1.dir/build.make examples/lab1/CMakeFiles/lab1.dir/RenderToTexture.cpp.i
+.PHONY : RenderToTexture.cpp.i
+
+RenderToTexture.s: RenderToTexture.cpp.s
+
+.PHONY : RenderToTexture.s
+
+# target to generate assembly for a file
+RenderToTexture.cpp.s:
+	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab1/CMakeFiles/lab1.dir/build.make examples/lab1/CMakeFiles/lab1.dir/RenderToTexture.cpp.s
+.PHONY : RenderToTexture.cpp.s
+
 RenderVisitor.o: RenderVisitor.cpp.o
 
 .PHONY : RenderVisitor.o
@@ -953,6 +980,9 @@ help:
 	@echo "... NodeVisitor.o"
 	@echo "... NodeVisitor.i"
 	@echo "... NodeVisitor.s"
+	@echo "... RenderToTexture.o"
+	@echo "... RenderToTexture.i"
+	@echo "... RenderToTexture.s"
 	@echo "... RenderVisitor.o"
 	@echo "... RenderVisitor.i"
 	@echo "... RenderVisitor.s"

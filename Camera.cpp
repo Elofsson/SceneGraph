@@ -215,3 +215,8 @@ void Camera::setFov(float fov)
 {
 	m_fov = fov;
 }
+
+glm::vec3 Camera::getDirection() const
+{
+	return m_direction;
+}

@@ -12,6 +12,8 @@
 #include "RenderVisitor.h"
 #include "UpdateVisitor.h"
 #include "InitVisitor.h"
+#include "RenderToTexture.h"
+
 class Scene;
 
 #define DEFAULT_SHADER 0
@@ -36,6 +38,8 @@ public:
   /// <param name="fshader_filename"></param>
   /// <returns></returns>
   bool initShaders(const std::string& vshader_filename, const std::string& fshader_filename);
+
+  bool initShadows(const std::string& vshader_filename, const std::string& fshader_filename);
 
   /// <summary>
   /// Add a lightsource
@@ -111,6 +115,8 @@ public:
 
   void createDotFile(std::string fileName);
 
+
+
 private:
   std::vector<GLuint> m_programs;
   std::vector<std::shared_ptr<Camera>> m_cameras;
@@ -120,6 +126,8 @@ private:
   GroupVector m_groups;
   LightVector m_lights;
 
+  bool m_shadowsEnabled;
+  std::shared_ptr<RenderToTexture> m_shadowMap;
   std::shared_ptr<RenderVisitor> m_renderer;
   std::shared_ptr<UpdateVisitor> m_updater;
   GLint m_uniform_numberOfLights;
