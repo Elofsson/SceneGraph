@@ -268,7 +268,7 @@ void Scene::render()
     //Compute the View Projection matrix from the lights point of view.
     glm::vec3 cameraPos = camera->getPosition();
     glm::vec3 cameraDir = camera->getDirection();
-    glm::mat4 depthProjectionMatrix = camera->getOrthoProjection();
+    glm::mat4 depthProjectionMatrix = camera->getPerspectiveProjection();
     glm::mat4 depthViewMatrix = glm::lookAt(cameraPos, cameraPos + cameraDir, glm::vec3(0,1,0));
 
     //Add bias matrix

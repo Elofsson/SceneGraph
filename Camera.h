@@ -100,6 +100,8 @@ public:
 
   glm::mat4 getOrthoProjection();
 
+  glm::mat4 getPerspectiveProjection();
+
 private:
   GLint m_uniform_v;
   GLint m_uniform_p;
