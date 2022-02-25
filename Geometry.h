@@ -131,7 +131,6 @@ public:
    */
   void resize(unsigned int size);
 
-
   /**
    * @brief Visit this visitor
    * 

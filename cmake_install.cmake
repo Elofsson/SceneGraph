@@ -1,8 +1,8 @@
-# Install script for directory: /home/elof/Skola/AvanceradDatorgrafik/5dv180-master/examples/SceneGraph
+# Install script for directory: /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master/examples/SceneGraph
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "/home/elof/Skola/AvanceradDatorgrafik/5dv180-master/installed")
+  set(CMAKE_INSTALL_PREFIX "/home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master/installed")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -12,7 +12,7 @@ if(NOT DEFINED CMAKE_INSTALL_CONFIG_NAME)
     string(REGEX REPLACE "^[^A-Za-z0-9_]+" ""
            CMAKE_INSTALL_CONFIG_NAME "${BUILD_TYPE}")
   else()
-    set(CMAKE_INSTALL_CONFIG_NAME "")
+    set(CMAKE_INSTALL_CONFIG_NAME "Debug")
   endif()
   message(STATUS "Install configuration: \"${CMAKE_INSTALL_CONFIG_NAME}\"")
 endif()
@@ -49,9 +49,13 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
          FILE "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/SceneGraph"
          RPATH "")
   endif()
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/bin" TYPE EXECUTABLE FILES "/home/elof/Skola/AvanceradDatorgrafik/5dv180-master/examples/SceneGraph/SceneGraph")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/bin" TYPE EXECUTABLE FILES "/home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master/examples/SceneGraph/SceneGraph")
   if(EXISTS "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/SceneGraph" AND
      NOT IS_SYMLINK "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/SceneGraph")
+    file(RPATH_CHANGE
+         FILE "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/SceneGraph"
+         OLD_RPATH "/home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master/installed/lib:"
+         NEW_RPATH "")
     if(CMAKE_INSTALL_DO_STRIP)
       execute_process(COMMAND "/usr/bin/strip" "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/SceneGraph")
     endif()

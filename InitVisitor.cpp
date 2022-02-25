@@ -24,9 +24,9 @@ void InitVisitor::visit(Geometry &g)
   std::cout << "Init geometry with program: " << m_program << std::endl;
   if(!g.initShaders(m_program))
   {
-      std::cerr << "Failed to load shaders for geometry" << std::endl;
-      return;
-    }
+    std::cerr << "Failed to load shaders for geometry" << std::endl;
+    //return;
+  }
   g.upload();
   //g.getState()->setProgram(m_program);
 

@@ -15,4 +15,5 @@ public:
 private:
   std::shared_ptr<Camera> m_camera;
   std::shared_ptr<Light> m_light;
+  int m_type;
 };

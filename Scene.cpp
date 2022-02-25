@@ -212,17 +212,6 @@ void Scene::add(std::shared_ptr<Group> node, int shader)
   //Add the new node to root graph.
   free(initVisitor);
 
-
-  //Init shadows if shadows is enabled.
-  if(m_shadowsEnabled)
-  {
-    std::cout << "Init shadows for geometry" << std::endl;
-    glUseProgram(m_shadowMap->getProgram());
-    InitVisitor *initShadows = new InitVisitor(m_shadowMap->getProgram());
-    initShadows->visit(*node);
-    free(initShadows);
-  }
-
   m_root->addChild(node);
 }
 
@@ -268,7 +257,7 @@ void Scene::render()
     //Compute the View Projection matrix from the lights point of view.
     glm::vec3 cameraPos = camera->getPosition();
     glm::vec3 cameraDir = camera->getDirection();
-    glm::mat4 depthProjectionMatrix = camera->getPerspectiveProjection();
+    glm::mat4 depthProjectionMatrix = camera->getOrthoProjection();
     glm::mat4 depthViewMatrix = glm::lookAt(cameraPos, cameraPos + cameraDir, glm::vec3(0,1,0));
 
     //Add bias matrix
