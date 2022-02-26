@@ -190,32 +190,32 @@ void Camera::setNearFar(const glm::vec2& nearFar)
   m_nearFar = nearFar;
 }
 
-void Camera::apply(GLuint program, int projectionType)
+void Camera::apply(GLuint program, glm::mat4 projectionMatrix)
 {
 	// Initializes matrices since otherwise they will be the null matrix
 	glm::mat4 view = glm::mat4(1.0f);
-	glm::mat4 projectionMat = glm::mat4(1.0f);
 
 	// Makes camera look in the right direction from the right position
 	view = glm::lookAt(m_position, m_position + m_direction, m_up);
-	
-	float aspect = (float)m_screenSize[0] / (float)m_screenSize[1];
 
-	// Adds perspective to the scene
-	if(projectionType == PROJECTION_PARALLEL)
-  {
-    projectionMat = getOrthoProjection();
-  }
-
-  else
-  {
-    projectionMat = glm::perspective(glm::radians(m_fov), aspect, m_nearFar[0], m_nearFar[1]);
-  }
 
   glUniformMatrix4fv(m_uniform_v, 1, GL_FALSE, glm::value_ptr(view));
-  glUniformMatrix4fv(m_uniform_p, 1, GL_FALSE, glm::value_ptr(projectionMat));
+  glUniformMatrix4fv(m_uniform_p, 1, GL_FALSE, glm::value_ptr(projectionMatrix));
   glm::mat4 v_inv = glm::inverse(view);
   glUniformMatrix4fv(m_uniform_v_inv, 1, GL_FALSE, glm::value_ptr(v_inv));
+}
+
+void Camera::applyOrthogonal(GLuint program, BoundingBox box)
+{
+	glm::mat4 projectionMatrix = getOrthoProjection(box);
+	apply(program, projectionMatrix);
+}
+
+void Camera::applyPerspective(GLuint program)
+{
+	float aspect = (float)m_screenSize[0] / (float)m_screenSize[1];
+	glm::mat4 projectionMatrix = glm::perspective(glm::radians(m_fov), aspect, m_nearFar[0], m_nearFar[1]);
+	apply(program, projectionMatrix);
 }
 
 void Camera::setFov(float fov)
@@ -228,9 +228,10 @@ glm::vec3 Camera::getDirection() const
   return m_direction;
 }
 
-glm::mat4 Camera::getOrthoProjection()
+glm::mat4 Camera::getOrthoProjection(BoundingBox box)
 {
-  return glm::ortho<float>(-20, 20, -20, 20, m_nearFar[0], m_nearFar[1]);
+	float radius = box.getRadius();
+  return glm::ortho<float>(-radius, radius, -radius, radius, m_nearFar[0], m_nearFar[1]);
 }
 
 glm::mat4 Camera::getPerspectiveProjection()

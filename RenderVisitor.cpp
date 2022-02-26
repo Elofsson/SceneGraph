@@ -69,9 +69,6 @@ void RenderVisitor::visit(Transform &t)
 
 void RenderVisitor::visit(Geometry &g)
 {
-	//std::cout << "Visit geometry " << std::endl;
-	//Set uniforms here maybe?
-	std::cout << "Size of stack: " << m_states.size() << std::endl;
 	if(m_transform_matrices.empty())
 	{
 		return;
@@ -84,13 +81,10 @@ void RenderVisitor::visit(Geometry &g)
 	}
 
 	geometryState->apply();
-	std::cout << "Render with state: " << geometryState->getProgram() << std::endl;
 	glm::mat4 object2world = m_transform_matrices.top();
 	g.initShaders(geometryState->getProgram());
 	g.apply(object2world);
-	std::cout << "After geometry apply " << std::endl;
 	g.draw();
-	std::cout << "After geometry draw" << std::endl;
 }
 
 void RenderVisitor::mergeAndPushState(std::shared_ptr<State> inputState)

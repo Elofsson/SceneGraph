@@ -39,7 +39,7 @@ void RenderToTexture::render(std::shared_ptr<Camera> camera, std::shared_ptr<Gro
 
   //Apply camera.
   camera->init(m_program);
-  camera->apply(m_program, PROJECTION_PARALLEL);
+  camera->applyOrthogonal(m_program, startNode->getBoundingBox());
 
   //Set program on node.
   GLuint previousProgram = -1;

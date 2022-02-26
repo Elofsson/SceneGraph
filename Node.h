@@ -25,7 +25,8 @@ public:
 
   // Calculate and return a bounding box for this Node based on its Mesh objects
   virtual BoundingBox calculateBoundingBox(glm::mat4 modelMat) = 0;
-  
+  virtual BoundingBox getBoundingBox();
+
   virtual void accept(NodeVisitor& visitor) = 0;
 
   std::shared_ptr<State> getState();
@@ -41,7 +42,9 @@ private:
   std::shared_ptr<State> m_nodeState;
   CallbackVector m_callbacks;
   bool m_enabled;
-  
+
+protected:
+  BoundingBox m_boundingBox;
 
 };
 

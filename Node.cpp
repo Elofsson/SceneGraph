@@ -45,3 +45,5 @@ void Node::setState(std::shared_ptr<State> state) { m_nodeState = state; }
 
 std::shared_ptr<State> Node::getState() { return m_nodeState; }
 
+BoundingBox Node::getBoundingBox(){ return m_boundingBox; }
+

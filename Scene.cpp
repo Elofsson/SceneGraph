@@ -130,11 +130,22 @@ int Scene::addCamera(std::shared_ptr<Camera> camera)
 
 void Scene::applyCamera()
 {
+
   for(auto program : m_programs)
   {
     glUseProgram(program);
     m_cameras[m_selectedCamera]->init(program);
-    m_cameras[m_selectedCamera]->apply(program);
+    
+    //if(m_selectedCamera == DEFAULT_CAMERA)
+    //{
+      m_cameras[m_selectedCamera]->applyPerspective(program);
+    //}
+
+    //else
+    //{
+      //BoundingBox box = m_root->getBoundingBox();
+      //m_cameras[m_selectedCamera]->applyOrthogonal(program, box);
+    //}
   }
 }
 
@@ -238,7 +249,7 @@ void Scene::render()
   //Render shadows
   if(m_shadowsEnabled)
   { 
-    //TODO check where to put all of  this.
+    //TODO check where to put all of this.
     //TODO make it work for multiple shaders.
     //TODO make it work for multiple lights.
     std::shared_ptr<Camera> camera = m_cameras[1];
@@ -257,7 +268,7 @@ void Scene::render()
     //Compute the View Projection matrix from the lights point of view.
     glm::vec3 cameraPos = camera->getPosition();
     glm::vec3 cameraDir = camera->getDirection();
-    glm::mat4 depthProjectionMatrix = camera->getOrthoProjection();
+    glm::mat4 depthProjectionMatrix = camera->getOrthoProjection(m_root->getBoundingBox());
     glm::mat4 depthViewMatrix = glm::lookAt(cameraPos, cameraPos + cameraDir, glm::vec3(0,1,0));
 
     //Add bias matrix

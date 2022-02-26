@@ -56,13 +56,7 @@ public:
   /// </summary>
   /// <param name="fov">The new fov</param>
   void setFov(float fov);
-
-  /// <summary>
-  /// Called when uniforms should be processed within the active program
-  /// </summary>
-  /// <param name="program"></param>
-  void apply(GLuint program, int projection = PROJECTION_PERSPECTIVE);
-
+  
   /// <summary>
   /// Set the overall transform of the camera (position, up, direction)
   /// </summary>
@@ -98,11 +92,18 @@ public:
 
   glm::vec3 getDirection() const;
 
-  glm::mat4 getOrthoProjection();
+  glm::mat4 getOrthoProjection(BoundingBox box);
 
   glm::mat4 getPerspectiveProjection();
 
+  void applyOrthogonal(GLuint program, BoundingBox box);
+
+  void applyPerspective(GLuint program);
+
 private:
+
+  void apply(GLuint program, glm::mat4 projectionMatrix);
+
   GLint m_uniform_v;
   GLint m_uniform_p;
   GLint m_uniform_v_inv;

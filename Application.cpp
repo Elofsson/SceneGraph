@@ -340,14 +340,32 @@ void Application::initView()
   secondCamera->setFov(90);
   addCamera(secondCamera);
 
-  std::shared_ptr<ControllableLightCallback> movableLightCallback = std::shared_ptr<ControllableLightCallback>(new ControllableLightCallback(light, secondCamera));
+  //Load object that should be next to the light and the second camera.
   std::shared_ptr<Group> lightGroup = std::shared_ptr<Group>(new Group);
+  std::string lightModel = "models/pointer.obj";
+  if(!loadGroup(lightModel, lightGroup))
+  {
+    std::cout << "Failed to load model for the light: " << lightModel << std::endl;
+    return;
+  }
+
+  //Create a transform to move the object to the light and cameras position. 
+  std::shared_ptr<Transform> lightModelPos = std::shared_ptr<Transform>(new Transform());
+  lightModelPos->addChild(lightGroup);
+  lightModelPos->scale(glm::vec3(2, 2, 2));
+
+  //Create callback which moves the object, light and camera together and add to state
+  std::shared_ptr<ControllableLightCallback> movableLightCallback 
+                    = std::shared_ptr<ControllableLightCallback>(new ControllableLightCallback(light, secondCamera, lightModelPos));
   std::shared_ptr<State> groupState = std::shared_ptr<State>(new State);
   groupState->addLight(light);
   lightGroup->setState(groupState);
-  lightGroup->addCallback(movableLightCallback);
-  m_sceneRoot->add(lightGroup);
+  lightModelPos->addCallback(movableLightCallback);
 
+  //Finally add the object to the scene.
+  m_sceneRoot->add(lightModelPos);
+
+  //Set some scene settings.
   glEnable(GL_CULL_FACE);
   glEnable(GL_DEPTH_TEST);
   glDepthFunc(GL_LESS);

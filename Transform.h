@@ -32,6 +32,7 @@ public:
   void scale(glm::vec3 scale);
   void translate(glm::vec3 translation);
   void rotate(glm::vec3 axis, float angle);
+  void setPosition(glm::vec3 position);
   bool initShaders(GLuint program);
   virtual BoundingBox calculateBoundingBox(glm::mat4 modelMat) override;
   virtual void accept(NodeVisitor &visitor) override;

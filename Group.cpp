@@ -41,6 +41,7 @@ BoundingBox Group::calculateBoundingBox(glm::mat4 modelMat)
     BoundingBox boxChild = child->calculateBoundingBox(modelMat);
     box.expand(boxChild);
   }
+  m_boundingBox = box;
   return box;
 }
 

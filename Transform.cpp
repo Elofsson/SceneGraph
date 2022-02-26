@@ -9,7 +9,6 @@ Transform::Transform()
 
 Transform::Transform(float x, float y, float z)
 {
-
   object2world = glm::translate(glm::mat4(1.0f), glm::vec3(x, y, z));
 }
 
@@ -59,6 +58,13 @@ void Transform::rotate(glm::vec3 vec, float angle)
   object2world = object2world * rotationMat;
 }
 
+void Transform::setPosition(glm::vec3 position)
+{
+  object2world[3][0] = position.x;
+  object2world[3][1] = position.y;
+  object2world[3][2] = position.z;
+}
+
 void Transform::accept(NodeVisitor &visitor)
 {
   if(isEnabled())
@@ -77,5 +83,6 @@ BoundingBox Transform::calculateBoundingBox(glm::mat4 modelMat)
     box.expand(boxChild);
   }
 
+  m_boundingBox = box;
   return box;
 }

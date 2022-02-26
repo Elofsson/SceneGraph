@@ -16,7 +16,8 @@ BoundingBox Geometry::calculateBoundingBox(glm::mat4 modelMat) {
     glm::vec3 vTransformed = modelMat * v;
     box.expand(vTransformed);
   }
-
+  
+  m_boundingBox = box;
   return box;
 }
 
@@ -276,7 +277,7 @@ bool Geometry::initShaders(GLuint program)
     fprintf(stderr, "Could not bind attribute %s\n", attribute_name);
     return false;
   }
-  
+
   return true;
 }
 
