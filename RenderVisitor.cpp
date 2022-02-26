@@ -93,11 +93,3 @@ void RenderVisitor::mergeAndPushState(std::shared_ptr<State> inputState)
 	newState->merge(inputState);
 	m_states.push(newState);
 }
-
-void RenderVisitor::cleanup()
-{
-	//m_states.clear();
-	//m_transform_matrices.clear();
-	//std::shared_ptr<State> defaultState = std::shared_ptr<State>(new State());
-	//m_states.push(defaultState);
-}

@@ -290,6 +290,5 @@ void Scene::render()
 
   m_updater->visit(*m_root);
   m_renderer->visit(*m_root);
-  m_renderer->cleanup();
   //std::cout << "Number of root children " << m_root->getChildren().size() << std::endl;
 }
