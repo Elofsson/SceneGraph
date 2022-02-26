@@ -14,6 +14,7 @@ Scene::Scene() : m_uniform_numberOfLights(-1)
   //Initalize visitors.
   m_renderer = std::shared_ptr<RenderVisitor>(new RenderVisitor());
   m_updater = std::shared_ptr<UpdateVisitor>(new UpdateVisitor());
+  m_shadowMap = nullptr;
 }
 
 Scene::~Scene()
@@ -32,9 +33,7 @@ bool Scene::initShadows(const std::string& vshader_filename, const std::string& 
 
   int width = 1920;
   int height = 1080;
-  GLuint shadowProgram = m_programs[id];
-  m_shadowMap = std::shared_ptr<RenderToTexture>(new RenderToTexture(width, height, shadowProgram));
-  m_shadowsEnabled = true;
+  m_depthProgram = m_programs[id];
   return true;
 }
 
@@ -95,6 +94,11 @@ void Scene::add(std::shared_ptr<Light>& light)
   m_root->getState()->addLight(light);
 }
 
+void Scene::addShadowMap(std::shared_ptr<Light>& light, std::shared_ptr<Camera> camera)
+{
+  m_shadowMap = std::shared_ptr<ShadowMap>(new ShadowMap(m_depthProgram, camera, light));
+}
+
 const std::shared_ptr<Group> Scene::getRoot()
 {
   return m_root;
@@ -135,17 +139,7 @@ void Scene::applyCamera()
   {
     glUseProgram(program);
     m_cameras[m_selectedCamera]->init(program);
-    
-    //if(m_selectedCamera == DEFAULT_CAMERA)
-    //{
-      m_cameras[m_selectedCamera]->applyPerspective(program);
-    //}
-
-    //else
-    //{
-      //BoundingBox box = m_root->getBoundingBox();
-      //m_cameras[m_selectedCamera]->applyOrthogonal(program, box);
-    //}
+    m_cameras[m_selectedCamera]->applyPerspective(program);
   }
 }
 
@@ -247,43 +241,18 @@ void Scene::render()
 {
 
   //Render shadows
-  if(m_shadowsEnabled)
+  if(m_shadowMap != nullptr)
   { 
-    //TODO check where to put all of this.
-    //TODO make it work for multiple shaders.
-    //TODO make it work for multiple lights.
-    std::shared_ptr<Camera> camera = m_cameras[1];
-    GLuint currentProgram = m_programs[DEFAULT_SHADER];
-
-    m_shadowMap->render(camera, m_root);
-    std::shared_ptr<Texture> shadowTexture = m_shadowMap->getTexture();
-    
-    glUseProgram(currentProgram);
-
-    //Bind and apply shadowmap in shader.
-    std::string shadowUniform = "shadowMap";
-    shadowTexture->bind();
-    shadowTexture->apply(currentProgram, shadowUniform.c_str());
-
-    //Compute the View Projection matrix from the lights point of view.
-    glm::vec3 cameraPos = camera->getPosition();
-    glm::vec3 cameraDir = camera->getDirection();
-    glm::mat4 depthProjectionMatrix = camera->getOrthoProjection(m_root->getBoundingBox());
-    glm::mat4 depthViewMatrix = glm::lookAt(cameraPos, cameraPos + cameraDir, glm::vec3(0,1,0));
-
-    //Add bias matrix
-    glm::mat4 biasMatrix(
-      0.5, 0.0, 0.0, 0.0,
-      0.0, 0.5, 0.0, 0.0,
-      0.0, 0.0, 0.5, 0.0,
-      0.5, 0.5, 0.5, 1.0);
-
-    glm::mat4 depthMVP = biasMatrix * depthProjectionMatrix * depthViewMatrix;
-
-    //Set lights MVP matric in shader.
-    std::string uniform = "lightSpaceMatrix";
-    GLuint depthMatrixID = glGetUniformLocation(currentProgram, uniform.c_str());
-    glUniformMatrix4fv(depthMatrixID, 1, GL_FALSE, glm::value_ptr(depthMVP));
+    m_shadowMap->update();
+    //Apply shadowmaps on all programs except the depthProgram.
+    for(auto program : m_programs)
+    {
+      //Do not apply with the depthProgram itself.
+      if(program != m_depthProgram)
+      {
+        m_shadowMap->apply(program, m_root);
+      }
+    }
   }
 
   applyCamera();

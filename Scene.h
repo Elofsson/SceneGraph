@@ -13,6 +13,7 @@
 #include "UpdateVisitor.h"
 #include "InitVisitor.h"
 #include "RenderToTexture.h"
+#include "ShadowMap.h"
 
 class Scene;
 
@@ -46,6 +47,8 @@ public:
   /// </summary>
   /// <param name="light">A new light source</param>
   void add(std::shared_ptr<Light>& light);
+
+  void addShadowMap(std::shared_ptr<Light>& light, std::shared_ptr<Camera> camera);
 
   /// <summary>
   /// Get all light soutces
@@ -127,7 +130,8 @@ private:
   LightVector m_lights;
 
   bool m_shadowsEnabled;
-  std::shared_ptr<RenderToTexture> m_shadowMap;
+  std::shared_ptr<ShadowMap> m_shadowMap;
+  GLuint m_depthProgram;
   std::shared_ptr<RenderVisitor> m_renderer;
   std::shared_ptr<UpdateVisitor> m_updater;
   GLint m_uniform_numberOfLights;

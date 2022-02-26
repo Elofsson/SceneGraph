@@ -340,8 +340,11 @@ void Application::initView()
   secondCamera->setFov(90);
   addCamera(secondCamera);
 
+  //Add a shadowMap for this light with the specified camera.
+  m_sceneRoot->addShadowMap(light, secondCamera);
+
   //Load object that should be next to the light and the second camera.
-  std::shared_ptr<Group> lightGroup = std::shared_ptr<Group>(new Group);
+  /*std::shared_ptr<Group> lightGroup = std::shared_ptr<Group>(new Group);
   std::string lightModel = "models/pointer.obj";
   if(!loadGroup(lightModel, lightGroup))
   {
@@ -363,7 +366,7 @@ void Application::initView()
   lightModelPos->addCallback(movableLightCallback);
 
   //Finally add the object to the scene.
-  m_sceneRoot->add(lightModelPos);
+  m_sceneRoot->add(lightModelPos);*/
 
   //Set some scene settings.
   glEnable(GL_CULL_FACE);
