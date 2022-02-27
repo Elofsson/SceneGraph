@@ -31,7 +31,7 @@ bool Scene::initShadows(const std::string& vshader_filename, const std::string& 
   if(id == -1)
     return false;
 
-  int width = 1920;
+  int width = 1080;
   int height = 1080;
   m_depthProgram = m_programs[id];
   return true;
@@ -97,6 +97,8 @@ void Scene::add(std::shared_ptr<Light>& light)
 void Scene::addShadowMap(std::shared_ptr<Light>& light, std::shared_ptr<Camera> camera)
 {
   m_shadowMap = std::shared_ptr<ShadowMap>(new ShadowMap(m_depthProgram, camera, light));
+  //Init on texture slot 3.
+  m_shadowMap->init(3);
 }
 
 const std::shared_ptr<Group> Scene::getRoot()

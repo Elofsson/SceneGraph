@@ -7,9 +7,14 @@ ShadowMap::ShadowMap(GLuint depthProgram, std::shared_ptr<Camera> camera, std::s
   //TODO pass this as a parameter somewhere.
   int width = 1920;
   int height = 1080;
-  m_shadowMapRender = std::shared_ptr<RenderToTexture>(new RenderToTexture(width, height, depthProgram));
   m_depthProgram = depthProgram;
   m_lightType = m_light->getPosition()[3];
+  m_shadowMapRender = std::shared_ptr<RenderToTexture>(new RenderToTexture(width, height, depthProgram));
+}
+
+bool ShadowMap::init(unsigned int textureSlot)
+{
+  return m_shadowMapRender->init(textureSlot);
 }
 
 /*Update the light position.

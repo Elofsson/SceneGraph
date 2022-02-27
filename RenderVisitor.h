@@ -19,7 +19,6 @@ class RenderVisitor : public NodeVisitor
 {
 public:
   RenderVisitor();
-  void cleanup();
   virtual void visit(Group &g) override;
   virtual void visit(Transform &t) override;
   virtual void visit(Geometry &g) override;

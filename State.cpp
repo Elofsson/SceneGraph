@@ -213,10 +213,7 @@ bool State::getLocations()
     std::cerr << "Could not bind uniform " << uniform_name << std::endl;
     return false;
   }
-  //m_material_ambient_uniform = glGetUniformLocation(m_program, "material.ambient");
-  //m_material_specular_uniform = glGetUniformLocation(m_program, "material.specular");
-  //m_material_diffuse_uniform = glGetUniformLocation(m_program, "material.diffuse");
-  //m_material_shininess_uniform = glGetUniformLocation(m_program, "material.shininess");
+
   return true;
 }
 
@@ -234,10 +231,10 @@ void State::unbind()
   }
 }
 
-  //Getters.
-  std::shared_ptr<Material>& State::getMaterial() { return m_material; }
-  TextureVector& State::getTextures() { return m_textures; }
-  LightVector& State::getLights() { return m_lights; }
-  GLuint State::getPolygonMode() { return m_polygonmode; }
-  bool State::getCullFaceMode() { return m_backface_culling; }
-  GLuint State::getProgram() { return m_program; }
+//Getters.
+std::shared_ptr<Material>& State::getMaterial() { return m_material; }
+TextureVector& State::getTextures() { return m_textures; }
+LightVector& State::getLights() { return m_lights; }
+GLuint State::getPolygonMode() { return m_polygonmode; }
+bool State::getCullFaceMode() { return m_backface_culling; }
+GLuint State::getProgram() { return m_program; }

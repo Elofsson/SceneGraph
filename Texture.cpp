@@ -58,9 +58,13 @@ void Texture::initEmpty(unsigned int width, unsigned int height, unsigned int sl
 	setupTexture();
 
   setWrapSetting(GL_CLAMP_TO_EDGE);
+	setFilterSetting(GL_LINEAR);
+	glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 
 	// Assigns the image to the OpenGL Texture object
 	glTexImage2D(texType, 0, GL_DEPTH_COMPONENT24, width, height, 0, GL_DEPTH_COMPONENT, pixelType, 0);
+
+	glGenerateMipmap(texType);
 
 	// Unbinds the OpenGL Texture object so that it can't accidentally be modified
 	glBindTexture(m_type, 0);

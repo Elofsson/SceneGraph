@@ -338,6 +338,7 @@ void Application::initView()
   secondCamera->setNearFar(glm::vec2(0.1, distance * 20));
   secondCamera->setSceneScale(0.01f * radius);
   secondCamera->setFov(90);
+  secondCamera->setScreenSize(m_screenSize);
   addCamera(secondCamera);
 
   //Add a shadowMap for this light with the specified camera.
@@ -409,7 +410,14 @@ void Application::processInput(GLFWwindow* window)
 
 void Application::setScreenSize(unsigned int width, unsigned int height)
 {
-  getCamera()->setScreenSize(glm::uvec2(width, height));
+  for(auto cameraId : m_cameras)
+  {
+    std::shared_ptr<Camera> camera = m_sceneRoot->getCamera(cameraId);
+    if(camera != nullptr)
+    {
+      camera->setScreenSize(glm::uvec2(width, height));
+    }
+  }
   glViewport(0, 0, width, height);
 }
 

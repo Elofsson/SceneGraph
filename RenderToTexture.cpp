@@ -7,11 +7,12 @@ RenderToTexture::RenderToTexture(unsigned int width, unsigned int height, GLuint
   m_renderer = std::shared_ptr<RenderVisitor>(new RenderVisitor());
   m_width = width;
   m_height = height;
-
   m_texture = std::shared_ptr<Texture>(new Texture());
-  //TODO set the slot from constructor.
+}
 
-  m_texture->initEmpty(width, height, 1, GL_TEXTURE_2D, GL_FLOAT);
+bool RenderToTexture::init(unsigned int textureSlot)
+{
+  m_texture->initEmpty(m_width, m_height, textureSlot, GL_TEXTURE_2D, GL_FLOAT);
   m_texture->bind();
 
   // The framebuffer, which regroups 0, 1, or more textures, and 0 or 1 depth buffer.
@@ -25,7 +26,12 @@ RenderToTexture::RenderToTexture(unsigned int width, unsigned int height, GLuint
   glDrawBuffer(GL_NONE);
 
   if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+  {
     std::cout << "Failed to create RenderToTexture" << std::endl;
+    return false;
+  }
+
+  return true;
 }
 
 //TODO find a way to reset viewport.
@@ -33,8 +39,8 @@ void RenderToTexture::render(std::shared_ptr<Camera> camera, std::shared_ptr<Gro
 {
   glBindFramebuffer(GL_FRAMEBUFFER, m_framebuffer);
   glViewport(0,0,m_width, m_height);
+  glCullFace(GL_FRONT);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
   glUseProgram(m_program); 
 
   //Apply camera.
@@ -57,6 +63,9 @@ void RenderToTexture::render(std::shared_ptr<Camera> camera, std::shared_ptr<Gro
     startNode->setState(state);
   }
 
+  bool previousCullMode = startNode->getState()->getCullFaceMode();
+  startNode->getState()->setCullFace(true); //Enable culling.
+
   //Use rendervisitor here.
   m_renderer->visit(*startNode);
 
@@ -66,8 +75,12 @@ void RenderToTexture::render(std::shared_ptr<Camera> camera, std::shared_ptr<Gro
     startNode->getState()->setProgram(previousProgram);
   }
   
+  startNode->getState()->setCullFace(previousCullMode);
+  
   glBindFramebuffer(GL_FRAMEBUFFER, 0);
-  glViewport(0,0,m_width, m_height);
+  glm::vec2 screenSize = camera->getScreenSize();
+  glViewport(0,0,screenSize.x, screenSize.y);
+  glCullFace(GL_BACK);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
