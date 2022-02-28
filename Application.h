@@ -126,6 +126,8 @@ private:
 
   //Load a moving light with attached to a object.
   bool loadMovingLight();
+
+  bool loadFurry();
   
   // Parent of all to be rendered
   std::shared_ptr<Scene> m_sceneRoot;

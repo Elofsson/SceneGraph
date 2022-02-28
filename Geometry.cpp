@@ -9,6 +9,19 @@ Geometry::Geometry(bool useVAO) {
   m_attribute_v_texCoords = -1;
 }
 
+Geometry::Geometry(std::shared_ptr<Geometry> geometry, bool useVAO)
+{
+  m_useVAO = useVAO;
+  m_attribute_v_normal = -1;
+  m_attribute_v_coord = -1;
+  m_attribute_v_texCoords = -1;
+
+  m_vertices = geometry->getVertices();
+  m_normals = geometry->getNormals();
+  m_texCoords = geometry->getTexCoords();
+  m_elements = geometry->getElements();
+}
+
 BoundingBox Geometry::calculateBoundingBox(glm::mat4 modelMat) {
   BoundingBox box;
   for(auto v : m_vertices)

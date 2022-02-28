@@ -135,17 +135,19 @@ bool Application::buildGeometry()
   cowLodModels.push_back("models/cow_0.1.obj");
   cowLodModels.push_back("models/cow_0.05.obj");
   cowLodModels.push_back("models/cow_0.01.obj");
-  loadLodObjects(cowLodModels);
+  //loadLodObjects(cowLodModels);
 
   //Create the terrain within a certain radius.
   BoundingBox sceneBox = m_sceneRoot->calculateBoundingBox();
   int radius = sceneBox.getRadius() / 2;
-  if(!loadTrees(radius))
-    return false;
+  //if(!loadTrees(radius))
+    //return false;
   
-  if(!loadMountains(radius))
-    return false;
+  //if(!loadMountains(radius))
+    //return false;
 
+  if(!loadFurry())
+    return false;
   //if(!loadMovingLight())
     //return false;
 
@@ -288,6 +290,50 @@ bool Application::loadGroup(std::string model_filename, std::shared_ptr<Group> &
       return false;
     }
   }
+
+  return true;
+}
+
+bool Application::loadFurry()
+{ 
+
+  //Load fur shaders.
+  std::string vshader = "shaders/fur-shading.vert.glsl";
+  std::string fshader = "shaders/fur-shading.frag.glsl";
+  int shaderId = m_sceneRoot->addShader(vshader, fshader);
+  if(shaderId < 0)
+  {
+    std::cout << "Failed to load shaders : " << vshader << " AND " << fshader << std::endl;
+    return false;
+  }
+
+  //Load object.
+  std::string modelName = "models/texturedBox.obj";
+  std::shared_ptr<Group> furryGroup = std::shared_ptr<Group>(new Group);
+  if(!loadGroup(modelName, furryGroup))
+  {
+    std::cout << "Failed to load furry object " << modelName << std::endl;
+    return false;
+  }
+
+  //Create fur state.
+  int furLayer = 20;
+  int seed = 3983948;
+  float furLength = 3;
+  std::shared_ptr<FurState> furState = std::shared_ptr<FurState>(new FurState(furLayer, seed, furLength));
+  std::shared_ptr<State> state = std::shared_ptr<State>(new State);
+  state->setFurShading(furState);
+  state->setProgram(m_sceneRoot->getProgram(shaderId));
+  furryGroup->setState(state);
+
+
+  //Create transform to scale the object.
+  std::shared_ptr<Transform> transform = std::shared_ptr<Transform>(new Transform);
+  transform->scale(glm::vec3(25, 25, 25));
+  transform->addChild(furryGroup);
+
+  //Add to scene.
+  m_sceneRoot->add(transform, shaderId);
 
   return true;
 }

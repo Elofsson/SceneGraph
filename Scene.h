@@ -62,6 +62,9 @@ public:
   /// <returns>The shader program</returns>
   std::vector<GLuint> getPrograms() const;
 
+
+  GLuint getProgram(int programId);
+
   /// <summary>
   /// Get the camera
   /// </summary>
@@ -93,6 +96,8 @@ public:
   /// </summary>
   /// <param name="node">A new node</param>
   void add(std::shared_ptr<Group> node, int shader = DEFAULT_SHADER);
+
+
 
   /// <summary>
   /// Reset all nodes transform to its initial value

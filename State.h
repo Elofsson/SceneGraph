@@ -4,6 +4,7 @@
 #include "Material.h"
 #include "glm/gtc/type_ptr.hpp"
 #include "Light.h"
+#include "FurState.h"
 
 #define SHADER_NUMBER_TEXTURES 2
 
@@ -24,19 +25,18 @@ public:
   void setPolygonMode(GLuint mode);
   void setCullFace(bool useCullFace);
   void setProgram(GLuint Program);
+  void setFurShading(std::shared_ptr<FurState> furState);
 
   //Getters.
+  std::shared_ptr<FurState> getFurState();
   std::shared_ptr<Material>& getMaterial();
   TextureVector& getTextures();
   LightVector& getLights();
   GLuint getPolygonMode();
   bool getCullFaceMode();
   GLuint getProgram();
-
   void merge(const std::shared_ptr<State> state);
-
   bool apply();
-  
   void unbind();
 
 private:
@@ -45,7 +45,8 @@ private:
 
   //Help methods to merge states.
   void updateLights(LightVector inputLights);
-
+  
+  std::shared_ptr<FurState> m_furState;
   bool m_backface_culling;
   GLuint m_program;
   GLuint m_polygonmode;
@@ -55,5 +56,4 @@ private:
   LightVector m_lights;
   //Material.
   std::shared_ptr<Material> m_material;
-
 };

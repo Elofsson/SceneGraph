@@ -10,6 +10,7 @@ State::State()
   m_material = std::shared_ptr<Material>(new Material());
   m_polygonmode = -1;
   m_program = 0;
+  m_furState = nullptr;
 }
 
 State::State(std::shared_ptr<State> state)
@@ -85,6 +86,12 @@ void State::merge(const std::shared_ptr<State> inputState)
   {
     //std::cout << "Update state program" << std::endl; 
     m_program = inputState->getProgram();
+  }
+
+  //Update furstate.
+  if(inputState->getFurState() != nullptr)
+  {
+    m_furState = inputState->getFurState();
   }
 }
 
@@ -230,6 +237,14 @@ void State::unbind()
     }
   }
 }
+
+void State::setFurShading(std::shared_ptr<FurState> furState)
+{
+  m_furState = furState;
+}
+
+std::shared_ptr<FurState> State::getFurState() { return m_furState; }
+
 
 //Getters.
 std::shared_ptr<Material>& State::getMaterial() { return m_material; }

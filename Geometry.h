@@ -30,6 +30,9 @@ public:
    */
   Geometry(bool useVAO = true);
 
+
+  Geometry(std::shared_ptr<Geometry> geometry, bool useVAO = true);
+
   /**
    * @brief Calculates the boundingbox for this geometry
    * 
@@ -55,7 +58,7 @@ public:
    * 
    * @param transformMatrix Modelmatrix to be set.
    */
-  virtual void apply(glm::mat4 transformMatrix);
+  void apply(glm::mat4 transformMatrix);
 
   /**
    * @brief Insert a new vertex at the specified index.
@@ -139,7 +142,7 @@ public:
   virtual void accept(NodeVisitor& visitor) override;
 
   //Initialise shaders with attributes, uniforms e.t.c.
-  bool initShaders(GLuint program);
+  virtual bool initShaders(GLuint program);
 
 private:
   vec4Vector m_vertices;

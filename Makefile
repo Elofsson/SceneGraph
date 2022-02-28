@@ -379,6 +379,33 @@ FurGeometry.cpp.s:
 	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/FurGeometry.cpp.s
 .PHONY : FurGeometry.cpp.s
 
+FurState.o: FurState.cpp.o
+
+.PHONY : FurState.o
+
+# target to build an object file
+FurState.cpp.o:
+	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/FurState.cpp.o
+.PHONY : FurState.cpp.o
+
+FurState.i: FurState.cpp.i
+
+.PHONY : FurState.i
+
+# target to preprocess a source file
+FurState.cpp.i:
+	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/FurState.cpp.i
+.PHONY : FurState.cpp.i
+
+FurState.s: FurState.cpp.s
+
+.PHONY : FurState.s
+
+# target to generate assembly for a file
+FurState.cpp.s:
+	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/FurState.cpp.s
+.PHONY : FurState.cpp.s
+
 Geometry.o: Geometry.cpp.o
 
 .PHONY : Geometry.o
@@ -1034,6 +1061,9 @@ help:
 	@echo "... FurGeometry.o"
 	@echo "... FurGeometry.i"
 	@echo "... FurGeometry.s"
+	@echo "... FurState.o"
+	@echo "... FurState.i"
+	@echo "... FurState.s"
 	@echo "... Geometry.o"
 	@echo "... Geometry.i"
 	@echo "... Geometry.s"

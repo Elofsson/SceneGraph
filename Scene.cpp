@@ -116,6 +116,16 @@ std::vector<GLuint> Scene::getPrograms() const
   return m_programs;
 }
 
+GLuint Scene::getProgram(int shaderId)
+{
+  if(m_programs.size() > shaderId && !(shaderId < 0))
+  {
+    return m_programs[shaderId];
+  }
+
+  return m_programs[DEFAULT_SHADER];
+}
+
 std::shared_ptr<Camera> Scene::getCamera(int cameraId)
 { 
   //check if such a camera exists.

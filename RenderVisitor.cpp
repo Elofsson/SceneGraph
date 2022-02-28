@@ -84,7 +84,24 @@ void RenderVisitor::visit(Geometry &g)
 	glm::mat4 object2world = m_transform_matrices.top();
 	g.initShaders(geometryState->getProgram());
 	g.apply(object2world);
-	g.draw();
+
+	//Render with furstate.
+	std::cout << "Render with program: " << geometryState->getProgram() << std::endl;
+	auto furState = geometryState->getFurState();
+	if(furState != nullptr)
+	{
+		for(int layer = 0; layer < furState->getNumLayers(); layer++)
+		{
+			furState->apply(geometryState->getProgram(), layer);
+			g.draw();
+		}
+	}
+
+	//Render without furstate if it is not set.
+	else
+	{
+		g.draw();
+	}
 }
 
 void RenderVisitor::mergeAndPushState(std::shared_ptr<State> inputState)
