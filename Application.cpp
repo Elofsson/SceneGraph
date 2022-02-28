@@ -227,16 +227,6 @@ bool Application::loadMountains(int radius)
     return false;
   }
 
-  //Load mountain shaders.
-  /*std::string vmountainShader = "shaders/simple-test-shading.vert.glsl";
-  std::string fmountainShader = "shaders/simple-test-shading.frag.glsl";
-  int shaderId = m_sceneRoot->addShader(vmountainShader, fmountainShader);
-  if(shaderId == -1)
-  {
-    std::cerr << "Failed to load shader: " << vmountainShader << " : " << fmountainShader << std::endl;
-    return false;
-  }*/
-
   std::srand(time(NULL));
 
   //Create 25 transforms containing mountain model.

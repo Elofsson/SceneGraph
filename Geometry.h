@@ -48,14 +48,14 @@ public:
    * @brief Draw the geometry
    * 
    */
-  void draw();
+  virtual void draw();
 
   /**
    * @brief Set uniforms and locations in the shader.
    * 
    * @param transformMatrix Modelmatrix to be set.
    */
-  void apply(glm::mat4 transformMatrix);
+  virtual void apply(glm::mat4 transformMatrix);
 
   /**
    * @brief Insert a new vertex at the specified index.

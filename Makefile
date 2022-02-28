@@ -352,6 +352,33 @@ FPSCounter.cpp.s:
 	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/FPSCounter.cpp.s
 .PHONY : FPSCounter.cpp.s
 
+FurGeometry.o: FurGeometry.cpp.o
+
+.PHONY : FurGeometry.o
+
+# target to build an object file
+FurGeometry.cpp.o:
+	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/FurGeometry.cpp.o
+.PHONY : FurGeometry.cpp.o
+
+FurGeometry.i: FurGeometry.cpp.i
+
+.PHONY : FurGeometry.i
+
+# target to preprocess a source file
+FurGeometry.cpp.i:
+	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/FurGeometry.cpp.i
+.PHONY : FurGeometry.cpp.i
+
+FurGeometry.s: FurGeometry.cpp.s
+
+.PHONY : FurGeometry.s
+
+# target to generate assembly for a file
+FurGeometry.cpp.s:
+	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/FurGeometry.cpp.s
+.PHONY : FurGeometry.cpp.s
+
 Geometry.o: Geometry.cpp.o
 
 .PHONY : Geometry.o
@@ -1004,6 +1031,9 @@ help:
 	@echo "... FPSCounter.o"
 	@echo "... FPSCounter.i"
 	@echo "... FPSCounter.s"
+	@echo "... FurGeometry.o"
+	@echo "... FurGeometry.i"
+	@echo "... FurGeometry.s"
 	@echo "... Geometry.o"
 	@echo "... Geometry.i"
 	@echo "... Geometry.s"
