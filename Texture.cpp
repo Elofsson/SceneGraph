@@ -111,7 +111,7 @@ bool Texture::initCubemap(std::vector<std::string> textures, unsigned int slot, 
 
 		//Read the image.
 		int widthImg, heightImg, numColCh;
-		unsigned char *bytes = readTexture(filePath, &widthImg, &heightImg, &numColCh);
+		unsigned char *bytes = readTexture(filePath, &widthImg, &heightImg, &numColCh, false);
 		if(!bytes)
 		{
 			std::cerr << "Error reading image: " << filePath << std::endl;
@@ -197,10 +197,10 @@ void Texture::setFilterSetting(GLuint filterSetting)
 	glTexParameteri(m_type, GL_TEXTURE_MAG_FILTER, filterSetting);
 }
 
-unsigned char* Texture::readTexture(std::string filePath, int *width, int *height, int *numChannels)
+unsigned char* Texture::readTexture(std::string filePath, int *width, int *height, int *numChannels, bool flip)
 {
 	// Flips the image so it appears right side up
-	stbi_set_flip_vertically_on_load(true);
+	stbi_set_flip_vertically_on_load(flip);
 	// Reads the image from a file and stores it in bytes
 	unsigned char* bytes = stbi_load(filePath.c_str(), width, height, numChannels, 0);
   return bytes;

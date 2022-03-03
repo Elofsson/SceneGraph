@@ -3,6 +3,7 @@
 #include <vr/shaderUtils.h>
 #include "Debug.h"
 #include "DotVisitor.h"
+#include "SkyBox.h"
 
 Scene::Scene() : m_uniform_numberOfLights(-1)
 {
@@ -11,10 +12,10 @@ Scene::Scene() : m_uniform_numberOfLights(-1)
   m_root = std::shared_ptr<Group>(new Group);
   m_root->name = "Root ";
   m_shadowsEnabled = false;
-  //Initalize visitors.
   m_renderer = std::shared_ptr<RenderVisitor>(new RenderVisitor());
   m_updater = std::shared_ptr<UpdateVisitor>(new UpdateVisitor());
   m_shadowMap = nullptr;
+  m_skybox = nullptr;
 }
 
 Scene::~Scene()
@@ -244,9 +245,17 @@ BoundingBox Scene::calculateBoundingBox()
   return m_root->calculateBoundingBox(glm::mat4(1.0f));
 }
 
-const GroupVector& Scene::getGroups()
+void Scene::setSkybox(int programId, std::vector<std::string> textures, std::string modelFile)
 {
-  return m_groups;
+  GLuint program = getProgram(programId);
+  if(program == m_programs[DEFAULT_SHADER])
+  {
+    std::cout << "Could not find skybox program" << std::endl;
+    std::cout << "Make sure to add the shader before setting skybox" << std::endl;
+    return;
+  }
+
+  m_skybox = std::shared_ptr<SkyBox>(new SkyBox(textures, modelFile.c_str(), program));
 }
 
 void Scene::render()
@@ -271,5 +280,13 @@ void Scene::render()
 
   m_updater->visit(*m_root);
   m_renderer->visit(*m_root);
+
+  if(m_skybox != nullptr)
+  { 
+    //Apply selected camera with the skybox program.
+    glUseProgram(m_skybox->getProgram());
+    m_cameras[m_selectedCamera]->applyOrthogonal(m_skybox->getProgram(), m_root->getBoundingBox());
+    m_skybox->display();
+  }
   //std::cout << "Number of root children " << m_root->getChildren().size() << std::endl;
 }

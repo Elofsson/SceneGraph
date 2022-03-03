@@ -1,20 +1,15 @@
 
 #pragma once
 
-#include <memory>
-#include <vector>
 #include <sstream>
-#include "Node.h"
 #include "Geometry.h"
 #include "Light.h"
 #include "Camera.h"
-#include "Group.h"
-#include "RenderVisitor.h"
 #include "UpdateVisitor.h"
-#include "InitVisitor.h"
 #include "RenderToTexture.h"
 #include "ShadowMap.h"
 
+class SkyBox;
 class Scene;
 
 #define DEFAULT_SHADER 0
@@ -104,8 +99,6 @@ public:
   /// </summary>
   void resetTransform();
 
-  const GroupVector& getGroups();
-
   const std::shared_ptr<Group> getRoot();
 
   /// <summary>
@@ -123,16 +116,14 @@ public:
 
   void createDotFile(std::string fileName);
 
-
+  void setSkybox(int programId, std::vector<std::string> textures, std::string modelFile);
 
 private:
   std::vector<GLuint> m_programs;
   std::vector<std::shared_ptr<Camera>> m_cameras;
   unsigned int m_selectedCamera;
   std::shared_ptr<Group> m_root;
-  NodeVector m_nodes;
-  GroupVector m_groups;
-  LightVector m_lights;
+  std::shared_ptr<SkyBox> m_skybox;
 
   bool m_shadowsEnabled;
   std::shared_ptr<ShadowMap> m_shadowMap;

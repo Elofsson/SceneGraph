@@ -28,7 +28,7 @@ private:
   void setupTexture();
   void cleanupInit(unsigned char *bytes);
   
-  unsigned char* readTexture(std::string filePath, int *width, int *height, int *numChannels);
+  unsigned char* readTexture(std::string filePath, int *width, int *height, int *numChannels, bool flip = true);
 
   GLuint m_texture_id;
   GLuint m_type;

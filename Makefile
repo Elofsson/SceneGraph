@@ -838,6 +838,33 @@ ShadowMap.cpp.s:
 	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/ShadowMap.cpp.s
 .PHONY : ShadowMap.cpp.s
 
+SkyBox.o: SkyBox.cpp.o
+
+.PHONY : SkyBox.o
+
+# target to build an object file
+SkyBox.cpp.o:
+	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/SkyBox.cpp.o
+.PHONY : SkyBox.cpp.o
+
+SkyBox.i: SkyBox.cpp.i
+
+.PHONY : SkyBox.i
+
+# target to preprocess a source file
+SkyBox.cpp.i:
+	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/SkyBox.cpp.i
+.PHONY : SkyBox.cpp.i
+
+SkyBox.s: SkyBox.cpp.s
+
+.PHONY : SkyBox.s
+
+# target to generate assembly for a file
+SkyBox.cpp.s:
+	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/SkyBox.cpp.s
+.PHONY : SkyBox.cpp.s
+
 State.o: State.cpp.o
 
 .PHONY : State.o
@@ -1112,6 +1139,9 @@ help:
 	@echo "... ShadowMap.o"
 	@echo "... ShadowMap.i"
 	@echo "... ShadowMap.s"
+	@echo "... SkyBox.o"
+	@echo "... SkyBox.i"
+	@echo "... SkyBox.s"
 	@echo "... State.o"
 	@echo "... State.i"
 	@echo "... State.s"

@@ -43,9 +43,32 @@ bool Application::initResources(const std::string& model_filename, const std::st
   std::string fshadowShader = "shaders/shadowmap-shading.frag.glsl";
   if(!m_sceneRoot->initShadows(vshadowShader, fshadowShader))
     return false;
+  
 
+  //Init skybox.
+  std::string vskyboxShader = "shaders/skybox-shading.vert.glsl";
+  std::string fskyboxShader = "shaders/skybox-shading.frag.glsl";
+  int shaderId = m_sceneRoot->addShader(vskyboxShader, fskyboxShader);
+  if(shaderId == -1)
+  {
+    std::cout << "Failed to load skybox shader " << std::endl;
+    return false;
+  }
+
+  //Textures.
+  std::vector<std::string> skyboxTextures;
+  skyboxTextures.push_back("models/skybox/right.jpg");
+  skyboxTextures.push_back("models/skybox/left.jpg");
+  skyboxTextures.push_back("models/skybox/top.jpg");
+  skyboxTextures.push_back("models/skybox/bottom.jpg");
+  skyboxTextures.push_back("models/skybox/front.jpg");
+  skyboxTextures.push_back("models/skybox/back.jpg");
+
+  std::string skyboxModelFile = "models/box.obj";
+  m_sceneRoot->setSkybox(shaderId, skyboxTextures, skyboxModelFile);
+
+  //Add camera.
   m_cameras.push_back(m_sceneRoot->getSelectedCameraId());
-
 
   //Create light.
   std::shared_ptr<Light> light2 = std::shared_ptr<Light>(new Light);
@@ -140,14 +163,15 @@ bool Application::buildGeometry()
   //Create the terrain within a certain radius.
   BoundingBox sceneBox = m_sceneRoot->calculateBoundingBox();
   int radius = sceneBox.getRadius() / 2;
-  //if(!loadTrees(radius))
-    //return false;
+  if(!loadTrees(radius))
+    return false;
   
-  //if(!loadMountains(radius))
-    //return false;
+  if(!loadMountains(radius))
+    return false;
 
   if(!loadFurry())
     return false;
+  
   //if(!loadMovingLight())
     //return false;
 
