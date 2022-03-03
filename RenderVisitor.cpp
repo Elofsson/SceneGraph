@@ -86,15 +86,10 @@ void RenderVisitor::visit(Geometry &g)
 	g.apply(object2world);
 
 	//Render with furstate.
-	std::cout << "Render with program: " << geometryState->getProgram() << std::endl;
 	auto furState = geometryState->getFurState();
 	if(furState != nullptr)
 	{
-		for(int layer = 0; layer < furState->getNumLayers(); layer++)
-		{
-			furState->apply(geometryState->getProgram(), layer);
-			g.draw();
-		}
+		furState->apply(g, geometryState->getProgram());
 	}
 
 	//Render without furstate if it is not set.

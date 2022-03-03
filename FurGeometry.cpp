@@ -15,18 +15,18 @@ bool FurGeometry::init(int seed, int density, int size, int textureSlot)
   //Initalzie data.
 
   //Simple method to generate a random noise.
-	srand(seed);
-	unsigned char *data = (unsigned char *) calloc(width * height, sizeof(unsigned char));
-	for(int row = 0; row < height; row++)
-	{
-		for(int col = 0; col < width; col++)
-		{
-			data[row * height + col] = (rand() % 32768) / 32768.0;
-		}
-	}
+	//srand(seed);
+	//unsigned char *data = (unsigned char *) calloc(width * height, sizeof(unsigned char));
+	//for(int row = 0; row < height; row++)
+	//{
+	//	for(int col = 0; col < width; col++)
+	//	{
+	//		data[row * height + col] = (rand() % 32768) / 32768.0;
+	//	}
+	//}
 
-	m_furPatternTexture->initData(width, height, textureSlot, GL_UNSIGNED_BYTE, GL_RGBA, data);
-	free(data);
+	//m_furPatternTexture->initData(width, height, textureSlot, GL_UNSIGNED_BYTE, GL_RGBA, data);
+	//free(data);
 
   return true;
 }
@@ -37,6 +37,38 @@ bool FurGeometry::initShaders(GLuint program)
 	if(!Geometry::initShaders(program))
 	{
 		std::cout << "Failed to load shaders for fur geometry" << std::endl;
+		return false;
+	}
+
+	const char *uniformName = "currentLayer";
+	m_uniformCurrentLayer = glGetUniformLocation(program, uniformName);
+	if(m_uniformCurrentLayer == -1)
+	{
+		std::cout << "Failed to get uniform " << uniformName << std::endl;
+		return false;
+	}
+
+	uniformName = "UVScale";
+	m_uniformUVScale = glGetUniformLocation(program, uniformName);
+	if(m_uniformUVScale == -1)
+	{
+		std::cout << "Failed to get uniform " << uniformName << std::endl;
+		return false;
+	}
+
+	uniformName = "furFlowOffset";
+	m_uniformFurOffset = glGetUniformLocation(program, uniformName);
+	if(m_uniformFurOffset == -1)
+	{
+		std::cout << "Failed to get uniform " << uniformName << std::endl;
+		return false;
+	}
+
+	uniformName = "furLength";
+	m_uniformFurLength = glGetUniformLocation(program, uniformName);
+	if(m_uniformFurLength == -1)
+	{
+		std::cout << "Failed to get uniform " << uniformName << std::endl;
 		return false;
 	}
 

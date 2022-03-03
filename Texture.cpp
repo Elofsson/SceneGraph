@@ -70,7 +70,7 @@ void Texture::initEmpty(unsigned int width, unsigned int height, unsigned int sl
 	glBindTexture(m_type, 0);
 }
 
-void Texture::initData(unsigned int width, unsigned int height, unsigned int slot, GLenum texType, GLenum pixelType, unsigned char *data)
+void Texture::initData(unsigned int width, unsigned int height, unsigned int slot, GLenum texType, GLenum pixelType, GLubyte *data)
 {
 	//Setup texture attributes.
   m_slot = slot;
@@ -78,12 +78,13 @@ void Texture::initData(unsigned int width, unsigned int height, unsigned int slo
 
 	setupTexture();
 
-  //setWrapSetting(GL_CLAMP_TO_EDGE);
-	//setFilterSetting(GL_LINEAR);
-	//glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+  setWrapSetting(GL_CLAMP_TO_EDGE);
+	setFilterSetting(GL_LINEAR);
+	glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 
 	// Assigns the image to the OpenGL Texture object
-	glTexImage2D(texType, 0, GL_RGBA8, width, height, 0, GL_RGBA, pixelType, data);
+	glTexStorage2D(GL_TEXTURE_2D, slot, GL_RGBA8, width, height);
+	glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, data);
 
 	// Unbinds the OpenGL Texture object so that it can't accidentally be modified
 	glBindTexture(m_type, 0);

@@ -308,7 +308,7 @@ bool Application::loadFurry()
   }
 
   //Load object.
-  std::string modelName = "models/texturedBox.obj";
+  std::string modelName = "models/Mike.obj";
   std::shared_ptr<Group> furryGroup = std::shared_ptr<Group>(new Group);
   if(!loadGroup(modelName, furryGroup))
   {
@@ -318,18 +318,20 @@ bool Application::loadFurry()
 
   //Create fur state.
   int furLayer = 20;
-  int seed = 3983948;
-  float furLength = 3;
-  std::shared_ptr<FurState> furState = std::shared_ptr<FurState>(new FurState(furLayer, seed, furLength));
+  float furLength = 0.001;
+  float furOffset = 0.001;
+  std::shared_ptr<FurState> furState = std::shared_ptr<FurState>(new FurState(furLayer, furLength, furOffset));
+  furState->init("textures/furPattern.png", 1920, 1920);
+  
+  //Add furstate to state.
   std::shared_ptr<State> state = std::shared_ptr<State>(new State);
   state->setFurShading(furState);
   state->setProgram(m_sceneRoot->getProgram(shaderId));
   furryGroup->setState(state);
 
-
   //Create transform to scale the object.
   std::shared_ptr<Transform> transform = std::shared_ptr<Transform>(new Transform);
-  transform->scale(glm::vec3(25, 25, 25));
+  transform->scale(glm::vec3(50, 50, 50));
   transform->addChild(furryGroup);
 
   //Add to scene.
