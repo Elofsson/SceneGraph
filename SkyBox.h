@@ -92,7 +92,7 @@ public:
   /**
    * @brief Render the skybox.
    */
-  void display();
+  void render();
 
   GLuint getProgram();
 

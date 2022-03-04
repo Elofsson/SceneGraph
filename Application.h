@@ -128,6 +128,8 @@ private:
   bool loadMovingLight();
 
   bool loadFurry();
+
+  bool loadSkybox(std::vector<std::string> textures, const std::string& model_filename, const std::string& vshader_filename, std::string& fshader_filename);
   
   // Parent of all to be rendered
   std::shared_ptr<Scene> m_sceneRoot;

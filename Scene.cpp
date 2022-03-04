@@ -261,6 +261,7 @@ void Scene::setSkybox(int programId, std::vector<std::string> textures, std::str
 void Scene::render()
 {
 
+
   //Render shadows
   if(m_shadowMap != nullptr)
   { 
@@ -276,17 +277,18 @@ void Scene::render()
     }
   }
 
-  applyCamera();
-
-  m_updater->visit(*m_root);
-  m_renderer->visit(*m_root);
-
   if(m_skybox != nullptr)
   { 
     //Apply selected camera with the skybox program.
     glUseProgram(m_skybox->getProgram());
     m_cameras[m_selectedCamera]->applyOrthogonal(m_skybox->getProgram(), m_root->getBoundingBox());
-    m_skybox->display();
+    m_skybox->render();
   }
+
+  applyCamera();
+
+  m_updater->visit(*m_root);
+  m_renderer->visit(*m_root);
+
   //std::cout << "Number of root children " << m_root->getChildren().size() << std::endl;
 }

@@ -39,13 +39,9 @@ void SkyBox::loadCubemap(std::vector<std::string> textures) {
   }
 }
 
-void SkyBox::display() {
+void SkyBox::render() {
   glDepthFunc(GL_LEQUAL); 
 
-  //Update view and projection matrices.
-  //This has probably already been done in the scene.
-
-  //TODO bind texture here.
   std::string uniform = "skybox";
   m_skyboxTexture->bind();
   m_skyboxTexture->apply(m_program, uniform);

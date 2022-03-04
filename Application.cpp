@@ -45,17 +45,11 @@ bool Application::initResources(const std::string& model_filename, const std::st
     return false;
   
 
-  //Init skybox.
+  //Skybox shaders.
   std::string vskyboxShader = "shaders/skybox-shading.vert.glsl";
   std::string fskyboxShader = "shaders/skybox-shading.frag.glsl";
-  int shaderId = m_sceneRoot->addShader(vskyboxShader, fskyboxShader);
-  if(shaderId == -1)
-  {
-    std::cout << "Failed to load skybox shader " << std::endl;
-    return false;
-  }
-
-  //Textures.
+  
+  //Skybox textures.
   std::vector<std::string> skyboxTextures;
   skyboxTextures.push_back("models/skybox/right.jpg");
   skyboxTextures.push_back("models/skybox/left.jpg");
@@ -64,8 +58,13 @@ bool Application::initResources(const std::string& model_filename, const std::st
   skyboxTextures.push_back("models/skybox/front.jpg");
   skyboxTextures.push_back("models/skybox/back.jpg");
 
+  //Skybox model.
   std::string skyboxModelFile = "models/box.obj";
-  m_sceneRoot->setSkybox(shaderId, skyboxTextures, skyboxModelFile);
+  if(!loadSkybox(skyboxTextures, skyboxModelFile, vskyboxShader, fskyboxShader))
+  {
+    std::cout << "Failed to load skybox " << std::endl;
+    return false;
+  }
 
   //Add camera.
   m_cameras.push_back(m_sceneRoot->getSelectedCameraId());
@@ -101,6 +100,21 @@ bool Application::initResources(const std::string& model_filename, const std::st
   }
 
   return 1;
+}
+
+bool Application::loadSkybox(std::vector<std::string> textures, const std::string& modelfilename, const std::string& vshaderfilename, std::string& fshaderfilename)
+{
+  //Init skybox.
+  int shaderId = m_sceneRoot->addShader(vshaderfilename, fshaderfilename);
+  if(shaderId == -1)
+  {
+    std::cout << "Failed to load skybox shader " << std::endl;
+    return false;
+  }
+
+  m_sceneRoot->setSkybox(shaderId, textures, modelfilename);
+  
+  return true;
 }
 
 bool Application::loadMovingLight()
