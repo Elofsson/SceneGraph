@@ -215,8 +215,6 @@ void Texture::apply(GLuint program, std::string uniform)
 
   GLuint texUni = glGetUniformLocation(program, uniform.c_str());
   glUniform1i(texUni, m_slot);
-
-  CHECK_GL_ERROR_LINE_FILE();
 }
 
 void Texture::bind()

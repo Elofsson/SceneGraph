@@ -10,6 +10,7 @@ public:
   ShadowMap(GLuint depthProgram, std::shared_ptr<Camera> camera, std::shared_ptr<Light> light);
   bool init(unsigned int textureSlot);
   void apply(GLuint program, std::shared_ptr<Group> node);
+  void clear();
   void update();
 
 private:

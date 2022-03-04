@@ -244,32 +244,32 @@ Camera.cpp.s:
 	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/Camera.cpp.s
 .PHONY : Camera.cpp.s
 
-ControllableLightCallback.o: ControllableLightCallback.cpp.o
+ControllableObjectCallback.o: ControllableObjectCallback.cpp.o
 
-.PHONY : ControllableLightCallback.o
+.PHONY : ControllableObjectCallback.o
 
 # target to build an object file
-ControllableLightCallback.cpp.o:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/ControllableLightCallback.cpp.o
-.PHONY : ControllableLightCallback.cpp.o
+ControllableObjectCallback.cpp.o:
+	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/ControllableObjectCallback.cpp.o
+.PHONY : ControllableObjectCallback.cpp.o
 
-ControllableLightCallback.i: ControllableLightCallback.cpp.i
+ControllableObjectCallback.i: ControllableObjectCallback.cpp.i
 
-.PHONY : ControllableLightCallback.i
+.PHONY : ControllableObjectCallback.i
 
 # target to preprocess a source file
-ControllableLightCallback.cpp.i:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/ControllableLightCallback.cpp.i
-.PHONY : ControllableLightCallback.cpp.i
+ControllableObjectCallback.cpp.i:
+	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/ControllableObjectCallback.cpp.i
+.PHONY : ControllableObjectCallback.cpp.i
 
-ControllableLightCallback.s: ControllableLightCallback.cpp.s
+ControllableObjectCallback.s: ControllableObjectCallback.cpp.s
 
-.PHONY : ControllableLightCallback.s
+.PHONY : ControllableObjectCallback.s
 
 # target to generate assembly for a file
-ControllableLightCallback.cpp.s:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/ControllableLightCallback.cpp.s
-.PHONY : ControllableLightCallback.cpp.s
+ControllableObjectCallback.cpp.s:
+	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/ControllableObjectCallback.cpp.s
+.PHONY : ControllableObjectCallback.cpp.s
 
 Debug.o: Debug.cpp.o
 
@@ -1073,9 +1073,9 @@ help:
 	@echo "... Camera.o"
 	@echo "... Camera.i"
 	@echo "... Camera.s"
-	@echo "... ControllableLightCallback.o"
-	@echo "... ControllableLightCallback.i"
-	@echo "... ControllableLightCallback.s"
+	@echo "... ControllableObjectCallback.o"
+	@echo "... ControllableObjectCallback.i"
+	@echo "... ControllableObjectCallback.s"
 	@echo "... Debug.o"
 	@echo "... Debug.i"
 	@echo "... Debug.s"

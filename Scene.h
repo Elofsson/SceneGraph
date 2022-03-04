@@ -118,7 +118,14 @@ public:
 
   void setSkybox(int programId, std::vector<std::string> textures, std::string modelFile);
 
+
+  void enableShadows(bool enabled);
+
+  bool shadowsIsEnabled();
+
+
 private:
+
   std::vector<GLuint> m_programs;
   std::vector<std::shared_ptr<Camera>> m_cameras;
   unsigned int m_selectedCamera;

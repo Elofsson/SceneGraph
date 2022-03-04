@@ -62,7 +62,7 @@ void RenderToTexture::render(std::shared_ptr<Camera> camera, std::shared_ptr<Gro
     state->setProgram(m_program);
     startNode->setState(state);
   }
-
+  
   bool previousCullMode = startNode->getState()->getCullFaceMode();
   startNode->getState()->setCullFace(true); //Enable culling.
 
@@ -93,4 +93,11 @@ GLuint RenderToTexture::getProgram()
 std::shared_ptr<Texture> RenderToTexture::getTexture()
 {
   return m_texture;
+}
+
+void RenderToTexture::clear()
+{
+  glBindFramebuffer(GL_FRAMEBUFFER, m_framebuffer);
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }

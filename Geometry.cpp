@@ -259,35 +259,35 @@ bool Geometry::initShaders(GLuint program)
 	uniform_name = "m";
 	m_uniform_m = glGetUniformLocation(program, uniform_name);
 	if (m_uniform_m == -1) {
-		fprintf(stderr, "Could not bind uniform %s\n", uniform_name);
+		//fprintf(stderr, "Could not bind uniform %s\n", uniform_name);
 	}
 
 	//Get the location for normal matrix.
 	uniform_name = "m_3x3_inv_transp";
 	m_uniform_m_3x3_inv_transp = glGetUniformLocation(program, uniform_name);
 	if (m_uniform_m_3x3_inv_transp == -1) {
-		fprintf(stderr, "Could not bind uniform %s\n", uniform_name);
+		//fprintf(stderr, "Could not bind uniform %s\n", uniform_name);
 	}
 
   const char* attribute_name;
   attribute_name = "vertex.position";
   m_attribute_v_coord = glGetAttribLocation(program, attribute_name);
   if (m_attribute_v_coord == -1) {
-    fprintf(stderr, "Could not bind attribute %s\n", attribute_name);
+    //fprintf(stderr, "Could not bind attribute %s\n", attribute_name);
     return false;
   }
 
   attribute_name = "vertex.normal";
   m_attribute_v_normal = glGetAttribLocation(program, attribute_name);
   if (m_attribute_v_normal == -1) {
-    fprintf(stderr, "Could not bind attribute %s\n", attribute_name);
+    //fprintf(stderr, "Could not bind attribute %s\n", attribute_name);
     return false;
   }
 
   attribute_name = "vertex.texCoord";
   m_attribute_v_texCoords = glGetAttribLocation(program, attribute_name);
   if (m_attribute_v_texCoords == -1) {
-    fprintf(stderr, "Could not bind attribute %s\n", attribute_name);
+    //fprintf(stderr, "Could not bind attribute %s\n", attribute_name);
     return false;
   }
 

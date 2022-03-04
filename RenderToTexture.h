@@ -10,6 +10,7 @@ class RenderToTexture
 public:
   RenderToTexture(unsigned int width, unsigned int height, GLuint program);
   void render(std::shared_ptr<Camera> camera, std::shared_ptr<Group> startNode);
+  void clear();
   bool init(unsigned int textureSlot);
   GLuint getProgram();
   std::shared_ptr<Texture> getTexture();

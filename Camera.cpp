@@ -166,20 +166,20 @@ bool Camera::init(GLuint program)
   m_uniform_v = glGetUniformLocation(program, uniform_name);
   if (m_uniform_v == -1) {
     std::cerr << "Could not bind uniform " << uniform_name << std::endl;
-    return false;
+    //return false;
   }
   uniform_name = "p";
   m_uniform_p = glGetUniformLocation(program, uniform_name);
   if (m_uniform_p == -1) {
     std::cerr << "Could not bind uniform " << uniform_name << std::endl;
-    return false;
+    //return false;
   }
 
   uniform_name = "v_inv";
   m_uniform_v_inv = glGetUniformLocation(program, uniform_name);
   if (m_uniform_v_inv == -1) {
-    std::cerr << "Could not bind uniform " << uniform_name << std::endl;
-    return false;
+    //std::cerr << "Could not bind uniform " << uniform_name << std::endl;
+    //return false;
   }
 
   return true;

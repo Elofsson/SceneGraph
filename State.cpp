@@ -200,12 +200,12 @@ void State::setCullFace(bool useCullFace)
 {
   if(useCullFace)
   {
-    std::cout << "Enable culling of backfaces" << std::endl;
+    //std::cout << "Enable culling of backfaces" << std::endl;
     glEnable(GL_CULL_FACE);
   } 
   else
   {
-    std::cout << "Disable culling of backfaces" << std::endl;
+    //std::cout << "Disable culling of backfaces" << std::endl;
     glDisable(GL_CULL_FACE);
   }
 
@@ -217,7 +217,7 @@ bool State::getLocations()
   const char *uniform_name = "numberOfLights";
   m_uniform_numberOfLights = glGetUniformLocation(m_program, uniform_name);
   if (m_uniform_numberOfLights == -1) {
-    std::cerr << "Could not bind uniform " << uniform_name << std::endl;
+    //std::cerr << "Could not bind uniform " << uniform_name << std::endl;
     return false;
   }
 

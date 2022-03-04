@@ -48,6 +48,15 @@ void keyboard_callback(GLFWwindow* window, int key, int scancode, int action, in
     }
   }
 
+  if (key == GLFW_KEY_V && action == GLFW_PRESS)
+  {
+    if (auto app = g_applicationPtr.lock())
+    {
+      std::cout << "Toggle shadows" << std::endl;
+      app->toggleShadows();
+    }
+  }
+
 }
 
 void window_size_callback(GLFWwindow* window, int width, int height)
@@ -265,10 +274,6 @@ int main(int argc, char** argv)
   //application->add(object);
 
   application->initView();
-
-  glEnable(GL_BLEND);
-  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-  glEnable(GL_DEPTH_TEST);
 
   while (!glfwWindowShouldClose(window))
   {

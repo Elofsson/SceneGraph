@@ -23,7 +23,7 @@ void Light::apply(GLuint program, size_t idx)
   uniform_name = prefix + "enabled";
   loc = glGetUniformLocation(program, uniform_name.c_str());
   if (loc == -1) {
-    std::cerr << "Could not bind uniform << " << uniform_name << std::endl;
+    //std::cerr << "Could not bind uniform << " << uniform_name << std::endl;
     return;
   }
   glUniform1i(loc, m_enabled);

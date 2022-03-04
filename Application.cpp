@@ -17,7 +17,7 @@
 #include "RotateCallback.h"
 #include <stdlib.h>
 #include <time.h> 
-#include "ControllableLightCallback.h"
+#include "ControllableObjectCallback.h"
 
 Application::Application(unsigned int width, unsigned height) : m_screenSize(width, height)
 {
@@ -172,7 +172,7 @@ bool Application::buildGeometry()
   cowLodModels.push_back("models/cow_0.1.obj");
   cowLodModels.push_back("models/cow_0.05.obj");
   cowLodModels.push_back("models/cow_0.01.obj");
-  //loadLodObjects(cowLodModels);
+  loadLodObjects(cowLodModels);
 
   //Create the terrain within a certain radius.
   BoundingBox sceneBox = m_sceneRoot->calculateBoundingBox();
@@ -185,9 +185,6 @@ bool Application::buildGeometry()
 
   if(!loadFurry())
     return false;
-  
-  //if(!loadMovingLight())
-    //return false;
 
   return true;
 }
@@ -364,6 +361,7 @@ bool Application::loadFurry()
   //Add furstate to state.
   std::shared_ptr<State> state = std::shared_ptr<State>(new State);
   state->setFurShading(furState);
+  std::cout << "FUR STATE program: " << m_sceneRoot->getProgram(shaderId) << std::endl;
   state->setProgram(m_sceneRoot->getProgram(shaderId));
   furryGroup->setState(state);
 
@@ -421,7 +419,7 @@ void Application::initView()
   m_sceneRoot->addShadowMap(light, secondCamera);
 
   //Load object that should be next to the light and the second camera.
-  /*std::shared_ptr<Group> lightGroup = std::shared_ptr<Group>(new Group);
+  std::shared_ptr<Group> lightGroup = std::shared_ptr<Group>(new Group);
   std::string lightModel = "models/pointer.obj";
   if(!loadGroup(lightModel, lightGroup))
   {
@@ -435,15 +433,15 @@ void Application::initView()
   lightModelPos->scale(glm::vec3(2, 2, 2));
 
   //Create callback which moves the object, light and camera together and add to state
-  std::shared_ptr<ControllableLightCallback> movableLightCallback 
-                    = std::shared_ptr<ControllableLightCallback>(new ControllableLightCallback(light, secondCamera, lightModelPos));
+  std::shared_ptr<ControllableObjectCallback> movableLightCallback 
+                    = std::shared_ptr<ControllableObjectCallback>(new ControllableObjectCallback(secondCamera, lightModelPos));
   std::shared_ptr<State> groupState = std::shared_ptr<State>(new State);
   groupState->addLight(light);
   lightGroup->setState(groupState);
   lightModelPos->addCallback(movableLightCallback);
 
   //Finally add the object to the scene.
-  m_sceneRoot->add(lightModelPos);*/
+  m_sceneRoot->add(lightModelPos);
 
   //Set some scene settings.
   glEnable(GL_CULL_FACE);
@@ -460,6 +458,7 @@ int Application::addCamera(std::shared_ptr<Camera> camera, bool selectCamera)
 
   if(selectCamera)
     m_sceneRoot->selectCamera(cameraId);
+    
   return cameraId;
 }
 
@@ -468,13 +467,13 @@ void Application::render(GLFWwindow* window)
   glClearColor(0.45f, 0.45f, 0.45f, 1.0f);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-  m_fpsCounter->render(window);
   m_sceneRoot->render();
+  m_fpsCounter->render(window);
 }
 
 void Application::update(GLFWwindow* window)
 {
-  m_sceneRoot->applyCamera();
+  //m_sceneRoot->applyCamera();
   render(window);
 }
 
@@ -513,6 +512,11 @@ void Application::add(std::shared_ptr<Group> group)
   {
     std::cerr << " Failed to add geometry" << std::endl;
   }
+}
+
+void Application::toggleShadows()
+{
+  m_sceneRoot->enableShadows(!m_sceneRoot->shadowsIsEnabled());
 }
 
 void Application::switchCamera()

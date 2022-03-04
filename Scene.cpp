@@ -100,6 +100,7 @@ void Scene::addShadowMap(std::shared_ptr<Light>& light, std::shared_ptr<Camera> 
   m_shadowMap = std::shared_ptr<ShadowMap>(new ShadowMap(m_depthProgram, camera, light));
   //Init on texture slot 3.
   m_shadowMap->init(3);
+  m_shadowsEnabled = true;
 }
 
 const std::shared_ptr<Group> Scene::getRoot()
@@ -147,7 +148,6 @@ int Scene::addCamera(std::shared_ptr<Camera> camera)
 
 void Scene::applyCamera()
 {
-
   for(auto program : m_programs)
   {
     glUseProgram(program);
@@ -192,6 +192,7 @@ void Scene::createDotFile(std::string fileName)
   DotVisitor *dotVisitor = new DotVisitor(fileName);
   dotVisitor->visit(*m_root);
   dotVisitor->close();
+  free(dotVisitor);
 }
 
 //TODO See if there is another way to init geometries other than initVisitor.
@@ -231,6 +232,7 @@ void Scene::add(std::shared_ptr<Group> node, int shader)
   free(initVisitor);
 
   m_root->addChild(node);
+  m_root->calculateBoundingBox(glm::mat4(1.0f));
 }
 
 void Scene::resetTransform()
@@ -258,12 +260,23 @@ void Scene::setSkybox(int programId, std::vector<std::string> textures, std::str
   m_skybox = std::shared_ptr<SkyBox>(new SkyBox(textures, modelFile.c_str(), program));
 }
 
+void Scene::enableShadows(bool enabled)
+{
+  m_shadowsEnabled = enabled;
+  m_shadowMap->clear();
+}
+
+bool Scene::shadowsIsEnabled()
+{
+  return m_shadowsEnabled;
+}
+
 void Scene::render()
 {
-
+  applyCamera();
 
   //Render shadows
-  if(m_shadowMap != nullptr)
+  if(m_shadowMap != nullptr && m_shadowsEnabled)
   { 
     m_shadowMap->update();
     //Apply shadowmaps on all programs except the depthProgram.
@@ -280,15 +293,12 @@ void Scene::render()
   if(m_skybox != nullptr)
   { 
     //Apply selected camera with the skybox program.
-    glUseProgram(m_skybox->getProgram());
-    m_cameras[m_selectedCamera]->applyOrthogonal(m_skybox->getProgram(), m_root->getBoundingBox());
+    GLuint skyboxProgram = m_skybox->getProgram();
+    glUseProgram(skyboxProgram);
+    m_cameras[m_selectedCamera]->applyPerspective(skyboxProgram);
     m_skybox->render();
   }
 
-  applyCamera();
-
   m_updater->visit(*m_root);
   m_renderer->visit(*m_root);
-
-  //std::cout << "Number of root children " << m_root->getChildren().size() << std::endl;
 }
