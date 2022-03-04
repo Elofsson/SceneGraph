@@ -116,6 +116,8 @@ public:
 
   void toggleShadows();
 
+  void drawControls();
+
 private:
 
   //Default geometry if no argument is provided or failes to be loaded in.

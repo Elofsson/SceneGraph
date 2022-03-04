@@ -469,11 +469,11 @@ void Application::render(GLFWwindow* window)
 
   m_sceneRoot->render();
   m_fpsCounter->render(window);
+  drawControls();
 }
 
 void Application::update(GLFWwindow* window)
 {
-  //m_sceneRoot->applyCamera();
   render(window);
 }
 
@@ -552,4 +552,17 @@ void Application::switchCamera()
       return;
     }
   }
+}
+
+
+void Application::drawControls()
+{
+  vr::Text::setColor(glm::vec4(0, 1, 0, 0.8));
+  vr::Text::setFontSize(20);
+  
+  std::string str = "Change Camera: C"; 
+  vr::Text::drawText(m_screenSize[0], m_screenSize[1], 10, 50, str.c_str());
+
+  str = "Toggle shadows: V";
+  vr::Text::drawText(m_screenSize[0], m_screenSize[1], 10, 70, str.c_str());
 }
