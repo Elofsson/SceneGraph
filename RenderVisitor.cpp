@@ -6,6 +6,8 @@ RenderVisitor::RenderVisitor()
 {
 	std::shared_ptr<State> defaultState = std::shared_ptr<State>(new State());
 	m_states.push(defaultState);
+	m_force = false;
+	m_forceProgram = 0;
 }
 
 //Set renderToTexture
@@ -82,14 +84,27 @@ void RenderVisitor::visit(Geometry &g)
 
 	geometryState->apply();
 	glm::mat4 object2world = m_transform_matrices.top();
-	g.initShaders(geometryState->getProgram());
+
+	//Determine program to use. 
+	GLuint programToUse;
+	if(m_force)
+	{
+		programToUse = m_forceProgram;
+	}
+
+	else
+	{
+		programToUse = geometryState->getProgram(); 
+	}
+
+	g.initShaders(programToUse);
 	g.apply(object2world);
 
-	//Render with furstate.
+	//Render with furstate if the state exists and if forcing has not been set.
 	auto furState = geometryState->getFurState();
-	if(furState != nullptr)
+	if(furState != nullptr && !m_force)
 	{
-		furState->apply(g, geometryState->getProgram());
+		furState->apply(g, programToUse);
 	}
 
 	//Render without furstate if it is not set.
@@ -97,6 +112,12 @@ void RenderVisitor::visit(Geometry &g)
 	{
 		g.draw();
 	}
+}
+
+void RenderVisitor::forceProgram(bool enabled, GLuint program)
+{
+	m_force = enabled;
+	m_forceProgram = program;
 }
 
 void RenderVisitor::mergeAndPushState(std::shared_ptr<State> inputState)

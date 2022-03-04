@@ -519,6 +519,7 @@ void Application::toggleShadows()
   m_sceneRoot->enableShadows(!m_sceneRoot->shadowsIsEnabled());
 }
 
+//TODO fix this method, works but is very bad implemented.
 void Application::switchCamera()
 {
   int currentCameraId = m_sceneRoot->getSelectedCameraId();

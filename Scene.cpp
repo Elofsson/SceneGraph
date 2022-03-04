@@ -285,6 +285,8 @@ void Scene::render()
       //Do not apply with the depthProgram itself.
       if(program != m_depthProgram)
       {
+        //std::cout << "Applying shadowmap for program: " << program << std::endl;
+        //TODO split current apply method to one render, and one apply.
         m_shadowMap->apply(program, m_root);
       }
     }

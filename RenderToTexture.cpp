@@ -5,6 +5,8 @@ RenderToTexture::RenderToTexture(unsigned int width, unsigned int height, GLuint
 {
   m_program = program;
   m_renderer = std::shared_ptr<RenderVisitor>(new RenderVisitor());
+  //Force render with this program.
+  m_renderer->forceProgram(true, m_program);
   m_width = width;
   m_height = height;
   m_texture = std::shared_ptr<Texture>(new Texture());

@@ -81,18 +81,19 @@ void State::merge(const std::shared_ptr<State> inputState)
     m_polygonmode = inputState->getPolygonMode();
   }
 
+  //Update furstate.
+  if(inputState->getFurState() != nullptr)
+  {
+    m_furState = inputState->getFurState();
+  }
+ 
   //Update program
   if(inputState->getProgram() != 0)
   {
     //std::cout << "Update state program" << std::endl; 
     m_program = inputState->getProgram();
   }
-
-  //Update furstate.
-  if(inputState->getFurState() != nullptr)
-  {
-    m_furState = inputState->getFurState();
-  }
+  
 }
 
 void State::updateLights(LightVector inputLights)

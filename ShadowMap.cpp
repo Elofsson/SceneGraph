@@ -78,7 +78,7 @@ void ShadowMap::apply(GLuint renderProgram, std::shared_ptr<Group> startNode)
   GLuint depthMatrixID = glGetUniformLocation(renderProgram, uniform.c_str());
   if(depthMatrixID == -1)
   {
-    //std::cout << "-------------------Failed to get " << uniform << std::endl;
+    //std::cout << "-------------------Failed to get " << uniform << " using prorgam: " << renderProgram << std::endl;
     return;
   }
   glUniformMatrix4fv(depthMatrixID, 1, GL_FALSE, glm::value_ptr(depthMVP));

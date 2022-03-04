@@ -22,9 +22,13 @@ public:
   virtual void visit(Group &g) override;
   virtual void visit(Transform &t) override;
   virtual void visit(Geometry &g) override;
+  void forceProgram(bool enabled, GLuint program);
 
 private:
   void mergeAndPushState(std::shared_ptr<State> inputState);
+
+  GLuint m_forceProgram;
+  bool m_force;
 
   GLuint m_uniform_m_3x3_inv_transp;
   GLuint m_uniform_m;
