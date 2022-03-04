@@ -30,8 +30,8 @@ public:
   virtual void accept(NodeVisitor& visitor) = 0;
 
   std::shared_ptr<State> getState();
-  void addCallback(std::shared_ptr<UpdateCallback> callback);
-  void executeCallbacks();
+  virtual void addCallback(std::shared_ptr<UpdateCallback> callback);
+  virtual void executeCallbacks();
   CallbackVector getCallbacks();
   void setState(std::shared_ptr<State> state);
   void setEnabled(bool enabled);

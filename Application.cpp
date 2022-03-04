@@ -13,7 +13,7 @@
 
 #include "Scene.h"
 #include "Loader.h"
-#include "MovingLightCallback.h"
+#include "MovingTransformCallback.h"
 #include "RotateCallback.h"
 #include <stdlib.h>
 #include <time.h> 
@@ -117,38 +117,30 @@ bool Application::loadSkybox(std::vector<std::string> textures, const std::strin
   return true;
 }
 
-bool Application::loadMovingLight()
+bool Application::loadMovingObject(std::string objectPath)
 {
   //Load object to be attached to light.
-  std::string lightObjectPath = "scenes/box.xml";
-  std::shared_ptr<Group> lightObject = std::shared_ptr<Group>(new Group());
-  if(!loadGroup(lightObjectPath, lightObject))
+  std::shared_ptr<Group> object = std::shared_ptr<Group>(new Group());
+  if(!loadGroup(objectPath, object))
   {
-    std::cerr << "Failed to load " << lightObjectPath << std::endl;
+    std::cout << "----------------------------Failed to load " << objectPath  << std::endl;
     return false;
   }
 
   //Light and object position.
-  glm::vec3 position = glm::vec3(0, 1000, -250);
-
-  //create light and add to root.
-  std::shared_ptr<Light> movingLight = std::shared_ptr<Light>(new Light());
-  movingLight->setAmbient(glm::vec4(0.0, 1.0, 0.5, 1.0));
-  movingLight->setDiffuse(glm::vec4(0.2, 0.9, 0.9, 1.0));
-  movingLight->setSpecular(glm::vec4(0.0, 0.1, 0.1, 1.0));
-  movingLight->setPosition(glm::vec4(position, 1));
-  m_sceneRoot->getRoot()->getState()->addLight(movingLight);
+  glm::vec3 origin = glm::vec3(0, 200, 0);
 
   //Add light and set state to transform.
-  std::shared_ptr<Transform> lightTransform = std::shared_ptr<Transform>(new Transform(position.x, position.y, position.z));
+  std::shared_ptr<Transform> transform = std::shared_ptr<Transform>(new Transform());
 
   //Create callback.
-  std::shared_ptr<MovingLightCallback> lightCallback = std::shared_ptr<MovingLightCallback>(new MovingLightCallback(lightTransform, movingLight));
+  float radius = 100.0f;
+  std::shared_ptr<MovingTransformCallback> callback = std::shared_ptr<MovingTransformCallback>(new MovingTransformCallback(transform, origin, radius));
 
   //Add callback and add to scene.
-  lightTransform->addCallback(lightCallback);
-  lightTransform->addChild(lightObject);
-  m_sceneRoot->add(lightTransform);
+  object->addCallback(callback);
+  transform->addChild(object);
+  m_sceneRoot->add(transform);
   return true;
 }
 
@@ -172,6 +164,7 @@ bool Application::buildGeometry()
   cowLodModels.push_back("models/cow_0.1.obj");
   cowLodModels.push_back("models/cow_0.05.obj");
   cowLodModels.push_back("models/cow_0.01.obj");
+
   loadLodObjects(cowLodModels);
 
   //Create the terrain within a certain radius.
@@ -184,6 +177,10 @@ bool Application::buildGeometry()
     return false;
 
   if(!loadFurry())
+    return false;
+
+  std::string objectPath = "scenes/sphere.xml";
+  if(!loadMovingObject(objectPath))
     return false;
 
   return true;

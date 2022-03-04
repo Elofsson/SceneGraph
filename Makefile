@@ -622,32 +622,32 @@ Mesh.cpp.s:
 	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/Mesh.cpp.s
 .PHONY : Mesh.cpp.s
 
-MovingLightCallback.o: MovingLightCallback.cpp.o
+MovingTransformCallback.o: MovingTransformCallback.cpp.o
 
-.PHONY : MovingLightCallback.o
+.PHONY : MovingTransformCallback.o
 
 # target to build an object file
-MovingLightCallback.cpp.o:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/MovingLightCallback.cpp.o
-.PHONY : MovingLightCallback.cpp.o
+MovingTransformCallback.cpp.o:
+	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/MovingTransformCallback.cpp.o
+.PHONY : MovingTransformCallback.cpp.o
 
-MovingLightCallback.i: MovingLightCallback.cpp.i
+MovingTransformCallback.i: MovingTransformCallback.cpp.i
 
-.PHONY : MovingLightCallback.i
+.PHONY : MovingTransformCallback.i
 
 # target to preprocess a source file
-MovingLightCallback.cpp.i:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/MovingLightCallback.cpp.i
-.PHONY : MovingLightCallback.cpp.i
+MovingTransformCallback.cpp.i:
+	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/MovingTransformCallback.cpp.i
+.PHONY : MovingTransformCallback.cpp.i
 
-MovingLightCallback.s: MovingLightCallback.cpp.s
+MovingTransformCallback.s: MovingTransformCallback.cpp.s
 
-.PHONY : MovingLightCallback.s
+.PHONY : MovingTransformCallback.s
 
 # target to generate assembly for a file
-MovingLightCallback.cpp.s:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/MovingLightCallback.cpp.s
-.PHONY : MovingLightCallback.cpp.s
+MovingTransformCallback.cpp.s:
+	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/MovingTransformCallback.cpp.s
+.PHONY : MovingTransformCallback.cpp.s
 
 Node.o: Node.cpp.o
 
@@ -1115,9 +1115,9 @@ help:
 	@echo "... Mesh.o"
 	@echo "... Mesh.i"
 	@echo "... Mesh.s"
-	@echo "... MovingLightCallback.o"
-	@echo "... MovingLightCallback.i"
-	@echo "... MovingLightCallback.s"
+	@echo "... MovingTransformCallback.o"
+	@echo "... MovingTransformCallback.i"
+	@echo "... MovingTransformCallback.s"
 	@echo "... Node.o"
 	@echo "... Node.i"
 	@echo "... Node.s"

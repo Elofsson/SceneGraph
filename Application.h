@@ -128,8 +128,8 @@ private:
 
   bool loadMountains(int radius);
 
-  //Load a moving light with attached to a object.
-  bool loadMovingLight();
+  //Load a moving object.
+  bool loadMovingObject(std::string objectPath);
 
   bool loadFurry();
 
