@@ -460,6 +460,33 @@ Group.cpp.s:
 	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/Group.cpp.s
 .PHONY : Group.cpp.s
 
+InitPhysicsVisitor.o: InitPhysicsVisitor.cpp.o
+
+.PHONY : InitPhysicsVisitor.o
+
+# target to build an object file
+InitPhysicsVisitor.cpp.o:
+	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/InitPhysicsVisitor.cpp.o
+.PHONY : InitPhysicsVisitor.cpp.o
+
+InitPhysicsVisitor.i: InitPhysicsVisitor.cpp.i
+
+.PHONY : InitPhysicsVisitor.i
+
+# target to preprocess a source file
+InitPhysicsVisitor.cpp.i:
+	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/InitPhysicsVisitor.cpp.i
+.PHONY : InitPhysicsVisitor.cpp.i
+
+InitPhysicsVisitor.s: InitPhysicsVisitor.cpp.s
+
+.PHONY : InitPhysicsVisitor.s
+
+# target to generate assembly for a file
+InitPhysicsVisitor.cpp.s:
+	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/InitPhysicsVisitor.cpp.s
+.PHONY : InitPhysicsVisitor.cpp.s
+
 InitVisitor.o: InitVisitor.cpp.o
 
 .PHONY : InitVisitor.o
@@ -702,6 +729,114 @@ NodeVisitor.s: NodeVisitor.cpp.s
 NodeVisitor.cpp.s:
 	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/NodeVisitor.cpp.s
 .PHONY : NodeVisitor.cpp.s
+
+Physics.o: Physics.cpp.o
+
+.PHONY : Physics.o
+
+# target to build an object file
+Physics.cpp.o:
+	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/Physics.cpp.o
+.PHONY : Physics.cpp.o
+
+Physics.i: Physics.cpp.i
+
+.PHONY : Physics.i
+
+# target to preprocess a source file
+Physics.cpp.i:
+	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/Physics.cpp.i
+.PHONY : Physics.cpp.i
+
+Physics.s: Physics.cpp.s
+
+.PHONY : Physics.s
+
+# target to generate assembly for a file
+Physics.cpp.s:
+	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/Physics.cpp.s
+.PHONY : Physics.cpp.s
+
+PhysicsCallback.o: PhysicsCallback.cpp.o
+
+.PHONY : PhysicsCallback.o
+
+# target to build an object file
+PhysicsCallback.cpp.o:
+	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/PhysicsCallback.cpp.o
+.PHONY : PhysicsCallback.cpp.o
+
+PhysicsCallback.i: PhysicsCallback.cpp.i
+
+.PHONY : PhysicsCallback.i
+
+# target to preprocess a source file
+PhysicsCallback.cpp.i:
+	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/PhysicsCallback.cpp.i
+.PHONY : PhysicsCallback.cpp.i
+
+PhysicsCallback.s: PhysicsCallback.cpp.s
+
+.PHONY : PhysicsCallback.s
+
+# target to generate assembly for a file
+PhysicsCallback.cpp.s:
+	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/PhysicsCallback.cpp.s
+.PHONY : PhysicsCallback.cpp.s
+
+PhysicsState.o: PhysicsState.cpp.o
+
+.PHONY : PhysicsState.o
+
+# target to build an object file
+PhysicsState.cpp.o:
+	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/PhysicsState.cpp.o
+.PHONY : PhysicsState.cpp.o
+
+PhysicsState.i: PhysicsState.cpp.i
+
+.PHONY : PhysicsState.i
+
+# target to preprocess a source file
+PhysicsState.cpp.i:
+	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/PhysicsState.cpp.i
+.PHONY : PhysicsState.cpp.i
+
+PhysicsState.s: PhysicsState.cpp.s
+
+.PHONY : PhysicsState.s
+
+# target to generate assembly for a file
+PhysicsState.cpp.s:
+	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/PhysicsState.cpp.s
+.PHONY : PhysicsState.cpp.s
+
+PhysicsVisitor.o: PhysicsVisitor.cpp.o
+
+.PHONY : PhysicsVisitor.o
+
+# target to build an object file
+PhysicsVisitor.cpp.o:
+	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/PhysicsVisitor.cpp.o
+.PHONY : PhysicsVisitor.cpp.o
+
+PhysicsVisitor.i: PhysicsVisitor.cpp.i
+
+.PHONY : PhysicsVisitor.i
+
+# target to preprocess a source file
+PhysicsVisitor.cpp.i:
+	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/PhysicsVisitor.cpp.i
+.PHONY : PhysicsVisitor.cpp.i
+
+PhysicsVisitor.s: PhysicsVisitor.cpp.s
+
+.PHONY : PhysicsVisitor.s
+
+# target to generate assembly for a file
+PhysicsVisitor.cpp.s:
+	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/PhysicsVisitor.cpp.s
+.PHONY : PhysicsVisitor.cpp.s
 
 RenderToTexture.o: RenderToTexture.cpp.o
 
@@ -1097,6 +1232,9 @@ help:
 	@echo "... Group.o"
 	@echo "... Group.i"
 	@echo "... Group.s"
+	@echo "... InitPhysicsVisitor.o"
+	@echo "... InitPhysicsVisitor.i"
+	@echo "... InitPhysicsVisitor.s"
 	@echo "... InitVisitor.o"
 	@echo "... InitVisitor.i"
 	@echo "... InitVisitor.s"
@@ -1124,6 +1262,18 @@ help:
 	@echo "... NodeVisitor.o"
 	@echo "... NodeVisitor.i"
 	@echo "... NodeVisitor.s"
+	@echo "... Physics.o"
+	@echo "... Physics.i"
+	@echo "... Physics.s"
+	@echo "... PhysicsCallback.o"
+	@echo "... PhysicsCallback.i"
+	@echo "... PhysicsCallback.s"
+	@echo "... PhysicsState.o"
+	@echo "... PhysicsState.i"
+	@echo "... PhysicsState.s"
+	@echo "... PhysicsVisitor.o"
+	@echo "... PhysicsVisitor.i"
+	@echo "... PhysicsVisitor.s"
 	@echo "... RenderToTexture.o"
 	@echo "... RenderToTexture.i"
 	@echo "... RenderToTexture.s"

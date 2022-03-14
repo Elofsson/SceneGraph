@@ -5,6 +5,7 @@
 #include "FPSCounter.h"
 #include "Camera.h"
 #include "LodCallback.h"
+#include <reactphysics3d/reactphysics3d.h>
 
 class Application
 {
@@ -101,7 +102,7 @@ public:
    * @return true when successfully read
    * @return false failed to read file.
    */
-  bool loadGroup(std::string model_filename, std::shared_ptr<Group> &group);
+  bool loadGroup(std::string model_filename, std::shared_ptr<Group> &group, bool enablePhysics);
 
   /**
    * @brief Add a new group to the application.
@@ -133,11 +134,13 @@ private:
 
   bool loadFurry();
 
+  bool loadTerrain();
+
   bool loadSkybox(std::vector<std::string> textures, const std::string& model_filename, const std::string& vshader_filename, std::string& fshader_filename);
   
   // Parent of all to be rendered
-  std::shared_ptr<Scene> m_sceneRoot;
 
+  std::shared_ptr<Scene> m_sceneRoot;
   std::shared_ptr<FPSCounter> m_fpsCounter;
   std::string m_loadedFilename, m_loadedVShader, m_loadedFShader;
   std::vector<int> m_cameras;

@@ -1,4 +1,6 @@
 #include "RenderVisitor.h"
+#include <glm/gtx/io.hpp>
+
 
 using namespace std;
 
@@ -23,6 +25,8 @@ void RenderVisitor::visit(Group &g)
 		pushedState = true;
 		mergeAndPushState(g.getState());
 	}
+
+  //updatePhysics(g);
 
 	NodeVisitor::traverse(g);
 
@@ -56,6 +60,10 @@ void RenderVisitor::visit(Transform &t)
     m_transform_matrices.push(newObject2world); 
   }
 
+  	std::cout << "Visiting transform in rendervisitor: "<<  t.name << t.object2world << std::endl;
+  //updatePhysics(t);
+
+	
 	//Traverse transforms children.
 	NodeVisitor::traverse(t);
 
@@ -71,7 +79,9 @@ void RenderVisitor::visit(Transform &t)
 
 void RenderVisitor::visit(Geometry &g)
 {
-	if(m_transform_matrices.empty())
+	updatePhysics(g);
+
+  if(m_transform_matrices.empty())
 	{
 		return;
 	}
@@ -84,6 +94,42 @@ void RenderVisitor::visit(Geometry &g)
 
 	geometryState->apply();
 	glm::mat4 object2world = m_transform_matrices.top();
+
+	//std::cout << "Object2world in render visitor: " << object2world << std::endl;
+
+  /*if(m_currentPhysics != nullptr)
+  {
+    reactphysics3d::RigidBody *body = m_currentPhysics->getBody();
+    const reactphysics3d::Transform& transform = body->getTransform();
+    const reactphysics3d::Matrix3x3 orientationMatrix = transform.getOrientation().getMatrix();
+    const reactphysics3d::Vector3& position = transform.getPosition();
+    std::cout << "Position " << position.x << " : " << position.y << " : " << position.z << std::endl;
+	std::cout << "Object 2 world: [" << object2world[3][0] << ", " << object2world[3][1] << ", " << object2world[3][2] << " ]" << std::endl; 
+
+	std::cout << "object2world BEFORE physics" << object2world << std::endl;
+
+
+	float matrix[16]; 
+    transform.getOpenGLMatrix(matrix);
+	//glm::mat4 translation = glm::make_mat4(matrix);
+	//object2world = translation * object2world;
+
+	//float newPosx = object2world[3][0] + position.x;
+	//float newPosy = object2world[3][1] + position.y;
+	//float newPosz = object2world[3][2] + position.z;
+
+    //glm::mat4 translation = glm::translate(glm::mat4(), glm::vec3(newPosx, newPosy, newPosz)); //glm::make_mat4(matrix);	
+	//object2world = translation * object2world;
+
+
+    //object2world = transformation * object2world;
+
+	object2world[3][0] = position.x;
+	object2world[3][1] = position.y;
+	object2world[3][2] = position.z;
+    
+	std::cout << "object2world AFTER physics" << object2world << std::endl;
+  }*/
 
 	//Determine program to use. 
 	GLuint programToUse;
@@ -125,4 +171,12 @@ void RenderVisitor::mergeAndPushState(std::shared_ptr<State> inputState)
 	std::shared_ptr<State> newState = std::shared_ptr<State>(new State(m_states.top()));
 	newState->merge(inputState);
 	m_states.push(newState);
+}
+
+void RenderVisitor::updatePhysics(Node &g)
+{
+  if(g.getPhysics() != nullptr)
+  {
+    m_currentPhysics = g.getPhysics(); 
+  }
 }

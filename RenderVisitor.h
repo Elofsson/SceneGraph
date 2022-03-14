@@ -26,6 +26,7 @@ public:
 
 private:
   void mergeAndPushState(std::shared_ptr<State> inputState);
+  void updatePhysics(Node &g);
 
   GLuint m_forceProgram;
   bool m_force;
@@ -34,4 +35,5 @@ private:
   GLuint m_uniform_m;
   std::stack<glm::mat4> m_transform_matrices;
   std::stack<std::shared_ptr<State>> m_states;
+  std::shared_ptr<PhysicsState> m_currentPhysics;
 };

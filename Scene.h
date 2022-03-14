@@ -8,6 +8,8 @@
 #include "UpdateVisitor.h"
 #include "RenderToTexture.h"
 #include "ShadowMap.h"
+#include "InitPhysicsVisitor.h"
+#include "Physics.h"
 
 class SkyBox;
 class Scene;
@@ -90,7 +92,7 @@ public:
   /// Add a new group.
   /// </summary>
   /// <param name="node">A new node</param>
-  void add(std::shared_ptr<Group> node, int shader = DEFAULT_SHADER);
+  void add(std::shared_ptr<Group> node, int shape = BOX, bool staticType = false, int shader = DEFAULT_SHADER);
 
 
 
@@ -118,13 +120,12 @@ public:
 
   void setSkybox(int programId, std::vector<std::string> textures, std::string modelFile);
 
-
   void enableShadows(bool enabled);
 
   bool shadowsIsEnabled();
 
-
 private:
+  std::shared_ptr<Physics> m_physics;
 
   std::vector<GLuint> m_programs;
   std::vector<std::shared_ptr<Camera>> m_cameras;

@@ -1,6 +1,7 @@
 #include "Transform.h"
 #include "NodeVisitor.h"
 #include "Debug.h"
+#include <glm/gtx/io.hpp>
 
 Transform::Transform()
 {
@@ -47,8 +48,9 @@ void Transform::scale(glm::vec3 scale)
 void Transform::translate(glm::vec3 translation)
 {
   //Translate
-  auto trans = glm::translate(glm::mat4(1.0f), translation); 
+  glm::mat4 trans = glm::translate(glm::mat4(1), translation); 
   object2world = object2world * trans;  
+  std::cout << "New matrix: " << object2world << std::endl;
 }
 
 void Transform::rotate(glm::vec3 vec, float angle)

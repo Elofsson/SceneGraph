@@ -19,10 +19,11 @@
 #include <time.h> 
 #include "ControllableObjectCallback.h"
 
+
 Application::Application(unsigned int width, unsigned height) : m_screenSize(width, height)
 {
+  std::cout << "Application init " << std::endl;
   m_fpsCounter = std::make_shared<FPSCounter>();
-
 }
 
 bool Application::initResources(const std::string& model_filename, const std::string& vshader_filename, std::string& fshader_filename)
@@ -79,7 +80,7 @@ bool Application::initResources(const std::string& model_filename, const std::st
   getCamera()->setScreenSize(m_screenSize);
   std::shared_ptr<Group> rootGroup = std::shared_ptr<Group>(new Group());
 
-  if(!loadGroup(model_filename, rootGroup))
+  if(!loadGroup(model_filename, rootGroup, true))
   {
     std::cerr << "Failed to load scene" << std::endl;
 
@@ -121,7 +122,7 @@ bool Application::loadMovingObject(std::string objectPath)
 {
   //Load object to be attached to light.
   std::shared_ptr<Group> object = std::shared_ptr<Group>(new Group());
-  if(!loadGroup(objectPath, object))
+  if(!loadGroup(objectPath, object, true))
   {
     std::cout << "----------------------------Failed to load " << objectPath  << std::endl;
     return false;
@@ -141,20 +142,22 @@ bool Application::loadMovingObject(std::string objectPath)
   object->addCallback(callback);
   transform->addChild(object);
   m_sceneRoot->add(transform);
+  //addPhysics(transform);
+
   return true;
 }
 
 bool Application::buildGeometry()
 {
   //Load default scene.
-  std::string ironman_modelfile = "scenes/custom.xml";
-  std::shared_ptr<Group> ironmanModel = std::shared_ptr<Group>(new Group());
-  if(!loadGroup(ironman_modelfile, ironmanModel))
-  {
-    return false;
-  }
+  //std::string ironman_modelfile = "scenes/custom.xml";
+  //std::shared_ptr<Group> ironmanModel = std::shared_ptr<Group>(new Group());
+  //if(!loadGroup(ironman_modelfile, ironmanModel, true))
+  //{
+    //return false;
+  //}
 
-  m_sceneRoot->add(ironmanModel);
+  //m_sceneRoot->add(ironmanModel);
 
   //Build level of detail objects.
   std::vector<std::string> cowLodModels;
@@ -165,23 +168,64 @@ bool Application::buildGeometry()
   cowLodModels.push_back("models/cow_0.05.obj");
   cowLodModels.push_back("models/cow_0.01.obj");
 
-  loadLodObjects(cowLodModels);
+  //loadLodObjects(cowLodModels);
+  std::string ironman_modelfile = "scenes/box.xml";
+  std::shared_ptr<Group> ironmanModel = std::shared_ptr<Group>(new Group());
+  if(!loadGroup(ironman_modelfile, ironmanModel, true))
+  {
+    return false;
+  }
+  //m_sceneRoot->add(ironmanModel);
+  
+  //Create rootgroup with physics property.
+  std::shared_ptr<Group> rootGroup = std::shared_ptr<Group>(new Group);
+
+  float offset = 1;
+  for(int i = 1; i  < 10; i++)
+  {
+    std::shared_ptr<Transform> transform = std::shared_ptr<Transform>(new Transform);
+    transform->translate(glm::vec3(0, i * offset, 0));
+    transform->addChild(ironmanModel);
+
+    //Set physics
+    std::shared_ptr<PhysicsState> physics = std::shared_ptr<PhysicsState>(new PhysicsState);
+    physics->setType(reactphysics3d::BodyType::DYNAMIC);
+    physics->setMass(5);
+    physics->setBounciness(0.9);
+    physics->setFriction(0.1);
+    physics->setShape(SHAPE_BOX);
+    transform->setPhysics(physics);
+    std::string name = "ball_";
+    name.append(std::to_string(i));
+    transform->name = name;
+    rootGroup->addChild(transform);
+  }
+
+
+  //m_sceneRoot->add(ironmanModel);
+
+  rootGroup->name = "Root group for balls";
+
+  m_sceneRoot->add(rootGroup);
+
+  if(!loadTerrain())
+    return false;
 
   //Create the terrain within a certain radius.
   BoundingBox sceneBox = m_sceneRoot->calculateBoundingBox();
   int radius = sceneBox.getRadius() / 2;
-  if(!loadTrees(radius))
-    return false;
+  //if(!loadTrees(radius))
+    //return false;
   
-  if(!loadMountains(radius))
-    return false;
+  //if(!loadMountains(radius))fl
+    //return false;
 
-  if(!loadFurry())
-    return false;
+  //if(!loadFurry())
+    //return false;
 
-  std::string objectPath = "scenes/sphere.xml";
-  if(!loadMovingObject(objectPath))
-    return false;
+  //std::string objectPath = "scenes/sphere.xml";
+  //if(!loadMovingObject(objectPath))
+    //return false;
 
   return true;
 }
@@ -194,7 +238,7 @@ bool Application::loadLodObjects(std::vector<std::string> objectFiles)
   {
     std::shared_ptr<Group> lodGroup = std::shared_ptr<Group>(new Group());
     lodGroup->name = modelFile;
-    if(!loadGroup(modelFile, lodGroup))
+    if(!loadGroup(modelFile, lodGroup, true))
     {
       return false;
     }
@@ -224,7 +268,7 @@ bool Application::loadTrees(int radius)
   //Load trees.
   std::string treeFile = "models/lowpolytree.obj";
   std::shared_ptr<Group> treeModel = std::shared_ptr<Group>(new Group());
-  if(!loadGroup(treeFile, treeModel))
+  if(!loadGroup(treeFile, treeModel, true))
   {
     std::cerr << "Failed to load " << treeFile << std::endl; 
     return false;
@@ -234,19 +278,21 @@ bool Application::loadTrees(int radius)
 
   //Radius used for random generation translations. 
   std::shared_ptr<Group> treeRoot = std::shared_ptr<Group>(new Group());
-  for(unsigned int i = 0; i < 25; i++)
+  for(unsigned int i = 0; i < 1; i++)
   {
     std::shared_ptr<Transform> treeTransform = std::shared_ptr<Transform>(new Transform(0, 0, 0));
     treeTransform->addChild(treeModel);
 
     float x = std::rand() % radius;
     float z = std::rand() % radius;
-    treeTransform->translate(glm::vec3(x, -22, z));
-    treeTransform->scale(glm::vec3(15, 15, 15));
+    //treeTransform->translate(glm::vec3(x, -22, z));
+    //treeTransform->scale(glm::vec3(15, 15, 15));
     treeRoot->addChild(treeTransform);
   }
 
   m_sceneRoot->add(treeRoot);
+  //addPhysics(treeRoot);
+  
   return true;
 }
 
@@ -255,7 +301,7 @@ bool Application::loadMountains(int radius)
   //Load model.
   std::string mountainFile = "scenes/mountain.xml";
   std::shared_ptr<Group> mountainModel = std::shared_ptr<Group>(new Group());
-  if(!loadGroup(mountainFile, mountainModel))
+  if(!loadGroup(mountainFile, mountainModel, true))
   {
     std::cerr << "Failed to load " << mountainFile << std::endl;
     return false;
@@ -298,7 +344,33 @@ bool Application::loadMountains(int radius)
   return true;
 }
 
-bool Application::loadGroup(std::string model_filename, std::shared_ptr<Group> &group)
+bool Application::loadTerrain()
+{
+  //Load terrain model.
+  std::string terrainModel = "scenes/terrain.xml";
+  std::shared_ptr<Group> terrain = std::shared_ptr<Group>(new Group);
+  if(!loadGroup(terrainModel, terrain, true))
+  {
+    std::cout << "Failed to load model: " << terrainModel << std::endl;
+    return false;
+  }
+
+  std::shared_ptr<Group> terrainRootGroup = std::shared_ptr<Group>(new Group);
+  std::shared_ptr<Transform> transform = std::shared_ptr<Transform>(new Transform);
+  terrainRootGroup->addChild(transform);
+  transform->addChild(terrain);
+  std::shared_ptr<PhysicsState> physics = std::shared_ptr<PhysicsState>(new PhysicsState);
+  physics->setType(reactphysics3d::BodyType::STATIC);
+  transform->setPhysics(physics);
+  terrainRootGroup->name = "Terrain root";
+
+  m_sceneRoot->add(terrainRootGroup, true);
+  //terrain->getPhysics()->getBody()->enableGravity(false);
+  //terrain->getPhysics()->getBody()->setType(reactphysics3d::BodyType::STATIC);
+  return true;
+}
+
+bool Application::loadGroup(std::string model_filename, std::shared_ptr<Group> &group, bool enablePhysics)
 {
   std::string ext = vr::FileSystem::getFileExtension(model_filename);
   if (ext == "xml" || ext == "XML"){
@@ -342,7 +414,7 @@ bool Application::loadFurry()
   //Load object.
   std::string modelName = "models/Mike.obj";
   std::shared_ptr<Group> furryGroup = std::shared_ptr<Group>(new Group);
-  if(!loadGroup(modelName, furryGroup))
+  if(!loadGroup(modelName, furryGroup, false))
   {
     std::cout << "Failed to load furry object " << modelName << std::endl;
     return false;
@@ -364,11 +436,12 @@ bool Application::loadFurry()
 
   //Create transform to scale the object.
   std::shared_ptr<Transform> transform = std::shared_ptr<Transform>(new Transform);
-  transform->scale(glm::vec3(50, 50, 50));
+  transform->scale(glm::vec3(25, 25, 25));
   transform->addChild(furryGroup);
 
   //Add to scene.
-  m_sceneRoot->add(transform, shaderId);
+  m_sceneRoot->add(transform, false, shaderId);
+  //addPhysics(transform);
 
   return true;
 }
@@ -416,9 +489,9 @@ void Application::initView()
   m_sceneRoot->addShadowMap(light, secondCamera);
 
   //Load object that should be next to the light and the second camera.
-  std::shared_ptr<Group> lightGroup = std::shared_ptr<Group>(new Group);
-  std::string lightModel = "models/pointer.obj";
-  if(!loadGroup(lightModel, lightGroup))
+  /*std::shared_ptr<Group> lightGroup = std::shared_ptr<Group>(new Group);
+  std::string lightModel = "scenes/sphere.xml";
+  if(!loadGroup(lightModel, lightGroup, true))
   {
     std::cout << "Failed to load model for the light: " << lightModel << std::endl;
     return;
@@ -438,7 +511,7 @@ void Application::initView()
   lightModelPos->addCallback(movableLightCallback);
 
   //Finally add the object to the scene.
-  m_sceneRoot->add(lightModelPos);
+  m_sceneRoot->add(lightModelPos);*/
 
   //Set some scene settings.
   glEnable(GL_CULL_FACE);
@@ -463,7 +536,7 @@ void Application::render(GLFWwindow* window)
 {
   glClearColor(0.45f, 0.45f, 0.45f, 1.0f);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
+  
   m_sceneRoot->render();
   m_fpsCounter->render(window);
   drawControls();

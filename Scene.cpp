@@ -16,6 +16,7 @@ Scene::Scene() : m_uniform_numberOfLights(-1)
   m_updater = std::shared_ptr<UpdateVisitor>(new UpdateVisitor());
   m_shadowMap = nullptr;
   m_skybox = nullptr;
+  m_physics = std::shared_ptr<Physics>(new Physics());
 }
 
 Scene::~Scene()
@@ -53,6 +54,13 @@ bool Scene::initShaders(const std::string& vshader_filename, const std::string& 
   rootState->setPolygonMode(GL_FILL);
   rootState->setCullFace(false);
   m_root->setState(rootState);
+
+  //Load physics debug shaders.
+  if(!m_physics->init("shaders/debug-physics.vert.glsl", "shaders/debug-physics.frag.glsl"))
+  {
+    std::cout << "Failed to load physics " << std::endl;
+    return false;
+  }
 
   return true;
 }
@@ -196,7 +204,7 @@ void Scene::createDotFile(std::string fileName)
 }
 
 //TODO See if there is another way to init geometries other than initVisitor.
-void Scene::add(std::shared_ptr<Group> node, int shader)
+void Scene::add(std::shared_ptr<Group> node, int shape, bool staticType, int shader)
 {
 
   //Set shader in state from default shader.
@@ -227,6 +235,8 @@ void Scene::add(std::shared_ptr<Group> node, int shader)
   glUseProgram(programToUse);
   InitVisitor *initVisitor = new InitVisitor(programToUse);
   initVisitor->visit(*node);
+
+  m_physics->add(node, staticType, shape);
 
   //Add the new node to root graph.
   free(initVisitor);
@@ -300,7 +310,17 @@ void Scene::render()
     m_cameras[m_selectedCamera]->applyPerspective(skyboxProgram);
     m_skybox->render();
   }
-
+ 
+ 
   m_updater->visit(*m_root);
+  std::cout << "Before render " << std::endl;
   m_renderer->visit(*m_root);
+  std::cout << "After render" << std::endl;
+
+  //Update physics here.
+  m_physics->update(*m_root);
+
+  glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+  m_physics->renderCollisionBoxes(m_cameras[m_selectedCamera]);
+  glPolygonMode(GL_FRONT_AND_BACK, m_root->getState()->getPolygonMode());
 }

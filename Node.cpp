@@ -24,7 +24,7 @@ CallbackVector Node::getCallbacks()
 
 void Node::executeCallbacks()
 {
-  //std::cout << "Execute callbacks for node " << name  << " Number of callbacks " << m_callbacks.size() << std::endl;
+  std::cout << "Execute callbacks for node " << name  << " Number of callbacks " << m_callbacks.size() << std::endl;
   for(int i = 0; i < m_callbacks.size(); i++)
   {
     m_callbacks[i]->update();
@@ -41,9 +41,10 @@ bool Node::isEnabled()
   return m_enabled;
 }
 
+void Node::setPhysics(std::shared_ptr<PhysicsState> physicsState) { m_physics = physicsState; }
 void Node::setState(std::shared_ptr<State> state) { m_nodeState = state; }
 
 std::shared_ptr<State> Node::getState() { return m_nodeState; }
-
+std::shared_ptr<PhysicsState> Node::getPhysics() { return m_physics; }
 BoundingBox Node::getBoundingBox(){ return m_boundingBox; }
 
