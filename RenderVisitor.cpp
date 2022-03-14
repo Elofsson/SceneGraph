@@ -60,7 +60,7 @@ void RenderVisitor::visit(Transform &t)
     m_transform_matrices.push(newObject2world); 
   }
 
-  	std::cout << "Visiting transform in rendervisitor: "<<  t.name << t.object2world << std::endl;
+  	//std::cout << "Visiting transform in rendervisitor: "<<  t.name << t.object2world << std::endl;
   //updatePhysics(t);
 
 	

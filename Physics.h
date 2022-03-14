@@ -4,7 +4,9 @@
 #include "InitPhysicsVisitor.h"
 #include "Camera.h"
 #include "PhysicsVisitor.h"
+#include "Player.h"
 #include <vr/shaderUtils.h>
+
 
 class Physics
 {
@@ -12,6 +14,7 @@ public:
   Physics();
   bool init(const std::string& vshader_filename, const std::string& fshader_filename);
   void add(std::shared_ptr<Group> node, int shape, bool staticBody);
+  
   void update(Group &group);
   void renderCollisionBoxes(std::shared_ptr<Camera> camera);
 

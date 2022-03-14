@@ -24,7 +24,7 @@ public:
   /// Handle keyboard events
   /// </summary>
   /// <param name="window">The window for which keyboard events are handled</param>
-  void processInput(GLFWwindow* window);
+  virtual void processInput(GLFWwindow* window);
 
   /// <summary>
   /// Get the size of the window for this camera

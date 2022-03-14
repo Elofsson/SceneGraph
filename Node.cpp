@@ -24,7 +24,7 @@ CallbackVector Node::getCallbacks()
 
 void Node::executeCallbacks()
 {
-  std::cout << "Execute callbacks for node " << name  << " Number of callbacks " << m_callbacks.size() << std::endl;
+  //std::cout << "Execute callbacks for node " << name  << " Number of callbacks " << m_callbacks.size() << std::endl;
   for(int i = 0; i < m_callbacks.size(); i++)
   {
     m_callbacks[i]->update();

@@ -838,6 +838,33 @@ PhysicsVisitor.cpp.s:
 	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/PhysicsVisitor.cpp.s
 .PHONY : PhysicsVisitor.cpp.s
 
+Player.o: Player.cpp.o
+
+.PHONY : Player.o
+
+# target to build an object file
+Player.cpp.o:
+	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/Player.cpp.o
+.PHONY : Player.cpp.o
+
+Player.i: Player.cpp.i
+
+.PHONY : Player.i
+
+# target to preprocess a source file
+Player.cpp.i:
+	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/Player.cpp.i
+.PHONY : Player.cpp.i
+
+Player.s: Player.cpp.s
+
+.PHONY : Player.s
+
+# target to generate assembly for a file
+Player.cpp.s:
+	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/Player.cpp.s
+.PHONY : Player.cpp.s
+
 RenderToTexture.o: RenderToTexture.cpp.o
 
 .PHONY : RenderToTexture.o
@@ -1274,6 +1301,9 @@ help:
 	@echo "... PhysicsVisitor.o"
 	@echo "... PhysicsVisitor.i"
 	@echo "... PhysicsVisitor.s"
+	@echo "... Player.o"
+	@echo "... Player.i"
+	@echo "... Player.s"
 	@echo "... RenderToTexture.o"
 	@echo "... RenderToTexture.i"
 	@echo "... RenderToTexture.s"

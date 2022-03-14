@@ -9,7 +9,7 @@ void UpdateVisitor::visit(Group &g)
 
 void UpdateVisitor::visit(Transform &t)
 {
-  std::cout << "Visiting transform in updatevisitor: " << &t << std::endl;
+  //std::cout << "Visiting transform in updatevisitor: " << &t << std::endl;
   t.executeCallbacks();
 
   NodeVisitor::traverse(t);

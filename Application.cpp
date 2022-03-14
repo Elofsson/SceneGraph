@@ -69,6 +69,10 @@ bool Application::initResources(const std::string& model_filename, const std::st
 
   //Add camera.
   m_cameras.push_back(m_sceneRoot->getSelectedCameraId());
+  
+  //Init player.
+  float speed = 750.0;
+  m_player = std::shared_ptr<Player>(new Player(speed, m_sceneRoot->getSelectedCamera()));
 
   //Create light.
   std::shared_ptr<Light> light2 = std::shared_ptr<Light>(new Light);
@@ -176,9 +180,23 @@ bool Application::buildGeometry()
     return false;
   }
   //m_sceneRoot->add(ironmanModel);
-  
-  //Create rootgroup with physics property.
+
+    //Create rootgroup with physics property.
   std::shared_ptr<Group> rootGroup = std::shared_ptr<Group>(new Group);
+
+  //Set player model with physics.
+  std::shared_ptr<PhysicsState> playerPhysics = std::shared_ptr<PhysicsState>(new PhysicsState);
+  playerPhysics->setType(reactphysics3d::BodyType::DYNAMIC);
+  playerPhysics->setMass(10);
+  playerPhysics->setBounciness(0.05);
+  playerPhysics->setFriction(1.0);
+  playerPhysics->setShape(SHAPE_SPHERE);
+  std::shared_ptr<Transform> playerTransform = std::shared_ptr<Transform>(new Transform);
+  playerTransform->translate(glm::vec3(1, 1, 1));
+  playerTransform->addChild(ironmanModel);
+  m_player->setModel(playerTransform, playerPhysics);
+
+  rootGroup->addChild(playerTransform);
 
   float offset = 1;
   for(int i = 1; i  < 10; i++)
@@ -191,7 +209,7 @@ bool Application::buildGeometry()
     std::shared_ptr<PhysicsState> physics = std::shared_ptr<PhysicsState>(new PhysicsState);
     physics->setType(reactphysics3d::BodyType::DYNAMIC);
     physics->setMass(5);
-    physics->setBounciness(0.9);
+    physics->setBounciness(0.5);
     physics->setFriction(0.1);
     physics->setShape(SHAPE_BOX);
     transform->setPhysics(physics);
@@ -361,6 +379,8 @@ bool Application::loadTerrain()
   transform->addChild(terrain);
   std::shared_ptr<PhysicsState> physics = std::shared_ptr<PhysicsState>(new PhysicsState);
   physics->setType(reactphysics3d::BodyType::STATIC);
+  physics->setFriction(0.95);
+  physics->setBounciness(0.05);
   transform->setPhysics(physics);
   terrainRootGroup->name = "Terrain root";
 
@@ -480,7 +500,7 @@ void Application::initView()
   std::shared_ptr<Camera> secondCamera = std::shared_ptr<Camera>(new Camera);
   secondCamera->set(position, direction, glm::vec3(0.0, 1.0, 0.0));
   secondCamera->setNearFar(glm::vec2(0.1, distance * 20));
-  secondCamera->setSceneScale(0.01f * radius);
+  secondCamera->setSceneScale(0.1f * radius);
   secondCamera->setFov(90);
   secondCamera->setScreenSize(m_screenSize);
   addCamera(secondCamera);
@@ -550,7 +570,8 @@ void Application::update(GLFWwindow* window)
 
 void Application::processInput(GLFWwindow* window)
 {
-  getCamera()->processInput(window);
+  m_player->processInput(window);
+  //getCamera()->processInput(window);
 }
 
 void Application::setScreenSize(unsigned int width, unsigned int height)

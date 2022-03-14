@@ -5,6 +5,7 @@
 #include "FPSCounter.h"
 #include "Camera.h"
 #include "LodCallback.h"
+#include "Player.h"
 #include <reactphysics3d/reactphysics3d.h>
 
 class Application
@@ -139,7 +140,7 @@ private:
   bool loadSkybox(std::vector<std::string> textures, const std::string& model_filename, const std::string& vshader_filename, std::string& fshader_filename);
   
   // Parent of all to be rendered
-
+  std::shared_ptr<Player> m_player;
   std::shared_ptr<Scene> m_sceneRoot;
   std::shared_ptr<FPSCounter> m_fpsCounter;
   std::string m_loadedFilename, m_loadedVShader, m_loadedFShader;

@@ -16,9 +16,12 @@ PhysicsCallback::PhysicsCallback(Transform *transform, std::shared_ptr<PhysicsSt
 
 void PhysicsCallback::update()
 {
-  std::cout << "-----------------PhysicsCallback update on transform: " << m_transform->name << std::endl;
+  //std::cout << "-----------------PhysicsCallback update on transform: " << m_transform->name << std::endl;
 
   reactphysics3d::RigidBody *body = m_physicsState->getBody();
+
+  //const reactphysics3d::Vector3 force(0, 0, 2);
+  //body->applyLocalForceAtCenterOfMass(force);
 
   if(!body->isSleeping())
   {
