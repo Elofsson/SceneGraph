@@ -9,6 +9,16 @@ PhysicsState::PhysicsState()
   m_mass = 1;
   m_shape = SHAPE_BOX;
   m_type = reactphysics3d::BodyType::STATIC;
+  m_body = nullptr;
+}
+
+PhysicsState::PhysicsState(PhysicsState &inState)
+{
+  m_bounciness = inState.getBounciness();
+  m_friction = inState.getFriction();
+  m_mass = inState.getMass();
+  m_shape = inState.getShape();
+  m_type = inState.getType();
 }
 
 reactphysics3d::RigidBody* PhysicsState::getBody()
@@ -16,9 +26,9 @@ reactphysics3d::RigidBody* PhysicsState::getBody()
   return m_body;
 }
 
-void PhysicsState::setCollider(reactphysics3d::Collider* collider)
+void PhysicsState::addCollider(reactphysics3d::Collider* collider)
 {
-  m_collider = collider;
+  m_colliders.push_back(collider);
 }
 
 void PhysicsState::setBody(reactphysics3d::RigidBody* body)
@@ -47,14 +57,39 @@ void PhysicsState::setShape(int shape)
   m_shape = shape;
 }
 
+void PhysicsState::setType(reactphysics3d::BodyType type)
+{
+  m_type = type;
+}
+
+float PhysicsState::getBounciness()
+{
+  return m_bounciness;
+}
+
+float PhysicsState::getMass()
+{
+  return m_mass;
+}
+
+float PhysicsState::getFriction()
+{
+  return m_friction;
+}
+
 int PhysicsState::getShape()
 {
   return m_shape;
 }
 
-void PhysicsState::setType(reactphysics3d::BodyType type)
+reactphysics3d::BodyType PhysicsState::getType()
 {
-  m_type = type;
+  return m_type;
+}
+
+bool PhysicsState::haveColliders()
+{
+  return !m_colliders.empty();
 }
 
 void PhysicsState::init()
@@ -62,6 +97,9 @@ void PhysicsState::init()
   m_body->setMass(m_mass);
   m_body->setType(m_type);
 
-  m_collider->getMaterial().setBounciness(m_bounciness);
-  m_collider->getMaterial().setFrictionCoefficient(m_friction);
+  for(auto collider : m_colliders)
+  {
+    collider->getMaterial().setBounciness(m_bounciness);
+    collider->getMaterial().setFrictionCoefficient(m_friction);
+  }
 }

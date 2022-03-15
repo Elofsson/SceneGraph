@@ -73,7 +73,7 @@ bool Application::initResources(const std::string& model_filename, const std::st
   if(!initPlayer())
   {
     std::cout << "Failed to load player" << std::endl;
-    return false;
+    //return false;
   }
 
   //Create light.
@@ -154,15 +154,6 @@ bool Application::loadMovingObject(std::string objectPath)
 
 bool Application::buildGeometry()
 {
-  //Load default scene.
-  //std::string ironman_modelfile = "scenes/custom.xml";
-  //std::shared_ptr<Group> ironmanModel = std::shared_ptr<Group>(new Group());
-  //if(!loadGroup(ironman_modelfile, ironmanModel, true))
-  //{
-    //return false;
-  //}
-
-  //m_sceneRoot->add(ironmanModel);
 
   //Build level of detail objects.
   std::vector<std::string> cowLodModels;
@@ -185,20 +176,6 @@ bool Application::buildGeometry()
     //Create rootgroup with physics property.
   std::shared_ptr<Group> rootGroup = std::shared_ptr<Group>(new Group);
 
-  //Set player model with physics.
-  /*std::shared_ptr<PhysicsState> playerPhysics = std::shared_ptr<PhysicsState>(new PhysicsState);
-  playerPhysics->setType(reactphysics3d::BodyType::DYNAMIC);
-  playerPhysics->setMass(10);
-  playerPhysics->setBounciness(0.05);
-  playerPhysics->setFriction(1.0);
-  playerPhysics->setShape(SHAPE_SPHERE);
-  std::shared_ptr<Transform> playerTransform = std::shared_ptr<Transform>(new Transform);
-  playerTransform->translate(glm::vec3(1, 1, 1));
-  playerTransform->addChild(ironmanModel);
-  m_player->setModel(playerTransform, playerPhysics);
-
-  rootGroup->addChild(playerTransform);*/
-
   float offset = 1;
   for(int i = 1; i  < 10; i++)
   {
@@ -209,7 +186,7 @@ bool Application::buildGeometry()
     //Set physics
     std::shared_ptr<PhysicsState> physics = std::shared_ptr<PhysicsState>(new PhysicsState);
     physics->setType(reactphysics3d::BodyType::DYNAMIC);
-    physics->setMass(5);
+    physics->setMass(1);
     physics->setBounciness(0.5);
     physics->setFriction(0.1);
     physics->setShape(SHAPE_BOX);
@@ -233,10 +210,10 @@ bool Application::buildGeometry()
   //Create the terrain within a certain radius.
   BoundingBox sceneBox = m_sceneRoot->calculateBoundingBox();
   int radius = sceneBox.getRadius() / 2;
-  //if(!loadTrees(radius))
-    //return false;
+  if(!loadTrees(radius))
+    return false;
   
-  //if(!loadMountains(radius))fl
+  //if(!loadMountains(radius))
     //return false;
 
   //if(!loadFurry())
@@ -319,6 +296,9 @@ bool Application::initPlayer()
   //Add playermodel to scene.
   rootGroup->addChild(playerTransform);
   m_sceneRoot->add(rootGroup);
+
+  //Set player view as default.
+  m_playerViewEnabled = true;
   return true;
 }
 
@@ -337,21 +317,34 @@ bool Application::loadTrees(int radius)
 
   //Radius used for random generation translations. 
   std::shared_ptr<Group> treeRoot = std::shared_ptr<Group>(new Group());
-  for(unsigned int i = 0; i < 1; i++)
+  for(unsigned int i = 0; i < 10; i++)
   {
     std::shared_ptr<Transform> treeTransform = std::shared_ptr<Transform>(new Transform(0, 0, 0));
     treeTransform->addChild(treeModel);
 
+    //Create physics
+    std::shared_ptr<PhysicsState> physics = std::shared_ptr<PhysicsState>(new PhysicsState);
+    physics->setType(reactphysics3d::BodyType::STATIC);
+    physics->setMass(5);
+    physics->setBounciness(0.5);
+    physics->setFriction(0.1);
+    physics->setShape(SHAPE_BOX);
+    treeTransform->setPhysics(physics);
+
+    //Set name.
+    std::string name = "tree_";
+    name.append(std::to_string(i));
+    treeTransform->name = name;
+
+    //Translate, scale and add to scene.
     float x = std::rand() % radius;
     float z = std::rand() % radius;
-    //treeTransform->translate(glm::vec3(x, -22, z));
-    //treeTransform->scale(glm::vec3(15, 15, 15));
+    treeTransform->translate(glm::vec3(x, 1.2, z));
+    treeTransform->scale(glm::vec3(0.4, 0.4, 0.4));
     treeRoot->addChild(treeTransform);
   }
 
   m_sceneRoot->add(treeRoot);
-  //addPhysics(treeRoot);
-  
   return true;
 }
 
@@ -370,7 +363,7 @@ bool Application::loadMountains(int radius)
 
   //Create 25 transforms containing mountain model.
   std::shared_ptr<Group> montainRoot = std::shared_ptr<Group>(new Group());
-  for(unsigned int i = 0; i < 25; i++)
+  for(unsigned int i = 0; i < 1; i++)
   {
     std::shared_ptr<Transform> mountainTransform = std::shared_ptr<Transform>(new Transform());
     mountainTransform->addChild(mountainModel);
@@ -378,21 +371,31 @@ bool Application::loadMountains(int radius)
     //Randomize x and y values whith whole scene bounding box radius.
     float x = 0;
     float z = 0;
-    x -= std::rand() % radius;
-    z -= std::rand() % radius;
-    mountainTransform->translate(glm::vec3(x, -22, z));
+    x -= std::rand() % 3;
+    z -= std::rand() % 3;
+    mountainTransform->translate(glm::vec3(x, 0.1, z));
 
     //set random scale with a cap of 20 and lowercap 3.
-    int higherCap = 20;
-    int lowerCap = 3;
+    int higherCap = 5;
+    int lowerCap = 1;
     float scaleX = std::rand() % higherCap + lowerCap;
     float scaleY = std::rand() % higherCap + lowerCap;
     float scaleZ = std::rand() % higherCap + lowerCap;
     mountainTransform->scale(glm::vec3(scaleX, scaleY, scaleZ));
 
     //Randomize rotations.
-    float rotation = std::rand() % 180;
-    mountainTransform->rotate(glm::vec3(0, 1, 0), rotation);
+    //float rotation = std::rand() % 180;
+    //mountainTransform->rotate(glm::vec3(0, 1, 0), rotation);
+
+
+    //Create physics
+    std::shared_ptr<PhysicsState> physics = std::shared_ptr<PhysicsState>(new PhysicsState);
+    physics->setType(reactphysics3d::BodyType::DYNAMIC);
+    physics->setMass(1);
+    physics->setBounciness(0.5);
+    physics->setFriction(0.1);
+    physics->setShape(SHAPE_BOX);
+    mountainTransform->setPhysics(physics);
 
     //Add to terrain root.
     montainRoot->addChild(mountainTransform);
@@ -611,8 +614,15 @@ void Application::update(GLFWwindow* window)
 
 void Application::processInput(GLFWwindow* window)
 {
-  m_player->processInput(window);
-  //getCamera()->processInput(window);
+  if(m_playerViewEnabled)
+  {
+    m_player->processInput(window);
+  }
+  
+  else
+  {
+    getCamera()->processInput(window);
+  }
 }
 
 void Application::setScreenSize(unsigned int width, unsigned int height)
@@ -657,6 +667,33 @@ void Application::togglePhysicsDebug()
   physics->setDebugMode(!physics->debugEnabled());
 }
 
+void Application::toggleWireFrame()
+{
+  auto state = m_sceneRoot->getRoot()->getState();
+  if(state->getPolygonMode() == GL_LINE)
+  {
+    state->setPolygonMode(GL_FILL);
+  }
+
+  else
+  {
+    state->setPolygonMode(GL_LINE);
+  }
+}
+
+void Application::togglePlayer()
+{
+  if(m_playerViewEnabled)
+  {
+    m_playerViewEnabled = false;
+  }
+  else
+  {
+    m_playerViewEnabled = true;
+  }
+}
+
+
 //TODO fix this method, works but is very bad implemented.
 void Application::switchCamera()
 {
@@ -693,7 +730,6 @@ void Application::switchCamera()
   }
 }
 
-
 void Application::drawControls()
 {
   vr::Text::setColor(glm::vec4(0, 1, 0, 0.8));
@@ -707,4 +743,26 @@ void Application::drawControls()
 
   str = "Toggle debug of collision boxes: B";
   vr::Text::drawText(m_screenSize[0], m_screenSize[1], 10, 90, str.c_str());
+
+  str = "Toggle wireframe: N";
+  vr::Text::drawText(m_screenSize[0], m_screenSize[1], 10, 110, str.c_str());
+
+  str = "Toggle player view: P";
+  vr::Text::drawText(m_screenSize[0], m_screenSize[1], 10, 130, str.c_str());
+  str = "(Note that change of camera, C, can not be used while in player view)";
+  vr::Text::drawText(m_screenSize[0], m_screenSize[1], 10, 150, str.c_str());
+
+
+  if(m_playerViewEnabled)
+  {
+    str = "Player view";
+    vr::Text::drawText(m_screenSize[0], m_screenSize[1], m_screenSize[0] - 150, 30, str.c_str());
+  }
+
+  else
+  {
+    str = "Camera " + std::to_string(m_sceneRoot->getSelectedCameraId()); 
+    vr::Text::drawText(m_screenSize[0], m_screenSize[1], m_screenSize[0] - 150, 30, str.c_str());
+  }
+  
 }

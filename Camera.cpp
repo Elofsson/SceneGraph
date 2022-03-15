@@ -239,3 +239,8 @@ glm::mat4 Camera::getPerspectiveProjection()
   float aspect = (float)m_screenSize[0] / (float)m_screenSize[1];
   return glm::perspective<float>(m_fov, aspect, m_nearFar[0], m_nearFar[1]);
 }
+
+void Camera::setSpeed(float speed)
+{
+  m_speed = speed;
+}

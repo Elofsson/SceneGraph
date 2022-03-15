@@ -69,6 +69,26 @@ void keyboard_callback(GLFWwindow* window, int key, int scancode, int action, in
     }
   }
 
+  //Toggle wireframe.
+  if (key == GLFW_KEY_N && action == GLFW_PRESS)
+  {
+    if (auto app = g_applicationPtr.lock())
+    {
+      std::cout << "Toggle wireframe" << std::endl;
+      app->toggleWireFrame();
+    }
+  }
+
+  //Toggle player view.
+  if (key == GLFW_KEY_P && action == GLFW_PRESS)
+  {
+    if (auto app = g_applicationPtr.lock())
+    {
+      std::cout << "Toggle player view " << std::endl;
+      app->togglePlayer();
+    }
+  }
+
 }
 
 void window_size_callback(GLFWwindow* window, int width, int height)

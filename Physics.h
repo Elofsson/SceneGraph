@@ -3,7 +3,6 @@
 #include "Node.h"
 #include "InitPhysicsVisitor.h"
 #include "Camera.h"
-#include "PhysicsVisitor.h"
 #include "Player.h"
 #include <vr/shaderUtils.h>
 
@@ -28,10 +27,8 @@ private:
   GLuint m_program;
   GLuint m_verticesLocation;
 
-
   float m_timeStep;  
   std::shared_ptr<InitPhysicsVisitor> m_physicsVisitor;
-  std::shared_ptr<PhysicsVisitor> m_physicsUpdater;
   reactphysics3d::PhysicsCommon* m_physicsCommon;
   reactphysics3d::PhysicsWorld* m_physicsWorld;
 };

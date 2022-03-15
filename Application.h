@@ -120,6 +120,10 @@ public:
 
   void togglePhysicsDebug();
 
+  void toggleWireFrame();
+
+  void togglePlayer();
+
   void drawControls();
 
 private:
@@ -143,6 +147,8 @@ private:
 
   bool loadSkybox(std::vector<std::string> textures, const std::string& model_filename, const std::string& vshader_filename, std::string& fshader_filename);
   
+  bool m_playerViewEnabled;
+
   // Parent of all to be rendered
   std::shared_ptr<Player> m_player;
   std::shared_ptr<Scene> m_sceneRoot;

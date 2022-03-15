@@ -20,4 +20,5 @@ private:
   float m_movementSpeed;
   float m_offsetY;
   float m_gravity;
+  glm::vec3 m_position;
 };

@@ -811,33 +811,6 @@ PhysicsState.cpp.s:
 	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/PhysicsState.cpp.s
 .PHONY : PhysicsState.cpp.s
 
-PhysicsVisitor.o: PhysicsVisitor.cpp.o
-
-.PHONY : PhysicsVisitor.o
-
-# target to build an object file
-PhysicsVisitor.cpp.o:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/PhysicsVisitor.cpp.o
-.PHONY : PhysicsVisitor.cpp.o
-
-PhysicsVisitor.i: PhysicsVisitor.cpp.i
-
-.PHONY : PhysicsVisitor.i
-
-# target to preprocess a source file
-PhysicsVisitor.cpp.i:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/PhysicsVisitor.cpp.i
-.PHONY : PhysicsVisitor.cpp.i
-
-PhysicsVisitor.s: PhysicsVisitor.cpp.s
-
-.PHONY : PhysicsVisitor.s
-
-# target to generate assembly for a file
-PhysicsVisitor.cpp.s:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/PhysicsVisitor.cpp.s
-.PHONY : PhysicsVisitor.cpp.s
-
 Player.o: Player.cpp.o
 
 .PHONY : Player.o
@@ -1298,9 +1271,6 @@ help:
 	@echo "... PhysicsState.o"
 	@echo "... PhysicsState.i"
 	@echo "... PhysicsState.s"
-	@echo "... PhysicsVisitor.o"
-	@echo "... PhysicsVisitor.i"
-	@echo "... PhysicsVisitor.s"
 	@echo "... Player.o"
 	@echo "... Player.i"
 	@echo "... Player.s"

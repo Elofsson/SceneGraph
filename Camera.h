@@ -100,6 +100,8 @@ public:
 
   void applyPerspective(GLuint program);
 
+  void setSpeed(float speed);
+
 private:
 
   void apply(GLuint program, glm::mat4 projectionMatrix);

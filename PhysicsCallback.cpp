@@ -16,12 +16,7 @@ PhysicsCallback::PhysicsCallback(Transform *transform, std::shared_ptr<PhysicsSt
 
 void PhysicsCallback::update()
 {
-  //std::cout << "-----------------PhysicsCallback update on transform: " << m_transform->name << std::endl;
-
   reactphysics3d::RigidBody *body = m_physicsState->getBody();
-
-  //const reactphysics3d::Vector3 force(0, 0, 2);
-  //body->applyLocalForceAtCenterOfMass(force);
 
   if(!body->isSleeping())
   {
@@ -31,6 +26,8 @@ void PhysicsCallback::update()
     //Calculate new position.
     glm::vec3 pos(position.x, position.y, position.z);
     glm::vec3 newPos = pos - m_physicLocalPos;
+    //std::cout << "Position: " << pos << std::endl;
+
     m_transform->setPosition(newPos);    
   }
 }

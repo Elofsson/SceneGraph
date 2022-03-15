@@ -3,7 +3,8 @@
 Player::Player(float speed, std::shared_ptr<Camera> camera)
 {
   m_movementSpeed = speed;
-  m_camera = camera ;
+  m_camera = camera;
+  m_position = camera->getPosition();
 }
 
 void Player::setModel(std::shared_ptr<Transform> model, std::shared_ptr<PhysicsState> physics)
@@ -12,8 +13,6 @@ void Player::setModel(std::shared_ptr<Transform> model, std::shared_ptr<PhysicsS
   BoundingBox box = m_player->calculateBoundingBox(glm::mat4(1.0f));
   m_offsetY = box.getRadius() * 1.5;
   m_player->setPhysics(physics);
-
-  //m_gravity = -5;//physics->getBody()->getLinearVelocity()[1];
 }
 
 void Player::processInput(GLFWwindow *window)
@@ -28,14 +27,16 @@ void Player::processInput(GLFWwindow *window)
   m_camera->setPosition(bodyPosition);
 
   glm::vec3 velocity = (cameraPos - bodyPosition) * m_movementSpeed;
+  m_position += velocity;
 
-  std::cout << "Velocity: " << velocity << std::endl;
+  //std::cout << "Velocity: " << velocity << std::endl;
   reactphysics3d::Vector3 previousForce = body->getForce();
   reactphysics3d::Vector3 force(velocity.x + previousForce[0], 0, velocity.z + previousForce[2]);
 
   if(glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
   { 
-    force[1] = glm::abs(velocity.y + previousForce[1]);
+    std::cout << "Jumping " << std::endl;
+    force[1] = glm::abs((velocity.y));
   }
 
   body->applyWorldForceAtCenterOfMass(force);

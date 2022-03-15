@@ -6,20 +6,15 @@ InitPhysicsVisitor::InitPhysicsVisitor(reactphysics3d::PhysicsCommon *physicsCom
 {
   m_physicsCommon = physicsCommon;
   m_physicsWorld = world;
-  m_static = false;
 }
 
 void InitPhysicsVisitor::visit(Group &g)
 {
   NodeVisitor::traverse(g);
-
-  //m_currentPhysics = nullptr;
 }
 
 void InitPhysicsVisitor::visit(Transform &t) 
 {
-  std::cout << "Visiting transform " << t.name << std::endl;
-
   //Push on stack.
 	if(m_transformStack.empty())
   {
@@ -34,6 +29,7 @@ void InitPhysicsVisitor::visit(Transform &t)
     m_transformStack.push(newObject2world); 
   }
 
+  //Only push transforms containing physics.
   if(t.getPhysics() != nullptr)
   {
     m_transformObjStack.push(&t);
@@ -41,6 +37,7 @@ void InitPhysicsVisitor::visit(Transform &t)
 
   NodeVisitor::traverse(t);
 
+  //Only pop when transform has been pushed.
   if(t.getPhysics() != nullptr)
   {
     m_transformObjStack.pop();
@@ -55,67 +52,81 @@ void InitPhysicsVisitor::visit(Geometry &g)
   //initPhysics(g); 
   if(!m_transformObjStack.empty())
   {
-    
-    //Get the scale of the geometry.
-    float x = m_transformStack.top()[0][0];
-    float y = m_transformStack.top()[1][1];
-    float z = m_transformStack.top()[2][2];
-    glm::vec3 scale = glm::vec3(x, y, z);
-
+    //TODO investigate if the geometries boundingbox is actually needed, 
+    //or if the whole transforms boundingbox can be used.
+    BoundingBox box = g.calculateBoundingBox(m_transformStack.top());
     Transform *t = m_transformObjStack.top();
-    auto physicsState = initPhysics(*t, scale);
+    auto physicsState = initPhysics(*t, box);
+    if(!physicsState)
+    {
+      std::cout << "Failed to init physic state." << std::endl;
+    }
+
+    else
+    {
     std::shared_ptr<PhysicsCallback> physicsCallback = std::shared_ptr<PhysicsCallback>(new PhysicsCallback(t, physicsState));
     t->addCallback(physicsCallback);
     std::cout << "\t--------------------Init physics callback for transform: " << t->name << " : address " << t << std::endl;
+    }
   }
 }
 
-void InitPhysicsVisitor::initStaticBodies(bool staticBodies)
+std::shared_ptr<PhysicsState> InitPhysicsVisitor::initPhysics(Transform &t, BoundingBox box)
 {
-  m_static = staticBodies;
-}
+  //Get the physics state to init.
+  std::shared_ptr<PhysicsState> physicState = t.getPhysics();
+  if(!physicState)
+    return nullptr;
 
-std::shared_ptr<PhysicsState> InitPhysicsVisitor::initPhysics(Transform &t, glm::vec3 scale)
-{
-  //Do not init physics if no physic state is set.
-  glm::mat4 stackTransform =  m_transformStack.top() ;
-  std::cout << "Transform " << stackTransform << std::endl;
-
-  BoundingBox box = t.calculateBoundingBox(glm::mat4(1.0f));
-  float radius = box.getRadius();
-  std::cout << "Radius " << radius << std::endl;
+  //Retrieve center position of object and get bodyPosition through the latest transform.
+  glm::mat4 stackTransform =  m_transformStack.top();
+  glm::vec3 center = box.getCenter();
   glm::vec4 bodyPosition = stackTransform * glm::vec4(0, 0, 0, 1);
 
-  //Create rigid body.
-  reactphysics3d::Vector3 position(bodyPosition.x, bodyPosition.y, bodyPosition.z);
+  //Default orientation.
   reactphysics3d::Quaternion orientation = reactphysics3d::Quaternion::identity();
-  reactphysics3d::Transform transform(position, orientation);  
-  reactphysics3d::RigidBody *body = m_physicsWorld->createRigidBody(transform);
 
-  //Create collisionbox.
+  //Create rigid body.
+  //Reuse rigid body if one is already created.
+  if(!physicState->getBody())
+  {
+    reactphysics3d::Vector3 position(bodyPosition.x, bodyPosition.y, bodyPosition.z);
+    reactphysics3d::Transform transform(position, orientation);  
+    reactphysics3d::RigidBody *body = m_physicsWorld->createRigidBody(transform);
+    physicState->setBody(body);
+  }
+
+  reactphysics3d::RigidBody *physicsBody = physicState->getBody();
+
+  //Create collision transformation relative to rigid body.
+  glm::vec3 collisionBodyOffset = center - glm::vec3(bodyPosition);
   reactphysics3d::Collider* collider;
-  reactphysics3d::Transform colliderTransform(reactphysics3d::Vector3(0.0, 0.0, 0.0), orientation);
-
-  if(t.getPhysics()->getShape() == SHAPE_BOX)
+  reactphysics3d::Transform colliderTransform(reactphysics3d::Vector3(collisionBodyOffset.x, collisionBodyOffset.y, collisionBodyOffset.z), orientation);
+  int shape = t.getPhysics()->getShape();
+  if(shape == SHAPE_BOX)
   {
-    const reactphysics3d::Vector3 halfExtents(stackTransform[0][0] / 2, stackTransform[1][1] / 2, stackTransform[2][2] / 2); 
+    //Calculate the size of the collision box.
+    glm::vec3 min = box.min();
+    glm::vec3 max = box.max();
+    glm::vec3 size = (max - min);
+    size = size * 0.5f;
+
+    const reactphysics3d::Vector3 halfExtents(size.x, size.y, size.z); 
     reactphysics3d::CollisionShape* boxShape = m_physicsCommon->createBoxShape(halfExtents);
-    collider = body->addCollider(boxShape, colliderTransform);
+    collider = physicsBody->addCollider(boxShape, colliderTransform);
   }
 
-  else if(t.getPhysics()->getShape() == SHAPE_SPHERE)
+  else if(shape == SHAPE_SPHERE)
   {
+    float radius = box.getRadius();
     reactphysics3d::CollisionShape* boxShape = m_physicsCommon->createSphereShape(radius);
-    collider = body->addCollider(boxShape, colliderTransform);
+    collider = physicsBody->addCollider(boxShape, colliderTransform);
   }
 
-  //Update center of mass and other properties.
-  body->updateMassPropertiesFromColliders();
-
-  //Update physics state.
-  std::shared_ptr<PhysicsState> physicState = t.getPhysics();
-  physicState->setCollider(collider);
-  physicState->setBody(body);
+  //Update center of mass and other properties such as friction.
+  physicsBody->updateMassPropertiesFromColliders();
+  physicState->addCollider(collider);
   physicState->init();
+
   return physicState;
 }

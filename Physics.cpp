@@ -2,11 +2,7 @@
 
 Physics::Physics()
 {
-
-  m_physicsUpdater = std::shared_ptr<PhysicsVisitor>(new PhysicsVisitor);
-
   //TODO might want to pass in parameters or make a way to set settings.
-
   // Create the world settings 
   reactphysics3d::PhysicsWorld::WorldSettings settings; 
   settings.defaultVelocitySolverNbIterations = 20; 
@@ -80,28 +76,27 @@ bool Physics::init(const std::string& vshader_filename, const std::string& fshad
 
 void Physics::add(std::shared_ptr<Group> node, int shape, bool staticBody)
 {
-  m_physicsVisitor->initStaticBodies(staticBody);
   m_physicsVisitor->visit(*node);
 }
 
 void Physics::update(Group &group)
 {
   m_physicsWorld->update(m_timeStep);
-  //m_physicsUpdater->visit(group);
 }
 
 void Physics::renderCollisionBoxes(std::shared_ptr<Camera> camera)
 {
 
+  //Generate data to draw.
   reactphysics3d::DebugRenderer& debugRenderer = m_physicsWorld->getDebugRenderer();
   debugRenderer.computeDebugRenderingPrimitives(*m_physicsWorld);
 
-  reactphysics3d::Array<reactphysics3d::DebugRenderer::DebugTriangle> triangles = debugRenderer.getTriangles();
-  std::cout << "Number of triangles " << triangles.size() << std::endl;
-
+  //Get the number of vertices.
   const int nrLines = debugRenderer.getNbLines();
   const int nrTraingles = debugRenderer.getNbTriangles();
 
+  //Fetch triangles
+  reactphysics3d::Array<reactphysics3d::DebugRenderer::DebugTriangle> triangles = debugRenderer.getTriangles();
   std::vector<glm::vec3> finalData;
   for(int i = 0; i < triangles.size(); i++)
   {
@@ -114,6 +109,7 @@ void Physics::renderCollisionBoxes(std::shared_ptr<Camera> camera)
     finalData.push_back(glm::vec3(p3.x, p3.y, p3.z));
   }
 
+  //Fetch lines.
   std::vector<glm::vec3> finalDataLines;
   if(nrLines > 0)
   {
@@ -148,10 +144,9 @@ void Physics::renderCollisionBoxes(std::shared_ptr<Camera> camera)
   glDrawArrays(GL_TRIANGLES, 0, nrTraingles);
   glEnableVertexAttribArray(0);
 
+  //Create buffer and draw lines.
   if(nrLines > 0)
   {
-    std::cout << "Draw lines " << std::endl;
-    //Create buffer andr draw lines.
     GLuint vboLines;
     glGenBuffers(1, &vboLines);
     glBindBuffer(GL_ARRAY_BUFFER, vboLines);
