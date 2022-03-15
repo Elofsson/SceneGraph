@@ -24,6 +24,16 @@ Physics::Physics()
   m_timeStep = 1.0f / 60.0f;
 }
 
+void Physics::setDebugMode(bool debug)
+{
+  m_debugEnabled = debug;
+}
+
+bool Physics::debugEnabled()
+{
+  return m_debugEnabled;
+}
+
 bool Physics::init(const std::string& vshader_filename, const std::string& fshader_filename)
 {
   /* Compile and link shaders */
@@ -157,6 +167,8 @@ void Physics::renderCollisionBoxes(std::shared_ptr<Camera> camera)
 
 void Physics::enableDebug()
 {
+  m_debugEnabled = true;
+
   m_physicsWorld->setIsDebugRenderingEnabled(true); 
 
   // Get a reference to the debug renderer 

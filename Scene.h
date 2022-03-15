@@ -122,6 +122,8 @@ public:
 
   void enableShadows(bool enabled);
 
+  std::shared_ptr<Physics> getPhysicsWorld();
+
   bool shadowsIsEnabled();
 
 private:

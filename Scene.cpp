@@ -281,6 +281,11 @@ bool Scene::shadowsIsEnabled()
   return m_shadowsEnabled;
 }
 
+std::shared_ptr<Physics> Scene::getPhysicsWorld()
+{
+  return m_physics;
+}
+
 void Scene::render()
 {
   applyCamera();
@@ -313,14 +318,16 @@ void Scene::render()
  
  
   m_updater->visit(*m_root);
-  std::cout << "Before render " << std::endl;
   m_renderer->visit(*m_root);
-  std::cout << "After render" << std::endl;
 
   //Update physics here.
   m_physics->update(*m_root);
 
-  glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-  m_physics->renderCollisionBoxes(m_cameras[m_selectedCamera]);
-  glPolygonMode(GL_FRONT_AND_BACK, m_root->getState()->getPolygonMode());
+  //Draw collision boxes if debug is enabled.
+  if(m_physics->debugEnabled())
+  {
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    m_physics->renderCollisionBoxes(m_cameras[m_selectedCamera]);
+    glPolygonMode(GL_FRONT_AND_BACK, m_root->getState()->getPolygonMode());
+  }
 }

@@ -83,6 +83,7 @@ std::shared_ptr<PhysicsState> InitPhysicsVisitor::initPhysics(Transform &t, glm:
 
   BoundingBox box = t.calculateBoundingBox(glm::mat4(1.0f));
   float radius = box.getRadius();
+  std::cout << "Radius " << radius << std::endl;
   glm::vec4 bodyPosition = stackTransform * glm::vec4(0, 0, 0, 1);
 
   //Create rigid body.

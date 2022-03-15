@@ -39,6 +39,7 @@ void keyboard_callback(GLFWwindow* window, int key, int scancode, int action, in
     if (auto app = g_applicationPtr.lock())
       app->reloadScene();
 
+  //Switch camera.
   if (key == GLFW_KEY_C && action == GLFW_PRESS)
   {
     if (auto app = g_applicationPtr.lock())
@@ -48,12 +49,23 @@ void keyboard_callback(GLFWwindow* window, int key, int scancode, int action, in
     }
   }
 
+  //Shadow toggle
   if (key == GLFW_KEY_V && action == GLFW_PRESS)
   {
     if (auto app = g_applicationPtr.lock())
     {
       std::cout << "Toggle shadows" << std::endl;
       app->toggleShadows();
+    }
+  }
+
+  //Physics collision debug toggle
+  if (key == GLFW_KEY_B && action == GLFW_PRESS)
+  {
+    if (auto app = g_applicationPtr.lock())
+    {
+      std::cout << "Toggle physics debug collision boxes" << std::endl;
+      app->togglePhysicsDebug();
     }
   }
 

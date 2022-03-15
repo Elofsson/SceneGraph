@@ -118,6 +118,8 @@ public:
 
   void toggleShadows();
 
+  void togglePhysicsDebug();
+
   void drawControls();
 
 private:
@@ -136,6 +138,8 @@ private:
   bool loadFurry();
 
   bool loadTerrain();
+
+  bool initPlayer();
 
   bool loadSkybox(std::vector<std::string> textures, const std::string& model_filename, const std::string& vshader_filename, std::string& fshader_filename);
   

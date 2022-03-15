@@ -69,10 +69,12 @@ bool Application::initResources(const std::string& model_filename, const std::st
 
   //Add camera.
   m_cameras.push_back(m_sceneRoot->getSelectedCameraId());
-  
-  //Init player.
-  float speed = 750.0;
-  m_player = std::shared_ptr<Player>(new Player(speed, m_sceneRoot->getSelectedCamera()));
+
+  if(!initPlayer())
+  {
+    std::cout << "Failed to load player" << std::endl;
+    return false;
+  }
 
   //Create light.
   std::shared_ptr<Light> light2 = std::shared_ptr<Light>(new Light);
@@ -146,7 +148,6 @@ bool Application::loadMovingObject(std::string objectPath)
   object->addCallback(callback);
   transform->addChild(object);
   m_sceneRoot->add(transform);
-  //addPhysics(transform);
 
   return true;
 }
@@ -185,7 +186,7 @@ bool Application::buildGeometry()
   std::shared_ptr<Group> rootGroup = std::shared_ptr<Group>(new Group);
 
   //Set player model with physics.
-  std::shared_ptr<PhysicsState> playerPhysics = std::shared_ptr<PhysicsState>(new PhysicsState);
+  /*std::shared_ptr<PhysicsState> playerPhysics = std::shared_ptr<PhysicsState>(new PhysicsState);
   playerPhysics->setType(reactphysics3d::BodyType::DYNAMIC);
   playerPhysics->setMass(10);
   playerPhysics->setBounciness(0.05);
@@ -196,7 +197,7 @@ bool Application::buildGeometry()
   playerTransform->addChild(ironmanModel);
   m_player->setModel(playerTransform, playerPhysics);
 
-  rootGroup->addChild(playerTransform);
+  rootGroup->addChild(playerTransform);*/
 
   float offset = 1;
   for(int i = 1; i  < 10; i++)
@@ -278,6 +279,46 @@ bool Application::loadLodObjects(std::vector<std::string> objectFiles)
   lodTransform->scale(glm::vec3(0.1, 0.1, 0.1));
   lodTransform->addChild(lodRoot);
   m_sceneRoot->add(lodTransform);
+  return true;
+}
+
+
+//Has to be called after a camera has been created.
+bool Application::initPlayer()
+{
+  //Load player model.
+  std::string playerModelFile = "scenes/sphere.xml";
+  std::shared_ptr<Group> playerModel = std::shared_ptr<Group>(new Group());
+  if(!loadGroup(playerModelFile, playerModel, true))
+  {
+    std::cout << "Failed to load player model " << playerModelFile << std::endl;
+    return false;
+  }
+  
+  //TODO this is due to a problem with the first transform in a subtree being ignored and interpreted as a group, this should be fixed.
+  //Create rootgroup with physics property.
+  std::shared_ptr<Group> rootGroup = std::shared_ptr<Group>(new Group);
+
+
+  //Init player with movementspeed and camera.
+  float speed = 750.0;
+  m_player = std::shared_ptr<Player>(new Player(speed, m_sceneRoot->getSelectedCamera()));
+
+  //Set player model with physics.
+  std::shared_ptr<PhysicsState> playerPhysics = std::shared_ptr<PhysicsState>(new PhysicsState);
+  playerPhysics->setType(reactphysics3d::BodyType::DYNAMIC);
+  playerPhysics->setMass(10);
+  playerPhysics->setBounciness(0.05);
+  playerPhysics->setFriction(1.0);
+  playerPhysics->setShape(SHAPE_SPHERE);
+  std::shared_ptr<Transform> playerTransform = std::shared_ptr<Transform>(new Transform);
+  playerTransform->translate(glm::vec3(1, 1, 1));
+  playerTransform->addChild(playerModel);
+  m_player->setModel(playerTransform, playerPhysics);
+
+  //Add playermodel to scene.
+  rootGroup->addChild(playerTransform);
+  m_sceneRoot->add(rootGroup);
   return true;
 }
 
@@ -610,6 +651,12 @@ void Application::toggleShadows()
   m_sceneRoot->enableShadows(!m_sceneRoot->shadowsIsEnabled());
 }
 
+void Application::togglePhysicsDebug()
+{
+  auto physics = m_sceneRoot->getPhysicsWorld();
+  physics->setDebugMode(!physics->debugEnabled());
+}
+
 //TODO fix this method, works but is very bad implemented.
 void Application::switchCamera()
 {
@@ -651,10 +698,13 @@ void Application::drawControls()
 {
   vr::Text::setColor(glm::vec4(0, 1, 0, 0.8));
   vr::Text::setFontSize(20);
-  
+
   std::string str = "Change Camera: C"; 
   vr::Text::drawText(m_screenSize[0], m_screenSize[1], 10, 50, str.c_str());
 
   str = "Toggle shadows: V";
   vr::Text::drawText(m_screenSize[0], m_screenSize[1], 10, 70, str.c_str());
+
+  str = "Toggle debug of collision boxes: B";
+  vr::Text::drawText(m_screenSize[0], m_screenSize[1], 10, 90, str.c_str());
 }

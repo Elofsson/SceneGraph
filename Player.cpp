@@ -10,7 +10,7 @@ void Player::setModel(std::shared_ptr<Transform> model, std::shared_ptr<PhysicsS
 {
   m_player = model;
   BoundingBox box = m_player->calculateBoundingBox(glm::mat4(1.0f));
-  m_offsetY = box.getRadius();
+  m_offsetY = box.getRadius() * 1.5;
   m_player->setPhysics(physics);
 
   //m_gravity = -5;//physics->getBody()->getLinearVelocity()[1];
@@ -39,7 +39,4 @@ void Player::processInput(GLFWwindow *window)
   }
 
   body->applyWorldForceAtCenterOfMass(force);
-
-
-
 }
