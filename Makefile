@@ -67,10 +67,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master
+CMAKE_SOURCE_DIR = /home/elof/Skola/AvanceradDatorgrafik/5dv180-master
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master
+CMAKE_BINARY_DIR = /home/elof/Skola/AvanceradDatorgrafik/5dv180-master
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -86,6 +86,18 @@ install/strip/fast: preinstall/fast
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing the project stripped..."
 	/usr/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
 .PHONY : install/strip/fast
+
+# Special rule for the target install/local
+install/local: preinstall
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing only the local directory..."
+	/usr/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
+.PHONY : install/local
+
+# Special rule for the target install/local
+install/local/fast: preinstall/fast
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing only the local directory..."
+	/usr/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
+.PHONY : install/local/fast
 
 # Special rule for the target install
 install: preinstall
@@ -122,8 +134,8 @@ rebuild_cache/fast: rebuild_cache
 
 # Special rule for the target edit_cache
 edit_cache:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake cache editor..."
-	/usr/bin/ccmake -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
+	/usr/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
 .PHONY : edit_cache
 
 # Special rule for the target edit_cache
@@ -131,28 +143,16 @@ edit_cache/fast: edit_cache
 
 .PHONY : edit_cache/fast
 
-# Special rule for the target install/local
-install/local: preinstall
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing only the local directory..."
-	/usr/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
-.PHONY : install/local
-
-# Special rule for the target install/local
-install/local/fast: preinstall/fast
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing only the local directory..."
-	/usr/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
-.PHONY : install/local/fast
-
 # The main all target
 all: cmake_check_build_system
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(CMAKE_COMMAND) -E cmake_progress_start /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master/CMakeFiles /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master/examples/lab2//CMakeFiles/progress.marks
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 examples/lab2/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master/CMakeFiles 0
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(CMAKE_COMMAND) -E cmake_progress_start /home/elof/Skola/AvanceradDatorgrafik/5dv180-master/CMakeFiles /home/elof/Skola/AvanceradDatorgrafik/5dv180-master/examples/SceneGraph//CMakeFiles/progress.marks
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 examples/SceneGraph/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/elof/Skola/AvanceradDatorgrafik/5dv180-master/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
 clean:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 examples/lab2/clean
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 examples/SceneGraph/clean
 .PHONY : clean
 
 # The main clean target
@@ -162,33 +162,33 @@ clean/fast: clean
 
 # Prepare targets for installation.
 preinstall: all
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 examples/lab2/preinstall
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 examples/SceneGraph/preinstall
 .PHONY : preinstall
 
 # Prepare targets for installation.
 preinstall/fast:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 examples/lab2/preinstall
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 examples/SceneGraph/preinstall
 .PHONY : preinstall/fast
 
 # clear depends
 depend:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
 
 # Convenience name for target.
-examples/lab2/CMakeFiles/lab2.dir/rule:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 examples/lab2/CMakeFiles/lab2.dir/rule
-.PHONY : examples/lab2/CMakeFiles/lab2.dir/rule
+examples/SceneGraph/CMakeFiles/SceneGraph.dir/rule:
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 examples/SceneGraph/CMakeFiles/SceneGraph.dir/rule
+.PHONY : examples/SceneGraph/CMakeFiles/SceneGraph.dir/rule
 
 # Convenience name for target.
-lab2: examples/lab2/CMakeFiles/lab2.dir/rule
+SceneGraph: examples/SceneGraph/CMakeFiles/SceneGraph.dir/rule
 
-.PHONY : lab2
+.PHONY : SceneGraph
 
 # fast build rule for target.
-lab2/fast:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/build
-.PHONY : lab2/fast
+SceneGraph/fast:
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/build
+.PHONY : SceneGraph/fast
 
 Application.o: Application.cpp.o
 
@@ -196,7 +196,7 @@ Application.o: Application.cpp.o
 
 # target to build an object file
 Application.cpp.o:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/Application.cpp.o
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/Application.cpp.o
 .PHONY : Application.cpp.o
 
 Application.i: Application.cpp.i
@@ -205,7 +205,7 @@ Application.i: Application.cpp.i
 
 # target to preprocess a source file
 Application.cpp.i:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/Application.cpp.i
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/Application.cpp.i
 .PHONY : Application.cpp.i
 
 Application.s: Application.cpp.s
@@ -214,7 +214,7 @@ Application.s: Application.cpp.s
 
 # target to generate assembly for a file
 Application.cpp.s:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/Application.cpp.s
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/Application.cpp.s
 .PHONY : Application.cpp.s
 
 Camera.o: Camera.cpp.o
@@ -223,7 +223,7 @@ Camera.o: Camera.cpp.o
 
 # target to build an object file
 Camera.cpp.o:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/Camera.cpp.o
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/Camera.cpp.o
 .PHONY : Camera.cpp.o
 
 Camera.i: Camera.cpp.i
@@ -232,7 +232,7 @@ Camera.i: Camera.cpp.i
 
 # target to preprocess a source file
 Camera.cpp.i:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/Camera.cpp.i
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/Camera.cpp.i
 .PHONY : Camera.cpp.i
 
 Camera.s: Camera.cpp.s
@@ -241,7 +241,7 @@ Camera.s: Camera.cpp.s
 
 # target to generate assembly for a file
 Camera.cpp.s:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/Camera.cpp.s
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/Camera.cpp.s
 .PHONY : Camera.cpp.s
 
 ControllableObjectCallback.o: ControllableObjectCallback.cpp.o
@@ -250,7 +250,7 @@ ControllableObjectCallback.o: ControllableObjectCallback.cpp.o
 
 # target to build an object file
 ControllableObjectCallback.cpp.o:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/ControllableObjectCallback.cpp.o
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/ControllableObjectCallback.cpp.o
 .PHONY : ControllableObjectCallback.cpp.o
 
 ControllableObjectCallback.i: ControllableObjectCallback.cpp.i
@@ -259,7 +259,7 @@ ControllableObjectCallback.i: ControllableObjectCallback.cpp.i
 
 # target to preprocess a source file
 ControllableObjectCallback.cpp.i:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/ControllableObjectCallback.cpp.i
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/ControllableObjectCallback.cpp.i
 .PHONY : ControllableObjectCallback.cpp.i
 
 ControllableObjectCallback.s: ControllableObjectCallback.cpp.s
@@ -268,7 +268,7 @@ ControllableObjectCallback.s: ControllableObjectCallback.cpp.s
 
 # target to generate assembly for a file
 ControllableObjectCallback.cpp.s:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/ControllableObjectCallback.cpp.s
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/ControllableObjectCallback.cpp.s
 .PHONY : ControllableObjectCallback.cpp.s
 
 Debug.o: Debug.cpp.o
@@ -277,7 +277,7 @@ Debug.o: Debug.cpp.o
 
 # target to build an object file
 Debug.cpp.o:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/Debug.cpp.o
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/Debug.cpp.o
 .PHONY : Debug.cpp.o
 
 Debug.i: Debug.cpp.i
@@ -286,7 +286,7 @@ Debug.i: Debug.cpp.i
 
 # target to preprocess a source file
 Debug.cpp.i:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/Debug.cpp.i
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/Debug.cpp.i
 .PHONY : Debug.cpp.i
 
 Debug.s: Debug.cpp.s
@@ -295,7 +295,7 @@ Debug.s: Debug.cpp.s
 
 # target to generate assembly for a file
 Debug.cpp.s:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/Debug.cpp.s
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/Debug.cpp.s
 .PHONY : Debug.cpp.s
 
 DotVisitor.o: DotVisitor.cpp.o
@@ -304,7 +304,7 @@ DotVisitor.o: DotVisitor.cpp.o
 
 # target to build an object file
 DotVisitor.cpp.o:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/DotVisitor.cpp.o
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/DotVisitor.cpp.o
 .PHONY : DotVisitor.cpp.o
 
 DotVisitor.i: DotVisitor.cpp.i
@@ -313,7 +313,7 @@ DotVisitor.i: DotVisitor.cpp.i
 
 # target to preprocess a source file
 DotVisitor.cpp.i:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/DotVisitor.cpp.i
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/DotVisitor.cpp.i
 .PHONY : DotVisitor.cpp.i
 
 DotVisitor.s: DotVisitor.cpp.s
@@ -322,7 +322,7 @@ DotVisitor.s: DotVisitor.cpp.s
 
 # target to generate assembly for a file
 DotVisitor.cpp.s:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/DotVisitor.cpp.s
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/DotVisitor.cpp.s
 .PHONY : DotVisitor.cpp.s
 
 FPSCounter.o: FPSCounter.cpp.o
@@ -331,7 +331,7 @@ FPSCounter.o: FPSCounter.cpp.o
 
 # target to build an object file
 FPSCounter.cpp.o:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/FPSCounter.cpp.o
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/FPSCounter.cpp.o
 .PHONY : FPSCounter.cpp.o
 
 FPSCounter.i: FPSCounter.cpp.i
@@ -340,7 +340,7 @@ FPSCounter.i: FPSCounter.cpp.i
 
 # target to preprocess a source file
 FPSCounter.cpp.i:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/FPSCounter.cpp.i
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/FPSCounter.cpp.i
 .PHONY : FPSCounter.cpp.i
 
 FPSCounter.s: FPSCounter.cpp.s
@@ -349,7 +349,7 @@ FPSCounter.s: FPSCounter.cpp.s
 
 # target to generate assembly for a file
 FPSCounter.cpp.s:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/FPSCounter.cpp.s
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/FPSCounter.cpp.s
 .PHONY : FPSCounter.cpp.s
 
 FurGeometry.o: FurGeometry.cpp.o
@@ -358,7 +358,7 @@ FurGeometry.o: FurGeometry.cpp.o
 
 # target to build an object file
 FurGeometry.cpp.o:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/FurGeometry.cpp.o
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/FurGeometry.cpp.o
 .PHONY : FurGeometry.cpp.o
 
 FurGeometry.i: FurGeometry.cpp.i
@@ -367,7 +367,7 @@ FurGeometry.i: FurGeometry.cpp.i
 
 # target to preprocess a source file
 FurGeometry.cpp.i:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/FurGeometry.cpp.i
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/FurGeometry.cpp.i
 .PHONY : FurGeometry.cpp.i
 
 FurGeometry.s: FurGeometry.cpp.s
@@ -376,7 +376,7 @@ FurGeometry.s: FurGeometry.cpp.s
 
 # target to generate assembly for a file
 FurGeometry.cpp.s:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/FurGeometry.cpp.s
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/FurGeometry.cpp.s
 .PHONY : FurGeometry.cpp.s
 
 FurState.o: FurState.cpp.o
@@ -385,7 +385,7 @@ FurState.o: FurState.cpp.o
 
 # target to build an object file
 FurState.cpp.o:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/FurState.cpp.o
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/FurState.cpp.o
 .PHONY : FurState.cpp.o
 
 FurState.i: FurState.cpp.i
@@ -394,7 +394,7 @@ FurState.i: FurState.cpp.i
 
 # target to preprocess a source file
 FurState.cpp.i:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/FurState.cpp.i
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/FurState.cpp.i
 .PHONY : FurState.cpp.i
 
 FurState.s: FurState.cpp.s
@@ -403,7 +403,7 @@ FurState.s: FurState.cpp.s
 
 # target to generate assembly for a file
 FurState.cpp.s:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/FurState.cpp.s
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/FurState.cpp.s
 .PHONY : FurState.cpp.s
 
 Geometry.o: Geometry.cpp.o
@@ -412,7 +412,7 @@ Geometry.o: Geometry.cpp.o
 
 # target to build an object file
 Geometry.cpp.o:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/Geometry.cpp.o
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/Geometry.cpp.o
 .PHONY : Geometry.cpp.o
 
 Geometry.i: Geometry.cpp.i
@@ -421,7 +421,7 @@ Geometry.i: Geometry.cpp.i
 
 # target to preprocess a source file
 Geometry.cpp.i:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/Geometry.cpp.i
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/Geometry.cpp.i
 .PHONY : Geometry.cpp.i
 
 Geometry.s: Geometry.cpp.s
@@ -430,7 +430,7 @@ Geometry.s: Geometry.cpp.s
 
 # target to generate assembly for a file
 Geometry.cpp.s:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/Geometry.cpp.s
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/Geometry.cpp.s
 .PHONY : Geometry.cpp.s
 
 Group.o: Group.cpp.o
@@ -439,7 +439,7 @@ Group.o: Group.cpp.o
 
 # target to build an object file
 Group.cpp.o:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/Group.cpp.o
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/Group.cpp.o
 .PHONY : Group.cpp.o
 
 Group.i: Group.cpp.i
@@ -448,7 +448,7 @@ Group.i: Group.cpp.i
 
 # target to preprocess a source file
 Group.cpp.i:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/Group.cpp.i
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/Group.cpp.i
 .PHONY : Group.cpp.i
 
 Group.s: Group.cpp.s
@@ -457,7 +457,7 @@ Group.s: Group.cpp.s
 
 # target to generate assembly for a file
 Group.cpp.s:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/Group.cpp.s
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/Group.cpp.s
 .PHONY : Group.cpp.s
 
 InitPhysicsVisitor.o: InitPhysicsVisitor.cpp.o
@@ -466,7 +466,7 @@ InitPhysicsVisitor.o: InitPhysicsVisitor.cpp.o
 
 # target to build an object file
 InitPhysicsVisitor.cpp.o:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/InitPhysicsVisitor.cpp.o
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/InitPhysicsVisitor.cpp.o
 .PHONY : InitPhysicsVisitor.cpp.o
 
 InitPhysicsVisitor.i: InitPhysicsVisitor.cpp.i
@@ -475,7 +475,7 @@ InitPhysicsVisitor.i: InitPhysicsVisitor.cpp.i
 
 # target to preprocess a source file
 InitPhysicsVisitor.cpp.i:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/InitPhysicsVisitor.cpp.i
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/InitPhysicsVisitor.cpp.i
 .PHONY : InitPhysicsVisitor.cpp.i
 
 InitPhysicsVisitor.s: InitPhysicsVisitor.cpp.s
@@ -484,7 +484,7 @@ InitPhysicsVisitor.s: InitPhysicsVisitor.cpp.s
 
 # target to generate assembly for a file
 InitPhysicsVisitor.cpp.s:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/InitPhysicsVisitor.cpp.s
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/InitPhysicsVisitor.cpp.s
 .PHONY : InitPhysicsVisitor.cpp.s
 
 InitVisitor.o: InitVisitor.cpp.o
@@ -493,7 +493,7 @@ InitVisitor.o: InitVisitor.cpp.o
 
 # target to build an object file
 InitVisitor.cpp.o:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/InitVisitor.cpp.o
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/InitVisitor.cpp.o
 .PHONY : InitVisitor.cpp.o
 
 InitVisitor.i: InitVisitor.cpp.i
@@ -502,7 +502,7 @@ InitVisitor.i: InitVisitor.cpp.i
 
 # target to preprocess a source file
 InitVisitor.cpp.i:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/InitVisitor.cpp.i
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/InitVisitor.cpp.i
 .PHONY : InitVisitor.cpp.i
 
 InitVisitor.s: InitVisitor.cpp.s
@@ -511,7 +511,7 @@ InitVisitor.s: InitVisitor.cpp.s
 
 # target to generate assembly for a file
 InitVisitor.cpp.s:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/InitVisitor.cpp.s
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/InitVisitor.cpp.s
 .PHONY : InitVisitor.cpp.s
 
 Light.o: Light.cpp.o
@@ -520,7 +520,7 @@ Light.o: Light.cpp.o
 
 # target to build an object file
 Light.cpp.o:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/Light.cpp.o
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/Light.cpp.o
 .PHONY : Light.cpp.o
 
 Light.i: Light.cpp.i
@@ -529,7 +529,7 @@ Light.i: Light.cpp.i
 
 # target to preprocess a source file
 Light.cpp.i:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/Light.cpp.i
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/Light.cpp.i
 .PHONY : Light.cpp.i
 
 Light.s: Light.cpp.s
@@ -538,7 +538,7 @@ Light.s: Light.cpp.s
 
 # target to generate assembly for a file
 Light.cpp.s:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/Light.cpp.s
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/Light.cpp.s
 .PHONY : Light.cpp.s
 
 Loader.o: Loader.cpp.o
@@ -547,7 +547,7 @@ Loader.o: Loader.cpp.o
 
 # target to build an object file
 Loader.cpp.o:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/Loader.cpp.o
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/Loader.cpp.o
 .PHONY : Loader.cpp.o
 
 Loader.i: Loader.cpp.i
@@ -556,7 +556,7 @@ Loader.i: Loader.cpp.i
 
 # target to preprocess a source file
 Loader.cpp.i:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/Loader.cpp.i
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/Loader.cpp.i
 .PHONY : Loader.cpp.i
 
 Loader.s: Loader.cpp.s
@@ -565,7 +565,7 @@ Loader.s: Loader.cpp.s
 
 # target to generate assembly for a file
 Loader.cpp.s:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/Loader.cpp.s
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/Loader.cpp.s
 .PHONY : Loader.cpp.s
 
 LodCallback.o: LodCallback.cpp.o
@@ -574,7 +574,7 @@ LodCallback.o: LodCallback.cpp.o
 
 # target to build an object file
 LodCallback.cpp.o:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/LodCallback.cpp.o
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/LodCallback.cpp.o
 .PHONY : LodCallback.cpp.o
 
 LodCallback.i: LodCallback.cpp.i
@@ -583,7 +583,7 @@ LodCallback.i: LodCallback.cpp.i
 
 # target to preprocess a source file
 LodCallback.cpp.i:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/LodCallback.cpp.i
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/LodCallback.cpp.i
 .PHONY : LodCallback.cpp.i
 
 LodCallback.s: LodCallback.cpp.s
@@ -592,7 +592,7 @@ LodCallback.s: LodCallback.cpp.s
 
 # target to generate assembly for a file
 LodCallback.cpp.s:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/LodCallback.cpp.s
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/LodCallback.cpp.s
 .PHONY : LodCallback.cpp.s
 
 Material.o: Material.cpp.o
@@ -601,7 +601,7 @@ Material.o: Material.cpp.o
 
 # target to build an object file
 Material.cpp.o:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/Material.cpp.o
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/Material.cpp.o
 .PHONY : Material.cpp.o
 
 Material.i: Material.cpp.i
@@ -610,7 +610,7 @@ Material.i: Material.cpp.i
 
 # target to preprocess a source file
 Material.cpp.i:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/Material.cpp.i
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/Material.cpp.i
 .PHONY : Material.cpp.i
 
 Material.s: Material.cpp.s
@@ -619,7 +619,7 @@ Material.s: Material.cpp.s
 
 # target to generate assembly for a file
 Material.cpp.s:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/Material.cpp.s
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/Material.cpp.s
 .PHONY : Material.cpp.s
 
 Mesh.o: Mesh.cpp.o
@@ -628,7 +628,7 @@ Mesh.o: Mesh.cpp.o
 
 # target to build an object file
 Mesh.cpp.o:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/Mesh.cpp.o
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/Mesh.cpp.o
 .PHONY : Mesh.cpp.o
 
 Mesh.i: Mesh.cpp.i
@@ -637,7 +637,7 @@ Mesh.i: Mesh.cpp.i
 
 # target to preprocess a source file
 Mesh.cpp.i:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/Mesh.cpp.i
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/Mesh.cpp.i
 .PHONY : Mesh.cpp.i
 
 Mesh.s: Mesh.cpp.s
@@ -646,7 +646,7 @@ Mesh.s: Mesh.cpp.s
 
 # target to generate assembly for a file
 Mesh.cpp.s:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/Mesh.cpp.s
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/Mesh.cpp.s
 .PHONY : Mesh.cpp.s
 
 MovingTransformCallback.o: MovingTransformCallback.cpp.o
@@ -655,7 +655,7 @@ MovingTransformCallback.o: MovingTransformCallback.cpp.o
 
 # target to build an object file
 MovingTransformCallback.cpp.o:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/MovingTransformCallback.cpp.o
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/MovingTransformCallback.cpp.o
 .PHONY : MovingTransformCallback.cpp.o
 
 MovingTransformCallback.i: MovingTransformCallback.cpp.i
@@ -664,7 +664,7 @@ MovingTransformCallback.i: MovingTransformCallback.cpp.i
 
 # target to preprocess a source file
 MovingTransformCallback.cpp.i:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/MovingTransformCallback.cpp.i
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/MovingTransformCallback.cpp.i
 .PHONY : MovingTransformCallback.cpp.i
 
 MovingTransformCallback.s: MovingTransformCallback.cpp.s
@@ -673,7 +673,7 @@ MovingTransformCallback.s: MovingTransformCallback.cpp.s
 
 # target to generate assembly for a file
 MovingTransformCallback.cpp.s:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/MovingTransformCallback.cpp.s
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/MovingTransformCallback.cpp.s
 .PHONY : MovingTransformCallback.cpp.s
 
 Node.o: Node.cpp.o
@@ -682,7 +682,7 @@ Node.o: Node.cpp.o
 
 # target to build an object file
 Node.cpp.o:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/Node.cpp.o
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/Node.cpp.o
 .PHONY : Node.cpp.o
 
 Node.i: Node.cpp.i
@@ -691,7 +691,7 @@ Node.i: Node.cpp.i
 
 # target to preprocess a source file
 Node.cpp.i:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/Node.cpp.i
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/Node.cpp.i
 .PHONY : Node.cpp.i
 
 Node.s: Node.cpp.s
@@ -700,7 +700,7 @@ Node.s: Node.cpp.s
 
 # target to generate assembly for a file
 Node.cpp.s:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/Node.cpp.s
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/Node.cpp.s
 .PHONY : Node.cpp.s
 
 NodeVisitor.o: NodeVisitor.cpp.o
@@ -709,7 +709,7 @@ NodeVisitor.o: NodeVisitor.cpp.o
 
 # target to build an object file
 NodeVisitor.cpp.o:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/NodeVisitor.cpp.o
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/NodeVisitor.cpp.o
 .PHONY : NodeVisitor.cpp.o
 
 NodeVisitor.i: NodeVisitor.cpp.i
@@ -718,7 +718,7 @@ NodeVisitor.i: NodeVisitor.cpp.i
 
 # target to preprocess a source file
 NodeVisitor.cpp.i:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/NodeVisitor.cpp.i
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/NodeVisitor.cpp.i
 .PHONY : NodeVisitor.cpp.i
 
 NodeVisitor.s: NodeVisitor.cpp.s
@@ -727,7 +727,7 @@ NodeVisitor.s: NodeVisitor.cpp.s
 
 # target to generate assembly for a file
 NodeVisitor.cpp.s:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/NodeVisitor.cpp.s
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/NodeVisitor.cpp.s
 .PHONY : NodeVisitor.cpp.s
 
 Physics.o: Physics.cpp.o
@@ -736,7 +736,7 @@ Physics.o: Physics.cpp.o
 
 # target to build an object file
 Physics.cpp.o:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/Physics.cpp.o
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/Physics.cpp.o
 .PHONY : Physics.cpp.o
 
 Physics.i: Physics.cpp.i
@@ -745,7 +745,7 @@ Physics.i: Physics.cpp.i
 
 # target to preprocess a source file
 Physics.cpp.i:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/Physics.cpp.i
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/Physics.cpp.i
 .PHONY : Physics.cpp.i
 
 Physics.s: Physics.cpp.s
@@ -754,7 +754,7 @@ Physics.s: Physics.cpp.s
 
 # target to generate assembly for a file
 Physics.cpp.s:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/Physics.cpp.s
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/Physics.cpp.s
 .PHONY : Physics.cpp.s
 
 PhysicsCallback.o: PhysicsCallback.cpp.o
@@ -763,7 +763,7 @@ PhysicsCallback.o: PhysicsCallback.cpp.o
 
 # target to build an object file
 PhysicsCallback.cpp.o:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/PhysicsCallback.cpp.o
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/PhysicsCallback.cpp.o
 .PHONY : PhysicsCallback.cpp.o
 
 PhysicsCallback.i: PhysicsCallback.cpp.i
@@ -772,7 +772,7 @@ PhysicsCallback.i: PhysicsCallback.cpp.i
 
 # target to preprocess a source file
 PhysicsCallback.cpp.i:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/PhysicsCallback.cpp.i
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/PhysicsCallback.cpp.i
 .PHONY : PhysicsCallback.cpp.i
 
 PhysicsCallback.s: PhysicsCallback.cpp.s
@@ -781,7 +781,7 @@ PhysicsCallback.s: PhysicsCallback.cpp.s
 
 # target to generate assembly for a file
 PhysicsCallback.cpp.s:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/PhysicsCallback.cpp.s
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/PhysicsCallback.cpp.s
 .PHONY : PhysicsCallback.cpp.s
 
 PhysicsState.o: PhysicsState.cpp.o
@@ -790,7 +790,7 @@ PhysicsState.o: PhysicsState.cpp.o
 
 # target to build an object file
 PhysicsState.cpp.o:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/PhysicsState.cpp.o
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/PhysicsState.cpp.o
 .PHONY : PhysicsState.cpp.o
 
 PhysicsState.i: PhysicsState.cpp.i
@@ -799,7 +799,7 @@ PhysicsState.i: PhysicsState.cpp.i
 
 # target to preprocess a source file
 PhysicsState.cpp.i:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/PhysicsState.cpp.i
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/PhysicsState.cpp.i
 .PHONY : PhysicsState.cpp.i
 
 PhysicsState.s: PhysicsState.cpp.s
@@ -808,7 +808,7 @@ PhysicsState.s: PhysicsState.cpp.s
 
 # target to generate assembly for a file
 PhysicsState.cpp.s:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/PhysicsState.cpp.s
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/PhysicsState.cpp.s
 .PHONY : PhysicsState.cpp.s
 
 Player.o: Player.cpp.o
@@ -817,7 +817,7 @@ Player.o: Player.cpp.o
 
 # target to build an object file
 Player.cpp.o:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/Player.cpp.o
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/Player.cpp.o
 .PHONY : Player.cpp.o
 
 Player.i: Player.cpp.i
@@ -826,7 +826,7 @@ Player.i: Player.cpp.i
 
 # target to preprocess a source file
 Player.cpp.i:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/Player.cpp.i
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/Player.cpp.i
 .PHONY : Player.cpp.i
 
 Player.s: Player.cpp.s
@@ -835,7 +835,7 @@ Player.s: Player.cpp.s
 
 # target to generate assembly for a file
 Player.cpp.s:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/Player.cpp.s
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/Player.cpp.s
 .PHONY : Player.cpp.s
 
 RenderToTexture.o: RenderToTexture.cpp.o
@@ -844,7 +844,7 @@ RenderToTexture.o: RenderToTexture.cpp.o
 
 # target to build an object file
 RenderToTexture.cpp.o:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/RenderToTexture.cpp.o
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/RenderToTexture.cpp.o
 .PHONY : RenderToTexture.cpp.o
 
 RenderToTexture.i: RenderToTexture.cpp.i
@@ -853,7 +853,7 @@ RenderToTexture.i: RenderToTexture.cpp.i
 
 # target to preprocess a source file
 RenderToTexture.cpp.i:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/RenderToTexture.cpp.i
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/RenderToTexture.cpp.i
 .PHONY : RenderToTexture.cpp.i
 
 RenderToTexture.s: RenderToTexture.cpp.s
@@ -862,7 +862,7 @@ RenderToTexture.s: RenderToTexture.cpp.s
 
 # target to generate assembly for a file
 RenderToTexture.cpp.s:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/RenderToTexture.cpp.s
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/RenderToTexture.cpp.s
 .PHONY : RenderToTexture.cpp.s
 
 RenderVisitor.o: RenderVisitor.cpp.o
@@ -871,7 +871,7 @@ RenderVisitor.o: RenderVisitor.cpp.o
 
 # target to build an object file
 RenderVisitor.cpp.o:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/RenderVisitor.cpp.o
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/RenderVisitor.cpp.o
 .PHONY : RenderVisitor.cpp.o
 
 RenderVisitor.i: RenderVisitor.cpp.i
@@ -880,7 +880,7 @@ RenderVisitor.i: RenderVisitor.cpp.i
 
 # target to preprocess a source file
 RenderVisitor.cpp.i:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/RenderVisitor.cpp.i
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/RenderVisitor.cpp.i
 .PHONY : RenderVisitor.cpp.i
 
 RenderVisitor.s: RenderVisitor.cpp.s
@@ -889,7 +889,7 @@ RenderVisitor.s: RenderVisitor.cpp.s
 
 # target to generate assembly for a file
 RenderVisitor.cpp.s:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/RenderVisitor.cpp.s
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/RenderVisitor.cpp.s
 .PHONY : RenderVisitor.cpp.s
 
 RotateCallback.o: RotateCallback.cpp.o
@@ -898,7 +898,7 @@ RotateCallback.o: RotateCallback.cpp.o
 
 # target to build an object file
 RotateCallback.cpp.o:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/RotateCallback.cpp.o
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/RotateCallback.cpp.o
 .PHONY : RotateCallback.cpp.o
 
 RotateCallback.i: RotateCallback.cpp.i
@@ -907,7 +907,7 @@ RotateCallback.i: RotateCallback.cpp.i
 
 # target to preprocess a source file
 RotateCallback.cpp.i:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/RotateCallback.cpp.i
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/RotateCallback.cpp.i
 .PHONY : RotateCallback.cpp.i
 
 RotateCallback.s: RotateCallback.cpp.s
@@ -916,7 +916,7 @@ RotateCallback.s: RotateCallback.cpp.s
 
 # target to generate assembly for a file
 RotateCallback.cpp.s:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/RotateCallback.cpp.s
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/RotateCallback.cpp.s
 .PHONY : RotateCallback.cpp.s
 
 Scene.o: Scene.cpp.o
@@ -925,7 +925,7 @@ Scene.o: Scene.cpp.o
 
 # target to build an object file
 Scene.cpp.o:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/Scene.cpp.o
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/Scene.cpp.o
 .PHONY : Scene.cpp.o
 
 Scene.i: Scene.cpp.i
@@ -934,7 +934,7 @@ Scene.i: Scene.cpp.i
 
 # target to preprocess a source file
 Scene.cpp.i:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/Scene.cpp.i
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/Scene.cpp.i
 .PHONY : Scene.cpp.i
 
 Scene.s: Scene.cpp.s
@@ -943,7 +943,7 @@ Scene.s: Scene.cpp.s
 
 # target to generate assembly for a file
 Scene.cpp.s:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/Scene.cpp.s
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/Scene.cpp.s
 .PHONY : Scene.cpp.s
 
 ShadowMap.o: ShadowMap.cpp.o
@@ -952,7 +952,7 @@ ShadowMap.o: ShadowMap.cpp.o
 
 # target to build an object file
 ShadowMap.cpp.o:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/ShadowMap.cpp.o
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/ShadowMap.cpp.o
 .PHONY : ShadowMap.cpp.o
 
 ShadowMap.i: ShadowMap.cpp.i
@@ -961,7 +961,7 @@ ShadowMap.i: ShadowMap.cpp.i
 
 # target to preprocess a source file
 ShadowMap.cpp.i:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/ShadowMap.cpp.i
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/ShadowMap.cpp.i
 .PHONY : ShadowMap.cpp.i
 
 ShadowMap.s: ShadowMap.cpp.s
@@ -970,7 +970,7 @@ ShadowMap.s: ShadowMap.cpp.s
 
 # target to generate assembly for a file
 ShadowMap.cpp.s:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/ShadowMap.cpp.s
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/ShadowMap.cpp.s
 .PHONY : ShadowMap.cpp.s
 
 SkyBox.o: SkyBox.cpp.o
@@ -979,7 +979,7 @@ SkyBox.o: SkyBox.cpp.o
 
 # target to build an object file
 SkyBox.cpp.o:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/SkyBox.cpp.o
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/SkyBox.cpp.o
 .PHONY : SkyBox.cpp.o
 
 SkyBox.i: SkyBox.cpp.i
@@ -988,7 +988,7 @@ SkyBox.i: SkyBox.cpp.i
 
 # target to preprocess a source file
 SkyBox.cpp.i:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/SkyBox.cpp.i
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/SkyBox.cpp.i
 .PHONY : SkyBox.cpp.i
 
 SkyBox.s: SkyBox.cpp.s
@@ -997,7 +997,7 @@ SkyBox.s: SkyBox.cpp.s
 
 # target to generate assembly for a file
 SkyBox.cpp.s:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/SkyBox.cpp.s
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/SkyBox.cpp.s
 .PHONY : SkyBox.cpp.s
 
 State.o: State.cpp.o
@@ -1006,7 +1006,7 @@ State.o: State.cpp.o
 
 # target to build an object file
 State.cpp.o:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/State.cpp.o
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/State.cpp.o
 .PHONY : State.cpp.o
 
 State.i: State.cpp.i
@@ -1015,7 +1015,7 @@ State.i: State.cpp.i
 
 # target to preprocess a source file
 State.cpp.i:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/State.cpp.i
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/State.cpp.i
 .PHONY : State.cpp.i
 
 State.s: State.cpp.s
@@ -1024,7 +1024,7 @@ State.s: State.cpp.s
 
 # target to generate assembly for a file
 State.cpp.s:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/State.cpp.s
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/State.cpp.s
 .PHONY : State.cpp.s
 
 Texture.o: Texture.cpp.o
@@ -1033,7 +1033,7 @@ Texture.o: Texture.cpp.o
 
 # target to build an object file
 Texture.cpp.o:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/Texture.cpp.o
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/Texture.cpp.o
 .PHONY : Texture.cpp.o
 
 Texture.i: Texture.cpp.i
@@ -1042,7 +1042,7 @@ Texture.i: Texture.cpp.i
 
 # target to preprocess a source file
 Texture.cpp.i:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/Texture.cpp.i
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/Texture.cpp.i
 .PHONY : Texture.cpp.i
 
 Texture.s: Texture.cpp.s
@@ -1051,7 +1051,7 @@ Texture.s: Texture.cpp.s
 
 # target to generate assembly for a file
 Texture.cpp.s:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/Texture.cpp.s
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/Texture.cpp.s
 .PHONY : Texture.cpp.s
 
 Transform.o: Transform.cpp.o
@@ -1060,7 +1060,7 @@ Transform.o: Transform.cpp.o
 
 # target to build an object file
 Transform.cpp.o:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/Transform.cpp.o
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/Transform.cpp.o
 .PHONY : Transform.cpp.o
 
 Transform.i: Transform.cpp.i
@@ -1069,7 +1069,7 @@ Transform.i: Transform.cpp.i
 
 # target to preprocess a source file
 Transform.cpp.i:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/Transform.cpp.i
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/Transform.cpp.i
 .PHONY : Transform.cpp.i
 
 Transform.s: Transform.cpp.s
@@ -1078,7 +1078,7 @@ Transform.s: Transform.cpp.s
 
 # target to generate assembly for a file
 Transform.cpp.s:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/Transform.cpp.s
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/Transform.cpp.s
 .PHONY : Transform.cpp.s
 
 UpdateVisitor.o: UpdateVisitor.cpp.o
@@ -1087,7 +1087,7 @@ UpdateVisitor.o: UpdateVisitor.cpp.o
 
 # target to build an object file
 UpdateVisitor.cpp.o:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/UpdateVisitor.cpp.o
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/UpdateVisitor.cpp.o
 .PHONY : UpdateVisitor.cpp.o
 
 UpdateVisitor.i: UpdateVisitor.cpp.i
@@ -1096,7 +1096,7 @@ UpdateVisitor.i: UpdateVisitor.cpp.i
 
 # target to preprocess a source file
 UpdateVisitor.cpp.i:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/UpdateVisitor.cpp.i
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/UpdateVisitor.cpp.i
 .PHONY : UpdateVisitor.cpp.i
 
 UpdateVisitor.s: UpdateVisitor.cpp.s
@@ -1105,7 +1105,7 @@ UpdateVisitor.s: UpdateVisitor.cpp.s
 
 # target to generate assembly for a file
 UpdateVisitor.cpp.s:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/UpdateVisitor.cpp.s
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/UpdateVisitor.cpp.s
 .PHONY : UpdateVisitor.cpp.s
 
 VectorUtils.o: VectorUtils.cpp.o
@@ -1114,7 +1114,7 @@ VectorUtils.o: VectorUtils.cpp.o
 
 # target to build an object file
 VectorUtils.cpp.o:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/VectorUtils.cpp.o
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/VectorUtils.cpp.o
 .PHONY : VectorUtils.cpp.o
 
 VectorUtils.i: VectorUtils.cpp.i
@@ -1123,7 +1123,7 @@ VectorUtils.i: VectorUtils.cpp.i
 
 # target to preprocess a source file
 VectorUtils.cpp.i:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/VectorUtils.cpp.i
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/VectorUtils.cpp.i
 .PHONY : VectorUtils.cpp.i
 
 VectorUtils.s: VectorUtils.cpp.s
@@ -1132,7 +1132,7 @@ VectorUtils.s: VectorUtils.cpp.s
 
 # target to generate assembly for a file
 VectorUtils.cpp.s:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/VectorUtils.cpp.s
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/VectorUtils.cpp.s
 .PHONY : VectorUtils.cpp.s
 
 main.o: main.cpp.o
@@ -1141,7 +1141,7 @@ main.o: main.cpp.o
 
 # target to build an object file
 main.cpp.o:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/main.cpp.o
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/main.cpp.o
 .PHONY : main.cpp.o
 
 main.i: main.cpp.i
@@ -1150,7 +1150,7 @@ main.i: main.cpp.i
 
 # target to preprocess a source file
 main.cpp.i:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/main.cpp.i
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/main.cpp.i
 .PHONY : main.cpp.i
 
 main.s: main.cpp.s
@@ -1159,7 +1159,7 @@ main.s: main.cpp.s
 
 # target to generate assembly for a file
 main.cpp.s:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/main.cpp.s
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/main.cpp.s
 .PHONY : main.cpp.s
 
 shader_utils.o: shader_utils.cpp.o
@@ -1168,7 +1168,7 @@ shader_utils.o: shader_utils.cpp.o
 
 # target to build an object file
 shader_utils.cpp.o:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/shader_utils.cpp.o
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/shader_utils.cpp.o
 .PHONY : shader_utils.cpp.o
 
 shader_utils.i: shader_utils.cpp.i
@@ -1177,7 +1177,7 @@ shader_utils.i: shader_utils.cpp.i
 
 # target to preprocess a source file
 shader_utils.cpp.i:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/shader_utils.cpp.i
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/shader_utils.cpp.i
 .PHONY : shader_utils.cpp.i
 
 shader_utils.s: shader_utils.cpp.s
@@ -1186,7 +1186,7 @@ shader_utils.s: shader_utils.cpp.s
 
 # target to generate assembly for a file
 shader_utils.cpp.s:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/lab2/CMakeFiles/lab2.dir/build.make examples/lab2/CMakeFiles/lab2.dir/shader_utils.cpp.s
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/shader_utils.cpp.s
 .PHONY : shader_utils.cpp.s
 
 # Help Target
@@ -1201,7 +1201,7 @@ help:
 	@echo "... install/strip"
 	@echo "... list_install_components"
 	@echo "... rebuild_cache"
-	@echo "... lab2"
+	@echo "... SceneGraph"
 	@echo "... Application.o"
 	@echo "... Application.i"
 	@echo "... Application.s"
@@ -1324,6 +1324,6 @@ help:
 # No rule that depends on this can have commands that come from listfiles
 # because they might be regenerated.
 cmake_check_build_system:
-	cd /home/dv19/dv19eft/workspace/AvanceradDatorgrafik/5dv180-master && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
 .PHONY : cmake_check_build_system
 

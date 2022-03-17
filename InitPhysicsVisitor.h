@@ -22,7 +22,7 @@ public:
 
 private:
 
-  std::shared_ptr<PhysicsState> initPhysics(Transform &t, BoundingBox box);
+  std::shared_ptr<PhysicsState> initPhysics(Transform &t, BoundingBox box, Geometry &g);
 
   //Physics attributes used for initalizing and storing physics.
   reactphysics3d::PhysicsCommon* m_physicsCommon;

@@ -171,9 +171,8 @@ bool Application::buildGeometry()
   {
     return false;
   }
-  //m_sceneRoot->add(ironmanModel);
 
-    //Create rootgroup with physics property.
+  //Create rootgroup with physics property.
   std::shared_ptr<Group> rootGroup = std::shared_ptr<Group>(new Group);
 
   float offset = 1;
@@ -209,7 +208,7 @@ bool Application::buildGeometry()
 
   //Create the terrain within a certain radius.
   BoundingBox sceneBox = m_sceneRoot->calculateBoundingBox();
-  int radius = sceneBox.getRadius() / 2;
+  int radius = sceneBox.getRadius() / 4;
   if(!loadTrees(radius))
     return false;
   
@@ -317,7 +316,7 @@ bool Application::loadTrees(int radius)
 
   //Radius used for random generation translations. 
   std::shared_ptr<Group> treeRoot = std::shared_ptr<Group>(new Group());
-  for(unsigned int i = 0; i < 10; i++)
+  for(unsigned int i = 0; i < 25; i++)
   {
     std::shared_ptr<Transform> treeTransform = std::shared_ptr<Transform>(new Transform(0, 0, 0));
     treeTransform->addChild(treeModel);
@@ -336,9 +335,24 @@ bool Application::loadTrees(int radius)
     name.append(std::to_string(i));
     treeTransform->name = name;
 
+    //Determine the sign of x and y coordinates.
+    int signX = std::rand() % 2;
+    int signZ = std::rand() % 2;
+    float x = 1;
+    float z = 1;
+    if(signX == 1)
+    {
+      x = -1;
+    }
+
+    if(signZ == 1)
+    {
+      z = -1;
+    }
+
     //Translate, scale and add to scene.
-    float x = std::rand() % radius;
-    float z = std::rand() % radius;
+    x *= std::rand() % radius;
+    z *= std::rand() % radius;
     treeTransform->translate(glm::vec3(x, 1.2, z));
     treeTransform->scale(glm::vec3(0.4, 0.4, 0.4));
     treeRoot->addChild(treeTransform);
@@ -417,20 +431,7 @@ bool Application::loadTerrain()
     return false;
   }
 
-  std::shared_ptr<Group> terrainRootGroup = std::shared_ptr<Group>(new Group);
-  std::shared_ptr<Transform> transform = std::shared_ptr<Transform>(new Transform);
-  terrainRootGroup->addChild(transform);
-  transform->addChild(terrain);
-  std::shared_ptr<PhysicsState> physics = std::shared_ptr<PhysicsState>(new PhysicsState);
-  physics->setType(reactphysics3d::BodyType::STATIC);
-  physics->setFriction(0.95);
-  physics->setBounciness(0.05);
-  transform->setPhysics(physics);
-  terrainRootGroup->name = "Terrain root";
-
-  m_sceneRoot->add(terrainRootGroup, true);
-  //terrain->getPhysics()->getBody()->enableGravity(false);
-  //terrain->getPhysics()->getBody()->setType(reactphysics3d::BodyType::STATIC);
+  m_sceneRoot->add(terrain, true);
   return true;
 }
 

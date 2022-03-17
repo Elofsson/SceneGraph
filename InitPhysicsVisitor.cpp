@@ -56,7 +56,7 @@ void InitPhysicsVisitor::visit(Geometry &g)
     //or if the whole transforms boundingbox can be used.
     BoundingBox box = g.calculateBoundingBox(m_transformStack.top());
     Transform *t = m_transformObjStack.top();
-    auto physicsState = initPhysics(*t, box);
+    auto physicsState = initPhysics(*t, box, g);
     if(!physicsState)
     {
       std::cout << "Failed to init physic state." << std::endl;
@@ -71,7 +71,7 @@ void InitPhysicsVisitor::visit(Geometry &g)
   }
 }
 
-std::shared_ptr<PhysicsState> InitPhysicsVisitor::initPhysics(Transform &t, BoundingBox box)
+std::shared_ptr<PhysicsState> InitPhysicsVisitor::initPhysics(Transform &t, BoundingBox box, Geometry &g)
 {
   //Get the physics state to init.
   std::shared_ptr<PhysicsState> physicState = t.getPhysics();
@@ -82,6 +82,7 @@ std::shared_ptr<PhysicsState> InitPhysicsVisitor::initPhysics(Transform &t, Boun
   glm::mat4 stackTransform =  m_transformStack.top();
   glm::vec3 center = box.getCenter();
   glm::vec4 bodyPosition = stackTransform * glm::vec4(0, 0, 0, 1);
+  std::cout << "Stack transform: " << stackTransform << std::endl;
 
   //Default orientation.
   reactphysics3d::Quaternion orientation = reactphysics3d::Quaternion::identity();
@@ -98,24 +99,41 @@ std::shared_ptr<PhysicsState> InitPhysicsVisitor::initPhysics(Transform &t, Boun
 
   reactphysics3d::RigidBody *physicsBody = physicState->getBody();
 
+  //Decompose transform to get the rotation.
+  glm::vec3 scale;
+  glm::quat rotation;
+  glm::vec3 translation;
+  glm::vec3 skew;
+  glm::vec4 perspective;
+  glm::decompose(stackTransform, scale, rotation, translation, skew, perspective);
+  
+  std::cout << "Rotation: " << rotation << std::endl;
+  rotation = glm::conjugate(rotation);
+
   //Create collision transformation relative to rigid body.
   glm::vec3 collisionBodyOffset = center - glm::vec3(bodyPosition);
   reactphysics3d::Collider* collider;
-  reactphysics3d::Transform colliderTransform(reactphysics3d::Vector3(collisionBodyOffset.x, collisionBodyOffset.y, collisionBodyOffset.z), orientation);
+  reactphysics3d::Quaternion colliderOrientation(rotation.x, rotation.y, rotation.z, rotation.w);
+  reactphysics3d::Transform colliderTransform(reactphysics3d::Vector3(collisionBodyOffset.x, collisionBodyOffset.y, collisionBodyOffset.z), colliderOrientation);
+  
+  //Create box shaped collision.
   int shape = t.getPhysics()->getShape();
   if(shape == SHAPE_BOX)
   {
     //Calculate the size of the collision box.
-    glm::vec3 min = box.min();
-    glm::vec3 max = box.max();
+    //Use boundingbox from geometries local space to get the dimensions.
+    BoundingBox geometryBoundingBox = g.calculateBoundingBox(glm::mat4(1.0f));
+    glm::vec3 min = scale * geometryBoundingBox.min();
+    glm::vec3 max = scale * geometryBoundingBox.max();
     glm::vec3 size = (max - min);
-    size = size * 0.5f;
+    size = glm::abs(size * 0.5f);
 
     const reactphysics3d::Vector3 halfExtents(size.x, size.y, size.z); 
     reactphysics3d::CollisionShape* boxShape = m_physicsCommon->createBoxShape(halfExtents);
     collider = physicsBody->addCollider(boxShape, colliderTransform);
   }
 
+  //Create sphere shaped collider
   else if(shape == SHAPE_SPHERE)
   {
     float radius = box.getRadius();

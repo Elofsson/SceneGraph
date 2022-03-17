@@ -16,6 +16,7 @@
 
 #include <stack>
 #include "Scene.h"
+#include "PhysicsState.h" // Used to read in physics from xml.
 
 
 std::string findTexture(const std::string& texturePath, const std::string& modelPath)
@@ -405,6 +406,43 @@ std::string getAttribute(rapidxml::xml_node<> * node, const std::string& attribu
   return attrib->value();
 }
 
+std::shared_ptr<PhysicsState> extractPhysics(rapidxml::xml_node<> *node)
+{
+  std::shared_ptr<PhysicsState> newPhysics = std::shared_ptr<PhysicsState>(new PhysicsState);
+  std::string type = getAttribute(node, "type");
+  if(std::strcmp(type.c_str(), "static") == 0)
+  {
+    newPhysics->setType(reactphysics3d::BodyType::STATIC);
+  }
+
+  else if(std::strcmp(type.c_str(), "dynamic") == 0)
+  {
+    newPhysics->setType(reactphysics3d::BodyType::DYNAMIC);
+  }
+
+  else if(std::strcmp(type.c_str(), "kinematic") == 0)
+  {
+    newPhysics->setType(reactphysics3d::BodyType::KINEMATIC);
+  }
+
+  //Get the collision shape of the node.
+  std::string shape = getAttribute(node, "shape");
+  if(std::strcmp(shape.c_str(), "box") == 0)
+  {
+    newPhysics->setShape(SHAPE_BOX);
+  }
+
+  else if(std::strcmp(shape.c_str(), "sphere") == 0)
+  {
+    newPhysics->setShape(SHAPE_SPHERE);
+  }
+
+  //TODO Read the other values such as mass, friction and all of that.
+  //std::string mass = getAttribute(node, "mass");
+
+  return newPhysics;
+}
+
 bool loadSceneFile(const std::string& sceneFile, std::shared_ptr<Group>& group)
 {
   std::string filepath = sceneFile;
@@ -466,6 +504,14 @@ bool loadSceneFile(const std::string& sceneFile, std::shared_ptr<Group>& group)
         throw std::runtime_error("Empty path: " + pathToString(xmlpath));
       xmlpath.pop_back(); // file
 
+      // Do we have a physics state set?
+      rapidxml::xml_node<> *physics = node_node->first_node("physics");
+      std::shared_ptr<PhysicsState> physicsState;
+      if(physics)
+      {
+        physicsState = extractPhysics(physics);
+      }
+
       // Do we have a transform?
       rapidxml::xml_node<> * transform = node_node->first_node("transform");
       if (transform) {
@@ -504,10 +550,20 @@ bool loadSceneFile(const std::string& sceneFile, std::shared_ptr<Group>& group)
           std::shared_ptr<Transform> initTransform = std::shared_ptr<Transform>(new Transform());
           initTransform->object2world = t;
           initTransform->addChild(loadedGroup);
+          
+          //Set name
           if(loadedGroup->name.empty())
           {
             loadedGroup->name = name;
           }
+
+          //Set physics
+          if(physicsState)
+          {
+            std::cout << "Set physics " << std::endl;
+            initTransform->setPhysics(physicsState);
+          }
+
           group->addChild(initTransform);
         }
 

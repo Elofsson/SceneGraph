@@ -39,5 +39,7 @@ void Player::processInput(GLFWwindow *window)
     force[1] = glm::abs((velocity.y));
   }
 
+  std::cout << "Force:: " << force.to_string() << std::endl;
+
   body->applyWorldForceAtCenterOfMass(force);
 }
