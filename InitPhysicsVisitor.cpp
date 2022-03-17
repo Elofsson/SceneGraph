@@ -136,7 +136,7 @@ std::shared_ptr<PhysicsState> InitPhysicsVisitor::initPhysics(Transform &t, Boun
   //Create sphere shaped collider
   else if(shape == SHAPE_SPHERE)
   {
-    float radius = box.getRadius();
+    float radius = box.getRadius() / 2;
     reactphysics3d::CollisionShape* boxShape = m_physicsCommon->createSphereShape(radius);
     collider = physicsBody->addCollider(boxShape, colliderTransform);
   }

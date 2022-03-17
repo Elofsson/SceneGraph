@@ -352,6 +352,33 @@ FPSCounter.cpp.s:
 	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/FPSCounter.cpp.s
 .PHONY : FPSCounter.cpp.s
 
+ForceCallback.o: ForceCallback.cpp.o
+
+.PHONY : ForceCallback.o
+
+# target to build an object file
+ForceCallback.cpp.o:
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/ForceCallback.cpp.o
+.PHONY : ForceCallback.cpp.o
+
+ForceCallback.i: ForceCallback.cpp.i
+
+.PHONY : ForceCallback.i
+
+# target to preprocess a source file
+ForceCallback.cpp.i:
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/ForceCallback.cpp.i
+.PHONY : ForceCallback.cpp.i
+
+ForceCallback.s: ForceCallback.cpp.s
+
+.PHONY : ForceCallback.s
+
+# target to generate assembly for a file
+ForceCallback.cpp.s:
+	cd /home/elof/Skola/AvanceradDatorgrafik/5dv180-master && $(MAKE) $(MAKESILENT) -f examples/SceneGraph/CMakeFiles/SceneGraph.dir/build.make examples/SceneGraph/CMakeFiles/SceneGraph.dir/ForceCallback.cpp.s
+.PHONY : ForceCallback.cpp.s
+
 FurGeometry.o: FurGeometry.cpp.o
 
 .PHONY : FurGeometry.o
@@ -1220,6 +1247,9 @@ help:
 	@echo "... FPSCounter.o"
 	@echo "... FPSCounter.i"
 	@echo "... FPSCounter.s"
+	@echo "... ForceCallback.o"
+	@echo "... ForceCallback.i"
+	@echo "... ForceCallback.s"
 	@echo "... FurGeometry.o"
 	@echo "... FurGeometry.i"
 	@echo "... FurGeometry.s"

@@ -270,6 +270,15 @@ bool Application::initPlayer()
     std::cout << "Failed to load player model " << playerModelFile << std::endl;
     return false;
   }
+
+  //Load projectile model
+  std::string projectileModelFile = "scenes/projectile.xml";
+  std::shared_ptr<Group> projectileModel = std::shared_ptr<Group>(new Group());
+  if(!loadGroup(projectileModelFile, projectileModel, true))
+  {
+    std::cout << "Failed to load projectile model " << projectileModelFile << std::endl;
+    return false;
+  }
   
   //TODO this is due to a problem with the first transform in a subtree being ignored and interpreted as a group, this should be fixed.
   //Create rootgroup with physics property.
@@ -291,6 +300,9 @@ bool Application::initPlayer()
   playerTransform->translate(glm::vec3(1, 1, 1));
   playerTransform->addChild(playerModel);
   m_player->setModel(playerTransform, playerPhysics);
+
+  //Set the weapon projectile model.
+  m_player->setWeapon(projectileModel);
 
   //Add playermodel to scene.
   rootGroup->addChild(playerTransform);
@@ -617,7 +629,11 @@ void Application::processInput(GLFWwindow* window)
 {
   if(m_playerViewEnabled)
   {
-    m_player->processInput(window);
+    std::shared_ptr<Group> playerOutputs = m_player->processInput(window);
+    if(playerOutputs != nullptr)
+    {
+      m_sceneRoot->add(playerOutputs);
+    }
   }
   
   else
