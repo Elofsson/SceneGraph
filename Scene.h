@@ -126,8 +126,11 @@ public:
 
   bool shadowsIsEnabled();
 
-
   void update(TimeStep ts);
+
+  bool initGBuffer(std::shared_ptr<Group> debugObj);
+
+  void debugGBuffer(int width, int height);
 
 private:
   std::shared_ptr<Physics> m_physics;
@@ -137,6 +140,10 @@ private:
   unsigned int m_selectedCamera;
   std::shared_ptr<Group> m_root;
   std::shared_ptr<SkyBox> m_skybox;
+
+  //G buffer.
+  std::shared_ptr<RenderToTexture> m_GBuffer;
+  std::shared_ptr<Group> m_gbufferDebugObj;
 
   bool m_shadowsEnabled;
   std::shared_ptr<ShadowMap> m_shadowMap;

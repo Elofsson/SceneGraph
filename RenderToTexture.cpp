@@ -10,8 +10,45 @@ RenderToTexture::RenderToTexture(unsigned int width, unsigned int height, GLuint
   m_width = width;
   m_height = height;
   m_texture = std::shared_ptr<Texture>(new Texture());
+
+  // The framebuffer, which regroups 0, 1, or more textures, and 0 or 1 depth buffer.
+  glGenFramebuffers(1, &m_framebuffer);
+  glBindFramebuffer(GL_DRAW_FRAMEBUFFER, m_framebuffer);
 }
 
+void RenderToTexture::addRenderTarget(std::shared_ptr<Texture> target)
+{
+  int attachmentNr = m_renderTargets.size();
+  m_renderTargets.push_back(target);
+  glBindFramebuffer(GL_DRAW_FRAMEBUFFER, m_framebuffer);
+  glFramebufferTexture2D(GL_DRAW_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + attachmentNr, GL_TEXTURE_2D, target->getTextureId(), 0);
+  m_drawBufferAttachments.push_back(GL_COLOR_ATTACHMENT0 + attachmentNr);
+}
+
+std::vector<std::shared_ptr<Texture>> RenderToTexture::getRenderTargets()
+{
+  return m_renderTargets;
+}
+
+bool RenderToTexture::init()
+{ 
+  glDrawBuffers(m_drawBufferAttachments.size(), m_drawBufferAttachments.data());
+  
+  if(glCheckFramebufferStatus(GL_DRAW_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+  {
+    std::cout << "Failed to create RenderToTexture" << std::endl;
+    return false;
+  }
+  
+  return true;
+}
+
+GLuint RenderToTexture::getFrameBuffer()
+{
+  return m_framebuffer;
+}
+
+//TODO remove this init method. Redundant soon.
 bool RenderToTexture::init(unsigned int textureSlot)
 {
   m_texture->initEmpty(m_width, m_height, textureSlot, GL_TEXTURE_2D, GL_FLOAT);
@@ -19,15 +56,15 @@ bool RenderToTexture::init(unsigned int textureSlot)
 
   // The framebuffer, which regroups 0, 1, or more textures, and 0 or 1 depth buffer.
   glGenFramebuffers(1, &m_framebuffer);
-  glBindFramebuffer(GL_FRAMEBUFFER, m_framebuffer);
+  glBindFramebuffer(GL_DRAW_FRAMEBUFFER, m_framebuffer);
 
   //Set our texture.
-  glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, m_texture->getTextureId(), 0);
+  glFramebufferTexture(GL_DRAW_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, m_texture->getTextureId(), 0);
 
   //Configure draw buffers to use no colors.
   glDrawBuffer(GL_NONE);
 
-  if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+  if(glCheckFramebufferStatus(GL_DRAW_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
   {
     std::cout << "Failed to create RenderToTexture" << std::endl;
     return false;
@@ -36,18 +73,18 @@ bool RenderToTexture::init(unsigned int textureSlot)
   return true;
 }
 
-//TODO find a way to reset viewport.
 void RenderToTexture::render(std::shared_ptr<Camera> camera, std::shared_ptr<Group> startNode)
 {
-  glBindFramebuffer(GL_FRAMEBUFFER, m_framebuffer);
+  glBindFramebuffer(GL_DRAW_FRAMEBUFFER, m_framebuffer);
   glViewport(0,0,m_width, m_height);
-  glCullFace(GL_FRONT);
+  //glCullFace(GL_FRONT);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   glUseProgram(m_program); 
 
   //Apply camera.
   camera->init(m_program);
-  camera->applyOrthogonal(m_program, startNode->getBoundingBox());
+  //camera->applyOrthogonal(m_program, startNode->getBoundingBox());
+  camera->applyPerspective(m_program);
 
   //Set program on node.
   GLuint previousProgram = -1;
@@ -79,10 +116,10 @@ void RenderToTexture::render(std::shared_ptr<Camera> camera, std::shared_ptr<Gro
   
   startNode->getState()->setCullFace(previousCullMode);
   
-  glBindFramebuffer(GL_FRAMEBUFFER, 0);
+  glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
   glm::vec2 screenSize = camera->getScreenSize();
   glViewport(0,0,screenSize.x, screenSize.y);
-  glCullFace(GL_BACK);
+  //glCullFace(GL_BACK);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
@@ -99,7 +136,7 @@ std::shared_ptr<Texture> RenderToTexture::getTexture()
 
 void RenderToTexture::clear()
 {
-  glBindFramebuffer(GL_FRAMEBUFFER, m_framebuffer);
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-  glBindFramebuffer(GL_FRAMEBUFFER, 0);
+  glBindFramebuffer(GL_DRAW_FRAMEBUFFER, m_framebuffer);
+  glClear(GL_DRAW_FRAMEBUFFER | GL_DEPTH_BUFFER_BIT);
+  glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
 }

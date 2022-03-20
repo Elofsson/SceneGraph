@@ -70,6 +70,25 @@ void Texture::initEmpty(unsigned int width, unsigned int height, unsigned int sl
 	glBindTexture(m_type, 0);
 }
 
+void Texture::initEmpty(unsigned int width, unsigned int height, unsigned int slot, GLenum texType, GLenum pixelType, GLint internalFormat, GLenum format)
+{
+  //Setup texture attributes.
+  m_slot = slot;
+  m_type = texType;
+
+	setupTexture();
+
+  //Default settings
+  setWrapSetting(GL_CLAMP);
+	setFilterSetting(GL_NEAREST);
+
+	// Assigns the image to the OpenGL Texture object
+	glTexImage2D(texType, 0, internalFormat, width, height, 0, format, pixelType, 0);
+
+	// Unbinds the OpenGL Texture object so that it can't accidentally be modified
+	glBindTexture(m_type, 0);
+}
+
 void Texture::initData(unsigned int width, unsigned int height, unsigned int slot, GLenum texType, GLenum pixelType, GLubyte *data)
 {
 	//Setup texture attributes.
@@ -143,6 +162,7 @@ void Texture::setupTexture()
 	glGenTextures(1, &m_texture_id);
 
 	// Assigns the texture to a Texture Unit
+  std::cout << "Slot :  " << m_slot << std::endl;
 	glActiveTextureARB(GL_TEXTURE0 + m_slot);
 	glBindTexture(m_type, m_texture_id);
 
@@ -212,7 +232,7 @@ void Texture::apply(GLuint program, std::string uniform)
 {
 
   bind();
-
+  std::cout << "Apply texture at slot : " << m_slot << " With program " << program << std::endl; 
   GLuint texUni = glGetUniformLocation(program, uniform.c_str());
   glUniform1i(texUni, m_slot);
 }
@@ -228,7 +248,7 @@ void Texture::bind()
 
 void Texture::unbind()
 {
-	glBindTexture(m_type, m_texture_id);
+	glBindTexture(m_type, 0);
 }
 
 //TODO find another solution to this.

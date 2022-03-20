@@ -11,7 +11,6 @@ PhysicsCallback::PhysicsCallback(Transform *transform, std::shared_ptr<PhysicsSt
   float y = position.y - m_transform->object2world[3][1];
   float z = position.z - m_transform->object2world[3][2];
   m_physicLocalPos = glm::vec3(x, y, z);
-  std::cout << "Start diff " << m_physicLocalPos << std::endl;
 }
 
 void PhysicsCallback::update()

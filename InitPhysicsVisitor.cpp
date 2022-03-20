@@ -82,7 +82,6 @@ std::shared_ptr<PhysicsState> InitPhysicsVisitor::initPhysics(Transform &t, Boun
   glm::mat4 stackTransform =  m_transformStack.top();
   glm::vec3 center = box.getCenter();
   glm::vec4 bodyPosition = stackTransform * glm::vec4(0, 0, 0, 1);
-  std::cout << "Stack transform: " << stackTransform << std::endl;
 
   //Default orientation.
   reactphysics3d::Quaternion orientation = reactphysics3d::Quaternion::identity();
@@ -107,7 +106,6 @@ std::shared_ptr<PhysicsState> InitPhysicsVisitor::initPhysics(Transform &t, Boun
   glm::vec4 perspective;
   glm::decompose(stackTransform, scale, rotation, translation, skew, perspective);
   
-  std::cout << "Rotation: " << rotation << std::endl;
   rotation = glm::conjugate(rotation);
 
   //Create collision transformation relative to rigid body.

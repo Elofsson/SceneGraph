@@ -15,6 +15,9 @@ public:
   bool init(const char *image, unsigned int slot, GLenum texType, GLenum pixelType);
   bool initCubemap(std::vector<std::string> textures, unsigned int slot, GLenum texType, GLenum pixelType);
   void initEmpty(unsigned int width, unsigned int height, unsigned int slot, GLenum texType, GLenum pixelType);
+
+  //Get more freedom of storage types with this function.
+  void initEmpty(unsigned int width, unsigned int height, unsigned int slot, GLenum texType, GLenum pixelType, GLint internalFormat, GLenum format);
   void initData(unsigned int width, unsigned int height, unsigned int slot, GLenum texType, GLenum pixelType, GLubyte *data);
   void apply(GLuint program, std::string uniform);
   void setWrapSetting(GLuint wrapSetting);

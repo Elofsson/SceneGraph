@@ -64,7 +64,10 @@ void State::merge(const std::shared_ptr<State> inputState)
   {
     for(unsigned int i = 0; i < inputTextures.size(); i++)
     {
-      addTexture(inputTextures[i], i);
+      if(inputTextures[i] != nullptr)
+      {
+        addTexture(inputTextures[i], i);
+      }
     }
   }
 

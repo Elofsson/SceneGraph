@@ -61,7 +61,7 @@ bool Scene::initShaders(const std::string& vshader_filename, const std::string& 
     std::cout << "Failed to load physics " << std::endl;
     return false;
   }
-
+  
   return true;
 }
 
@@ -294,12 +294,102 @@ void Scene::update(TimeStep ts)
   m_physics->update(*m_root);
 }
 
+//TODO refactor this to a GBuffer class once a minimal version is working.
+bool Scene::initGBuffer(std::shared_ptr<Group> debugObj)
+{
+  m_gbufferDebugObj = debugObj;
+
+  //TODO pass with and height as parameters somewhere.
+  int width = 1024;
+  int height = 1024;
+  int startSlot = 7;
+
+  //Load geometry pass shader.
+  const std::string& vshader_filename = "shaders/geometry-pass.vert.glsl";
+  const std::string& fshader_filename = "shaders/geometry-pass.frag.glsl";
+  int shader = addShader(vshader_filename, fshader_filename);
+  if(shader == -1)
+  {
+    std::cout << "Failed to load gbuffer shaders " << std::endl;
+    return false;
+  }
+
+  GLuint gBufferProgram = m_programs[shader];
+  std::cout << "Gbuffer program id : " << gBufferProgram << std::endl;
+
+  m_GBuffer = std::shared_ptr<RenderToTexture>(new RenderToTexture(width, height, gBufferProgram));
+
+  //Position color texture.
+  std::shared_ptr<Texture> positionBuffer = std::shared_ptr<Texture>(new Texture());
+  positionBuffer->initEmpty(width, height, startSlot, GL_TEXTURE_2D, GL_FLOAT, GL_RGB16F, GL_RGBA);
+  m_GBuffer->addRenderTarget(positionBuffer);
+
+  //Normal color texture
+  std::shared_ptr<Texture> normalBuffer = std::shared_ptr<Texture>(new Texture());
+  normalBuffer->initEmpty(width, height, startSlot + 1, GL_TEXTURE_2D, GL_FLOAT, GL_RGB16F, GL_RGBA);
+  m_GBuffer->addRenderTarget(normalBuffer);
+
+  //Color + specular buffer.
+  std::shared_ptr<Texture> albedoSpecBuffer = std::shared_ptr<Texture>(new Texture());
+  albedoSpecBuffer->initEmpty(width, height, startSlot + 2, GL_TEXTURE_2D, GL_UNSIGNED_INT, GL_RGBA, GL_RGBA);
+  m_GBuffer->addRenderTarget(albedoSpecBuffer);
+
+  m_GBuffer->init();
+
+  return true;
+}
+
+void Scene::debugGBuffer(int width, int height)
+{  
+  /*std::shared_ptr<Group> debugRoot = std::shared_ptr<Group>(new Group);
+  int offset = 5;
+  for(int i = 0; i < gBufferRenderTargets.size(); i++)
+  {
+    std::shared_ptr<Texture> renderTarget = gBufferRenderTargets[i]; 
+    std::shared_ptr<Transform> position = std::shared_ptr<Transform>(new Transform(0, 5, offset * i));
+    position->scale(glm::vec3(2, 2, 2));
+    std::shared_ptr<State> state = std::shared_ptr<State>(new State);
+    state->addTexture(renderTarget, 0);
+    state->setProgram(m_programs[DEFAULT_SHADER]);
+    position->setState(state);
+    position->addChild(m_gbufferDebugObj);
+    debugRoot->addChild(position);
+  }
+  m_renderer->visit(*debugRoot);*/
+
+  //TODO all of this should be moved to a GBuffer class.
+  //Get the render targets and the GBuffer.
+  auto gBufferRenderTargets = m_GBuffer->getRenderTargets();
+  GLuint gBuffer = m_GBuffer->getFrameBuffer();
+  glBindFramebuffer(GL_READ_FRAMEBUFFER, gBuffer);
+
+  GLsizei halfWidth = (GLsizei) width / 4;
+  GLsizei halfHeight = (GLsizei) height / 4;
+  GLsizei destY = 10;
+  GLsizei destX = 0;
+  GLsizei offset = 10;
+
+  for(int i = 0; i < gBufferRenderTargets.size(); i++)
+  {
+    std::shared_ptr<Texture> target = gBufferRenderTargets[i];
+    //This works since in RenderToTexture they are added in this order.
+    //However this should be done in a more clear way.
+    glReadBuffer(GL_COLOR_ATTACHMENT0 + i);  
+    glBlitFramebuffer(0, 0, halfWidth, halfHeight, destX + offset, destY, destX + halfWidth, halfHeight, GL_COLOR_BUFFER_BIT, GL_LINEAR);
+    destX += halfWidth;
+
+    std::cout << "Destination x: " << destX << std::endl;
+    std::cout << "Half width: " << halfWidth << std::endl;
+  }
+
+}
+
 void Scene::render()
 {
   applyCamera();
 
   //Render shadows
-  if(m_shadowMap != nullptr && m_shadowsEnabled)
+  /*if(m_shadowMap != nullptr && m_shadowsEnabled)
   { 
     m_shadowMap->update();
     //Apply shadowmaps on all programs except the depthProgram.
@@ -313,7 +403,10 @@ void Scene::render()
         m_shadowMap->apply(program, m_root);
       }
     }
-  }
+  }*/
+
+  m_GBuffer->render(getSelectedCamera(), m_root);
+  m_renderer->visit(*m_root); 
 
   if(m_skybox != nullptr)
   { 
@@ -323,8 +416,6 @@ void Scene::render()
     m_cameras[m_selectedCamera]->applyPerspective(skyboxProgram);
     m_skybox->render();
   }
- 
-  m_renderer->visit(*m_root);
 
   //Draw collision boxes if debug is enabled.
   if(m_physics->debugEnabled())

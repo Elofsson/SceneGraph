@@ -68,6 +68,22 @@ bool Application::initResources(const std::string& model_filename, const std::st
     return false;
   }
 
+  //Load debug object for GBuffer.
+  std::string gbufferDebugObjFile = "models/plane.obj";
+  std::shared_ptr<Group> gbufferDebugObj = std::shared_ptr<Group>(new Group);
+  if(!loadGroup(gbufferDebugObjFile, gbufferDebugObj, true))
+  {
+    std::cout << "Failed to load GBuffer debug object " << gbufferDebugObjFile << std::endl;
+    return false; 
+  }
+
+  //initalize the GBuffer.
+  if(!m_sceneRoot->initGBuffer(gbufferDebugObj))
+  {
+    std::cout << "Failed to load GBuffer " << std::endl;
+    return false;
+  }
+
   //Add camera.
   m_cameras.push_back(m_sceneRoot->getSelectedCameraId());
 
@@ -616,6 +632,7 @@ void Application::render(GLFWwindow* window)
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   
   m_sceneRoot->render();
+  m_sceneRoot->debugGBuffer(m_screenSize[0], m_screenSize[1]);
   m_fpsCounter->render(window);
   drawControls();
 }
