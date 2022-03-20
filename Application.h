@@ -6,6 +6,7 @@
 #include "Camera.h"
 #include "LodCallback.h"
 #include "Player.h"
+#include "TimeStep.h"
 #include <reactphysics3d/reactphysics3d.h>
 
 class Application
@@ -150,6 +151,8 @@ private:
   bool m_playerViewEnabled;
 
   // Parent of all to be rendered
+  TimeStep m_timeStep;
+  float m_lastFrameTime;
   std::shared_ptr<Player> m_player;
   std::shared_ptr<Scene> m_sceneRoot;
   std::shared_ptr<FPSCounter> m_fpsCounter;

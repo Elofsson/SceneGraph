@@ -3,6 +3,7 @@
 #include <glm/glm.hpp>
 #include <GLFW/glfw3.h>
 #include "BoundingBox.h"
+#include "TimeStep.h"
 
 #define PROJECTION_PARALLEL 0
 #define PROJECTION_PERSPECTIVE 1
@@ -24,7 +25,7 @@ public:
   /// Handle keyboard events
   /// </summary>
   /// <param name="window">The window for which keyboard events are handled</param>
-  virtual void processInput(GLFWwindow* window);
+  virtual void processInput(GLFWwindow* window, TimeStep ts);
 
   /// <summary>
   /// Get the size of the window for this camera
@@ -121,6 +122,7 @@ private:
 
   // Adjust the speed of the camera and it's sensitivity when looking around
   float m_speed;
+  float m_previousSpeed;
   float m_sceneScale;
   float m_sensitivity;
   float m_fov;

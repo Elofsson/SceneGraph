@@ -19,6 +19,7 @@ public:
   void setShape(int shape);
   void setType(reactphysics3d::BodyType type);
   void setBody(reactphysics3d::RigidBody* body);
+  void setForce(reactphysics3d::Vector3 force);
 
 
   reactphysics3d::RigidBody* getBody();
@@ -28,11 +29,13 @@ public:
   float getFriction();
   int getShape();
   reactphysics3d::BodyType getType();
+  reactphysics3d::Vector3 getForce();
 
   void init();
 
 private:
   reactphysics3d::RigidBody* m_body;
+  reactphysics3d::Vector3 m_force;
   std::vector<reactphysics3d::Collider*> m_colliders;
   reactphysics3d::BodyType m_type;
   float m_bounciness;

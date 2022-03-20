@@ -10,6 +10,7 @@ PhysicsState::PhysicsState()
   m_shape = SHAPE_BOX;
   m_type = reactphysics3d::BodyType::STATIC;
   m_body = nullptr;
+  m_force = reactphysics3d::Vector3(0, 0, 0);
 }
 
 PhysicsState::PhysicsState(PhysicsState &inState)
@@ -19,6 +20,12 @@ PhysicsState::PhysicsState(PhysicsState &inState)
   m_mass = inState.getMass();
   m_shape = inState.getShape();
   m_type = inState.getType();
+  m_force = inState.getForce();
+}
+
+void PhysicsState::setForce(reactphysics3d::Vector3 force)
+{
+  m_force = force;
 }
 
 reactphysics3d::RigidBody* PhysicsState::getBody()
@@ -62,6 +69,11 @@ void PhysicsState::setType(reactphysics3d::BodyType type)
   m_type = type;
 }
 
+reactphysics3d::Vector3 PhysicsState::getForce()
+{
+  return m_force;
+}
+
 float PhysicsState::getBounciness()
 {
   return m_bounciness;
@@ -102,4 +114,7 @@ void PhysicsState::init()
     collider->getMaterial().setBounciness(m_bounciness);
     collider->getMaterial().setFrictionCoefficient(m_friction);
   }
+
+  //Apply force.
+  m_body->applyLocalForceAtCenterOfMass(m_force);
 }

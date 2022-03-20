@@ -15,7 +15,8 @@ Camera::Camera() :
 	m_uniform_p(0),
 	m_uniform_v_inv(0),
 	m_firstClick(true),
-	m_speed(0.1f),
+	m_speed(10.0f),
+	m_previousSpeed(m_speed),
 	m_sceneScale(1),
 	m_sensitivity(100.0f),
 	m_fov(50)
@@ -64,42 +65,43 @@ glm::vec3 Camera::getPosition() const
 	return m_position;
 }
 
-void Camera::processInput(GLFWwindow* window)
+void Camera::processInput(GLFWwindow* window, TimeStep ts)
 {
+	//std::cout << "Timestep in camera: " << ts.getSeconds() << std::endl;
+
 	// Handles key inputs
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
 	{
-		m_position += m_speed * m_sceneScale * m_direction;
+		m_position += m_speed * m_sceneScale * m_direction * ts.getSeconds();
 	}
 	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
 	{
-		m_position += m_speed * m_sceneScale * -glm::normalize(glm::cross(m_direction, m_up));
+		m_position += m_speed * m_sceneScale * -glm::normalize(glm::cross(m_direction, m_up)) * ts.getSeconds();
 	}
 	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
 	{
-		m_position += m_speed * m_sceneScale * -m_direction;
+		m_position += m_speed * m_sceneScale * -m_direction * ts.getSeconds();
 	}
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
 	{
-		m_position += m_speed * m_sceneScale * glm::normalize(glm::cross(m_direction, m_up));
+		m_position += m_speed * m_sceneScale * glm::normalize(glm::cross(m_direction, m_up)) * ts.getSeconds();
 	}
 	if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
 	{
-		m_position += m_speed * m_sceneScale * m_up;
+		m_position += m_speed * m_sceneScale * m_up * ts.getSeconds();
 	}
 	if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS)
 	{
-		m_position += m_speed * m_sceneScale * -m_up;
+		m_position += m_speed * m_sceneScale * -m_up * ts.getSeconds();
 	}
 	if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
 	{
-		m_speed = 0.4f;
+		m_speed = 15.0f;
 	}
 	else if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_RELEASE)
 	{
-		m_speed = 0.1f;
+		m_speed = 10.0;
 	}
-
 
 	// Handles mouse inputs
 	//if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)

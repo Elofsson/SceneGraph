@@ -13,6 +13,7 @@ public:
   void update() override;
 
 private:
+
   glm::vec3 m_force;
   std::shared_ptr<PhysicsState> m_physics;
 };

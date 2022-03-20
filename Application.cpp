@@ -24,6 +24,7 @@ Application::Application(unsigned int width, unsigned height) : m_screenSize(wid
 {
   std::cout << "Application init " << std::endl;
   m_fpsCounter = std::make_shared<FPSCounter>();
+  m_lastFrameTime = 0.0f;
 }
 
 bool Application::initResources(const std::string& model_filename, const std::string& vshader_filename, std::string& fshader_filename)
@@ -621,6 +622,12 @@ void Application::render(GLFWwindow* window)
 
 void Application::update(GLFWwindow* window)
 {
+  //Increase timestep.
+  float time = glfwGetTime();
+  m_timeStep = time - m_lastFrameTime;
+  m_lastFrameTime = time;
+
+  m_sceneRoot->update(m_timeStep);
   render(window);
 }
 
@@ -629,7 +636,7 @@ void Application::processInput(GLFWwindow* window)
 {
   if(m_playerViewEnabled)
   {
-    std::shared_ptr<Group> playerOutputs = m_player->processInput(window);
+    std::shared_ptr<Group> playerOutputs = m_player->processInput(window, m_timeStep);
     if(playerOutputs != nullptr)
     {
       m_sceneRoot->add(playerOutputs);
@@ -638,7 +645,7 @@ void Application::processInput(GLFWwindow* window)
   
   else
   {
-    getCamera()->processInput(window);
+    getCamera()->processInput(window, m_timeStep);
   }
 }
 

@@ -2,6 +2,8 @@
 
 Player::Player(float speed, std::shared_ptr<Camera> camera)
 {
+  m_fireRate = 0.25f;
+  m_lastShot = 1.0f;
   m_movementSpeed = speed;
   m_camera = camera;
   m_position = camera->getPosition();
@@ -15,9 +17,9 @@ void Player::setModel(std::shared_ptr<Transform> model, std::shared_ptr<PhysicsS
   m_player->setPhysics(physics);
 }
 
-std::shared_ptr<Group> Player::processInput(GLFWwindow *window)
+std::shared_ptr<Group> Player::processInput(GLFWwindow *window, TimeStep ts)
 {
-  m_camera->processInput(window);
+  m_camera->processInput(window, ts);
   glm::vec3 cameraPos = m_camera->getPosition();
 
   //Update camera position.
@@ -47,30 +49,30 @@ std::shared_ptr<Group> Player::processInput(GLFWwindow *window)
 
   if(m_trajectoryModel != nullptr)
   {
-    if(glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
+    m_lastShot += ts;
+    if(glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS && m_lastShot >= m_fireRate)
     {
       std::cout << "Shoot " << std::endl;
-      glm::vec3 trajectoryVelocity = m_camera->getDirection() * 3.0f;
+      glm::vec3 trajectoryVelocity = m_camera->getDirection() * 50.0f;
       
       //Create new trajectory
       std::shared_ptr<Transform> trajectory = std::shared_ptr<Transform>(new Transform(bodyPosition.x, bodyPosition.y, bodyPosition.z));
       std::shared_ptr<PhysicsState> trajectoryPhysics = std::shared_ptr<PhysicsState>(new PhysicsState);
       trajectoryPhysics->setShape(SHAPE_SPHERE);
       trajectoryPhysics->setType(reactphysics3d::BodyType::DYNAMIC);
-      trajectoryPhysics->setMass(0.1);
+      trajectoryPhysics->setMass(0.15);
+      trajectoryPhysics->setBounciness(0.9);
+      trajectoryPhysics->setForce(reactphysics3d::Vector3(trajectoryVelocity.x, trajectoryVelocity.y, trajectoryVelocity.z));
       trajectory->setPhysics(trajectoryPhysics);
 
       //Add model to trajectory.
       trajectory->addChild(m_trajectoryModel);
-
-      //Create force update callback.
-      std::shared_ptr<ForceCallback> projectileForceCallback = std::shared_ptr<ForceCallback>(new ForceCallback(trajectoryPhysics, trajectoryVelocity));
-      trajectory->addCallback(projectileForceCallback);
-
+      
       //this group is only created to avoid visitor bug. This should be fixed.
       std::shared_ptr<Group> group = std::shared_ptr<Group>(new Group());
       group->addChild(trajectory); 
 
+      m_lastShot = 0.0f;
       return group;
     }
   }

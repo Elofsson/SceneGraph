@@ -286,6 +286,14 @@ std::shared_ptr<Physics> Scene::getPhysicsWorld()
   return m_physics;
 }
 
+void Scene::update(TimeStep ts)
+{
+  
+  m_updater->visit(*m_root);
+  //Update physics here.
+  m_physics->update(*m_root);
+}
+
 void Scene::render()
 {
   applyCamera();
@@ -316,12 +324,7 @@ void Scene::render()
     m_skybox->render();
   }
  
- 
-  m_updater->visit(*m_root);
   m_renderer->visit(*m_root);
-
-  //Update physics here.
-  m_physics->update(*m_root);
 
   //Draw collision boxes if debug is enabled.
   if(m_physics->debugEnabled())

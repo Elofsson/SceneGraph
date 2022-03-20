@@ -126,6 +126,9 @@ public:
 
   bool shadowsIsEnabled();
 
+
+  void update(TimeStep ts);
+
 private:
   std::shared_ptr<Physics> m_physics;
 
