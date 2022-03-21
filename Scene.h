@@ -142,6 +142,7 @@ private:
   std::shared_ptr<SkyBox> m_skybox;
 
   //G buffer.
+  GLuint m_lightningPassProgram;
   std::shared_ptr<RenderToTexture> m_GBuffer;
   std::shared_ptr<Group> m_gbufferDebugObj;
 

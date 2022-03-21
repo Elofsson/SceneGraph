@@ -158,6 +158,7 @@ void Scene::applyCamera()
 {
   for(auto program : m_programs)
   {
+    std::cout << "Apply camera on program: " << program << std::endl;
     glUseProgram(program);
     m_cameras[m_selectedCamera]->init(program);
     m_cameras[m_selectedCamera]->applyPerspective(program);
@@ -314,6 +315,19 @@ bool Scene::initGBuffer(std::shared_ptr<Group> debugObj)
     return false;
   }
 
+  //Load lightning pass shader
+  const std::string& vshader_filename_lightning = "shaders/lightning-pass.vert.glsl";
+  const std::string& fshader_filename_lightning = "shaders/lightning-pass.frag.glsl";
+  int lightPassShaderId = addShader(vshader_filename_lightning, fshader_filename_lightning);
+  if(lightPassShaderId == -1)
+  {
+    std::cout << "Failed to load gbuffer shaders " << std::endl;
+    return false;
+  }
+  
+  m_lightningPassProgram = m_programs[lightPassShaderId];
+  m_root->getState()->setProgram(m_lightningPassProgram);
+
   GLuint gBufferProgram = m_programs[shader];
   std::cout << "Gbuffer program id : " << gBufferProgram << std::endl;
 
@@ -321,7 +335,7 @@ bool Scene::initGBuffer(std::shared_ptr<Group> debugObj)
 
   //Position color texture.
   std::shared_ptr<Texture> positionBuffer = std::shared_ptr<Texture>(new Texture());
-  positionBuffer->initEmpty(width, height, startSlot, GL_TEXTURE_2D, GL_FLOAT, GL_RGB16F, GL_RGBA);
+  positionBuffer->initEmpty(width, height, startSlot, GL_TEXTURE_2D, GL_FLOAT, GL_RGB32F, GL_RGBA);
   m_GBuffer->addRenderTarget(positionBuffer);
 
   //Normal color texture
@@ -341,22 +355,6 @@ bool Scene::initGBuffer(std::shared_ptr<Group> debugObj)
 
 void Scene::debugGBuffer(int width, int height)
 {  
-  /*std::shared_ptr<Group> debugRoot = std::shared_ptr<Group>(new Group);
-  int offset = 5;
-  for(int i = 0; i < gBufferRenderTargets.size(); i++)
-  {
-    std::shared_ptr<Texture> renderTarget = gBufferRenderTargets[i]; 
-    std::shared_ptr<Transform> position = std::shared_ptr<Transform>(new Transform(0, 5, offset * i));
-    position->scale(glm::vec3(2, 2, 2));
-    std::shared_ptr<State> state = std::shared_ptr<State>(new State);
-    state->addTexture(renderTarget, 0);
-    state->setProgram(m_programs[DEFAULT_SHADER]);
-    position->setState(state);
-    position->addChild(m_gbufferDebugObj);
-    debugRoot->addChild(position);
-  }
-  m_renderer->visit(*debugRoot);*/
-
   //TODO all of this should be moved to a GBuffer class.
   //Get the render targets and the GBuffer.
   auto gBufferRenderTargets = m_GBuffer->getRenderTargets();
@@ -377,16 +375,12 @@ void Scene::debugGBuffer(int width, int height)
     glReadBuffer(GL_COLOR_ATTACHMENT0 + i);  
     glBlitFramebuffer(0, 0, halfWidth, halfHeight, destX + offset, destY, destX + halfWidth, halfHeight, GL_COLOR_BUFFER_BIT, GL_LINEAR);
     destX += halfWidth;
-
-    std::cout << "Destination x: " << destX << std::endl;
-    std::cout << "Half width: " << halfWidth << std::endl;
   }
 
 }
 
 void Scene::render()
 {
-  applyCamera();
 
   //Render shadows
   /*if(m_shadowMap != nullptr && m_shadowsEnabled)
@@ -405,7 +399,42 @@ void Scene::render()
     }
   }*/
 
+  //TODO move this GBuffer related things to a GBuffer class
+  //glDepthMask(GL_TRUE);
+
+  //glEnable(GL_DEPTH_TEST);
+
   m_GBuffer->render(getSelectedCamera(), m_root);
+
+  //glDepthMask(GL_FALSE);
+
+  //glDisable(GL_DEPTH_TEST);
+
+  //TODO this is rly bad. Make it more readable
+  std::shared_ptr<Texture> positionTexture = m_GBuffer->getRenderTargets()[0];
+  std::shared_ptr<Texture> normalTexture = m_GBuffer->getRenderTargets()[1];
+  std::shared_ptr<Texture> albedoTexture = m_GBuffer->getRenderTargets()[2];
+  
+  applyCamera();
+
+  glUseProgram(m_lightningPassProgram);
+
+  const char *uniform = "gPosition";
+  positionTexture->apply(m_lightningPassProgram, uniform);
+
+  uniform = "gNormal";
+  normalTexture->apply(m_lightningPassProgram, uniform);
+
+  uniform = "gAlbedoSpec";
+  albedoTexture->apply(m_lightningPassProgram, uniform);
+
+  //glEnable(GL_BLEND);
+  //glBlendEquation(GL_FUNC_ADD);
+  //glBlendFunc(GL_ONE, GL_ONE);
+  //glClear(GL_COLOR_BUFFER_BIT);
+
+  //Currently force just to test.
+  //m_renderer->forceProgram(true, m_lightningPassProgram);
   m_renderer->visit(*m_root); 
 
   if(m_skybox != nullptr)
